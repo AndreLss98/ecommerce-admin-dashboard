@@ -7,7 +7,7 @@ const backendURL = 'http://localhost:8085';
 export const environment = {
   production: false,
   backendURL,
-  graphQL: `${backendURL}/api`
+  graphQL: `${backendURL}/graphql`
 };
 
 /*
