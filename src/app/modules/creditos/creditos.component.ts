@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import {MatSort} from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import {MatTableDataSource} from '@angular/material/table';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 
 import { CreditosService } from './creditos.service';
@@ -13,9 +15,11 @@ import { CreditosService } from './creditos.service';
 })
 export class CreditosComponent implements OnInit {
 
-  public data = [];
+  @ViewChild(MatSort) sort: MatSort;
+
+  public dataSource: MatTableDataSource<any>;
   public isLoading: boolean = false;
-  public displayedColumns: string[] = ['ItemTitle', 'CreditsUsed'];
+  public displayedColumns: string[] = ['ItemTitle', 'CreditsUsed', 'UsageDate'];
   public userName: string = '';
   public creditos: number;
   public creditosUsados: number;
@@ -30,10 +34,16 @@ export class CreditosComponent implements OnInit {
     this.filterForm = formBuilder.group({
       email: ['', [Validators.required]]
     });
+
+    this.dataSource = new MatTableDataSource([]);
   }
 
   ngOnInit(): void {
 
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
   }
 
   search() {
@@ -41,13 +51,13 @@ export class CreditosComponent implements OnInit {
     this.resetVars();
     this.creditosService.getUserCreditsUsed(this.filterForm.value.email)
     .subscribe(response => {
-      console.log(response);
       if (response.data.user) {
         this.isLoading = false;
-        this.data = response.data.user.CreditosUsados;
+        this.dataSource.data = response.data.user.CreditosUsados;
         this.userName = response.data.user.CustomerName;
         this.creditos = response.data.user.Credits;
-        this.creditosUsados = this.data.reduce((a, element) => a + element.CreditsUsed, 0);
+        this.creditosUsados = this.dataSource.data.reduce((a, element) => a + element.CreditsUsed, 0);
+        this.dataSource.sort = this.sort;
       } else {
         this.matDialog.open(BasicModalComponent, {
           data: {
@@ -66,7 +76,7 @@ export class CreditosComponent implements OnInit {
   }
 
   private resetVars() {
-    this.data = [];
+    this.dataSource.data = [];
     this.userName = '';
     this.creditos = null;
     this.creditosUsados = 0;

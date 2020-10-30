@@ -20,8 +20,9 @@ export class CreditosService {
         CustomerEmail
         Credits
         CreditosUsados {
-          ItemTitle,
+          ItemTitle
           CreditsUsed
+          UsageDate
         }
       }
     }`;

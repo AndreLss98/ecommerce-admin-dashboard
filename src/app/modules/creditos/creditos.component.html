@@ -11,12 +11,23 @@
                     type="email" required />
             </mat-form-field>
         </div>
+        <div class="col">
+            <mat-form-field appearance="standard">
+                <mat-label>Período</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                  <input matStartDate placeholder="Data inicial">
+                  <input matEndDate placeholder="Data final">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
         <div class="col d-flex align-items-center">
             <button mat-raised-button color="primary" type="submit" [disabled]="filterForm.invalid">Buscar</button>
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" *ngIf="userName">
         <div class="col">
             <mat-form-field appearance="standard" color="primary">
                 <mat-label>Nome</mat-label>
@@ -47,9 +58,13 @@
     </div>
 </form>
 
-<mat-table [dataSource]="data" *ngIf="!isLoading; else loading">
+<div *ngIf="isLoading" class="row d-flex justify-content-center my-4">
+    <mat-spinner></mat-spinner>
+</div>
+
+<mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 my-2">
     <ng-container matColumnDef="ItemTitle">
-      <mat-header-cell *matHeaderCellDef> Plugin </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
     </ng-container>
   
@@ -57,13 +72,12 @@
       <mat-header-cell *matHeaderCellDef> Crédito usado </mat-header-cell>
       <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
     </ng-container>
+
+    <ng-container matColumnDef="UsageDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Data Utilização </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.UsageDate | date}} </mat-cell>
+      </ng-container>
   
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 </mat-table>
-
-<ng-template #loading>
-    <div class="row d-flex justify-content-center my-4">
-        <mat-spinner></mat-spinner>
-    </div>
-</ng-template>

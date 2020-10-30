@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
+import {MatNativeDateModule} from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
@@ -23,6 +24,7 @@ import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.com
     MatToolbarModule,
     AppRoutingModule,
     HttpClientModule,
+    MatNativeDateModule,
     BrowserAnimationsModule,
   ],
   providers: [],
