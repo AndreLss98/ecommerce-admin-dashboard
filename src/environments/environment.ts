@@ -2,8 +2,12 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+const backendURL = 'http://localhost:8085';
+
 export const environment = {
-  production: false
+  production: false,
+  backendURL,
+  graphQL: `${backendURL}/api`
 };
 
 /*
