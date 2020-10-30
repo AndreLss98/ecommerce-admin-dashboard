@@ -1,0 +1,69 @@
+<form [formGroup]="filterForm" (ngSubmit)="search()"
+    class="d-flex flex-column align-items-center justify-content-center">
+    <div class="row">
+        <div class="col">
+            <mat-form-field appearance="standard" color="primary">
+                <mat-label>Email</mat-label>
+                <input
+                    matInput
+                    formControlName="email"
+                    placeholder="Ex.: user@domain.com"
+                    type="email" required />
+            </mat-form-field>
+        </div>
+        <div class="col d-flex align-items-center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="filterForm.invalid">Buscar</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <mat-form-field appearance="standard" color="primary">
+                <mat-label>Nome</mat-label>
+                <input
+                    matInput
+                    [value]="userName"
+                    type="text" readonly />
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field appearance="standard" color="primary">
+                <mat-label>Créditos restantes</mat-label>
+                <input
+                    matInput
+                    [value]="creditos"
+                    type="number" readonly />
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <mat-form-field appearance="standard" color="primary">
+                <mat-label>Créditos usados</mat-label>
+                <input
+                    matInput
+                    [value]="creditosUsados"
+                    type="number" readonly />
+            </mat-form-field>
+        </div>
+    </div>
+</form>
+
+<mat-table [dataSource]="data" *ngIf="!isLoading; else loading">
+    <ng-container matColumnDef="ItemTitle">
+      <mat-header-cell *matHeaderCellDef> Plugin </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
+    </ng-container>
+  
+    <ng-container matColumnDef="CreditsUsed">
+      <mat-header-cell *matHeaderCellDef> Crédito usado </mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
+    </ng-container>
+  
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+</mat-table>
+
+<ng-template #loading>
+    <div class="row d-flex justify-content-center my-4">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

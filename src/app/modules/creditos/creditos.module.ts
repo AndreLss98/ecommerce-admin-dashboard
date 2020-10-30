@@ -1,5 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import {MatTableModule} from '@angular/material/table';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { CreditosComponent } from './creditos.component';
 import { CreditosRoutingModule } from './creditos-routing.module';
@@ -11,7 +19,15 @@ import { CreditosRoutingModule } from './creditos-routing.module';
   ],
   imports: [
     CommonModule,
-    CreditosRoutingModule
+    FormsModule,
+    MatTableModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    CreditosRoutingModule,
+    MatProgressSpinnerModule,
   ]
 })
 export class CreditosModule { }
