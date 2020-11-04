@@ -19,6 +19,8 @@ export class CreditosComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
+  readonly maxDate: Date = new Date();
+
   public dataSource: MatTableDataSource<any>;
   public isLoading: boolean = false;
   public displayedColumns: string[] = ['ItemTitle', 'CreditsUsed', 'UsageDate'];

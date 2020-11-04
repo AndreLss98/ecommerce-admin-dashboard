@@ -15,7 +15,7 @@
         <div class="col">
             <mat-form-field appearance="standard">
                 <mat-label>Período</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
+                <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
                   <input matStartDate placeholder="Data inicial">
                   <input matEndDate placeholder="Data final">
                 </mat-date-range-input>
