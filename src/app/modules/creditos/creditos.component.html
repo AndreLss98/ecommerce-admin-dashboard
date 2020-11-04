@@ -7,6 +7,7 @@
                 <input
                     matInput
                     formControlName="email"
+                    autocomplete="false"
                     placeholder="Ex.: user@domain.com"
                     type="email" required />
             </mat-form-field>
@@ -27,22 +28,22 @@
         </div>
     </div>
 
-    <div class="row" *ngIf="userName">
+    <div class="row" *ngIf="filterForm.controls['nome'].value">
         <div class="col">
             <mat-form-field appearance="standard" color="primary">
                 <mat-label>Nome</mat-label>
                 <input
                     matInput
-                    [value]="userName"
+                    formControlName="nome"
                     type="text" readonly />
             </mat-form-field>
         </div>
         <div class="col">
             <mat-form-field appearance="standard" color="primary">
-                <mat-label>Créditos restantes</mat-label>
+                <mat-label>Créditos</mat-label>
                 <input
                     matInput
-                    [value]="creditos"
+                    formControlName="creditos"
                     type="number" readonly />
             </mat-form-field>
         </div>
@@ -51,7 +52,7 @@
                 <mat-label>Créditos usados</mat-label>
                 <input
                     matInput
-                    [value]="creditosUsados"
+                    formControlName="creditos_usados"
                     type="number" readonly />
             </mat-form-field>
         </div>
@@ -62,22 +63,26 @@
     <mat-spinner></mat-spinner>
 </div>
 
-<mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 my-2">
-    <ng-container matColumnDef="ItemTitle">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
-    </ng-container>
-  
-    <ng-container matColumnDef="CreditsUsed">
-      <mat-header-cell *matHeaderCellDef> Crédito usado </mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="UsageDate">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> Data Utilização </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.UsageDate | date}} </mat-cell>
-      </ng-container>
-  
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-</mat-table>
+<div class="mat-elevation-z8 my-2">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="ItemTitle">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
+        </ng-container>
+      
+        <ng-container matColumnDef="CreditsUsed">
+          <mat-header-cell *matHeaderCellDef> Crédito usado </mat-header-cell>
+          <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="UsageDate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Data Utilização </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.UsageDate | date}} </mat-cell>
+          </ng-container>
+      
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>
