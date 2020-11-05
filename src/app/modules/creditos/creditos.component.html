@@ -9,18 +9,24 @@
                     formControlName="email"
                     autocomplete="false"
                     placeholder="Ex.: user@domain.com"
-                    type="email" required />
+                    type="email" />
             </mat-form-field>
         </div>
         <div class="col">
             <mat-form-field appearance="standard">
                 <mat-label>Período</mat-label>
                 <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
-                  <input matStartDate placeholder="Data inicial">
-                  <input matEndDate placeholder="Data final">
+                  <input
+                    matStartDate
+                    formControlName="start"
+                    placeholder="Data inicial" />
+                  <input
+                    matEndDate
+                    formControlName="end"
+                    placeholder="Data final" />
                 </mat-date-range-input>
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
+                <mat-date-range-picker (closed)="search()" #picker></mat-date-range-picker>
             </mat-form-field>
         </div>
         <div class="col d-flex align-items-center">
@@ -77,12 +83,12 @@
     
         <ng-container matColumnDef="UsageDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Data Utilização </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.UsageDate | date}} </mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.UsageDate | date:'short'}} </mat-cell>
           </ng-container>
       
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     
-    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
 </div>

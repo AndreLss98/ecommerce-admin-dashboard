@@ -23,7 +23,7 @@ export class CreditosComponent implements OnInit {
 
   public dataSource: MatTableDataSource<any>;
   public isLoading: boolean = false;
-  public displayedColumns: string[] = ['ItemTitle', 'CreditsUsed', 'UsageDate'];
+  public displayedColumns: string[] = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
 
   public filterForm: FormGroup;
 
@@ -35,6 +35,8 @@ export class CreditosComponent implements OnInit {
     this.filterForm = formBuilder.group({
       email: ['', []],
       nome: ['', []],
+      start: [null, []],
+      end: [null, []],
       creditos: [null, []],
       creditos_usados: [null, []]
     });
@@ -52,12 +54,52 @@ export class CreditosComponent implements OnInit {
   }
 
   search() {
+    if (this.filterForm.controls['email'].value) {
+      this.searchUser();
+    } else if (this.filterForm.controls['start'].value) {
+      this.searchInterval();
+    }
+  }
+
+  searchInterval() {
+    this.isLoading = true;
+
+    this.creditosService.getAllInInterval(
+      this.filterForm.controls['start'].value.toISOString().replace(/\T.{1,}/, 'T01:00:00.000Z'),
+      this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : ''
+    ).subscribe(response => {
+      this.isLoading = false;
+      this.dataSource.data = response.data.credits;
+
+      this.filterForm.controls['nome'].setValue('');
+      this.filterForm.controls['creditos'].setValue(null);
+      this.filterForm.controls['creditos_usados'].setValue(null);
+    }, (error) => {
+      this.isLoading = false;
+      this.openErroDialog("Erro de conexão.");
+    }, () => {
+      this.isLoading = false;
+    });
+  }
+
+  searchUser() {
     this.isLoading = true;
 
     this.creditosService.getUserCreditsUsed(this.filterForm.value.email)
     .subscribe(response => {
       if (response.data.user) {
         this.isLoading = false;
+
+        if (this.filterForm.controls['start'].value) {
+          response.data.user.CreditosUsados = response.data.user.CreditosUsados
+            .filter(credit => Number(credit.UsageDate) >= this.filterForm.controls['start'].value.setHours(0, 0, 0, 0));
+        }
+
+        if (this.filterForm.controls['end'].value) {
+          response.data.user.CreditosUsados = response.data.user.CreditosUsados
+            .filter(credit => Number(credit.UsageDate) <= this.filterForm.controls['end'].value.setHours(23, 59, 59, 999));
+        }
+
         this.dataSource.data = response.data.user.CreditosUsados;
 
         this.filterForm.controls['nome'].setValue(response.data.user.CustomerName);
