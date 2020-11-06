@@ -1,4 +1,4 @@
-const backendURL = 'http://backend.painel.lenofx.com';
+const backendURL = 'https://backend.painel.lenofx.com';
 
 export const environment = {
   production: true,
