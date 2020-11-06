@@ -1,4 +1,4 @@
-const backendURL = 'http://3.23.61.244:8085';
+const backendURL = 'http://backend.painel.lenofx.com';
 
 export const environment = {
   production: true,
