@@ -7,9 +7,11 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { CreditosComponent } from './creditos.component';
@@ -28,10 +30,12 @@ import { CreditosRoutingModule } from './creditos-routing.module';
     MatInputModule,
     MatButtonModule,
     MatDialogModule,
+    MatDividerModule,
     MatPaginatorModule,
     MatFormFieldModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatSlideToggleModule,
     CreditosRoutingModule,
     MatProgressSpinnerModule,
   ]

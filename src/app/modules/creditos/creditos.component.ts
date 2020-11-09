@@ -21,8 +21,10 @@ export class CreditosComponent implements OnInit {
 
   readonly maxDate: Date = new Date();
 
-  public dataSource: MatTableDataSource<any>;
   public isLoading: boolean = false;
+  public dataSource: MatTableDataSource<any>;
+  public data = [];
+  public filteredData = [];
   public displayedColumns: string[] = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
 
   public filterForm: FormGroup;
@@ -38,10 +40,15 @@ export class CreditosComponent implements OnInit {
       start: [null, []],
       end: [null, []],
       creditos: [null, []],
-      creditos_usados: [null, []]
+      creditos_usados: [null, []],
+      agrupar_creditos: [false, []]
     });
 
-    this.dataSource = new MatTableDataSource([]);
+    this.dataSource = new MatTableDataSource(this.data);
+    this.filterForm.controls['agrupar_creditos'].valueChanges
+      .subscribe(() => {
+        this.checkGroup();
+      });
   }
 
   ngOnInit(): void {
@@ -69,13 +76,17 @@ export class CreditosComponent implements OnInit {
       this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : ''
     ).subscribe(response => {
       this.isLoading = false;
-      this.dataSource.data = response.data.credits;
+
+      this.data = response.data.credits
+      this.checkGroup();
 
       this.filterForm.controls['nome'].setValue('');
       this.filterForm.controls['creditos'].setValue(null);
       this.filterForm.controls['creditos_usados'].setValue(null);
     }, (error) => {
       this.isLoading = false;
+      this.data = [];
+      this.dataSource.data = this.data;
       this.openErroDialog("Erro de conexão.");
     }, () => {
       this.isLoading = false;
@@ -100,16 +111,21 @@ export class CreditosComponent implements OnInit {
             .filter(credit => Number(credit.UsageDate) <= this.filterForm.controls['end'].value.setHours(23, 59, 59, 999));
         }
 
-        this.dataSource.data = response.data.user.CreditosUsados;
+        this.data = response.data.user.CreditosUsados
+        this.checkGroup();
 
         this.filterForm.controls['nome'].setValue(response.data.user.CustomerName);
         this.filterForm.controls['creditos'].setValue(response.data.user.Credits);
         this.filterForm.controls['creditos_usados'].setValue(this.dataSource.data.reduce((a, element) => a + element.CreditsUsed, 0));
       } else {
+        this.data = [];
+        this.dataSource.data = this.data;
         this.openErroDialog("Usuário não encontrado.");
       }
     }, (error) => {
       this.isLoading = false;
+      this.data = [];
+      this.dataSource.data = this.data;
       this.openErroDialog("Erro de conexão.");
     }, () => {
       this.isLoading = false;
@@ -123,5 +139,25 @@ export class CreditosComponent implements OnInit {
         title: "Aviso!", message
       }
     })
+  }
+
+  private checkGroup() {
+    if (this.filterForm.controls['agrupar_creditos'].value) {
+      this.filteredData = this.groupBy(this.data, 'ItemTitle', 'CreditsUsed');
+      this.displayedColumns = ['ItemTitle', 'CreditsUsed'];
+    } else {
+      this.filteredData = this.data;
+      this.displayedColumns = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
+    }
+
+    this.dataSource.data = this.filteredData;
+  }
+
+  private groupBy(originalBuffer, key: string, accumulator: string) {
+    return originalBuffer.reduce((buffer, element) => {
+      const temp = buffer.find(el => el[key] === element[key]);
+      temp? temp[accumulator] += element[accumulator] : buffer.push({...element});
+      return buffer;
+    }, []);
   }
 }
