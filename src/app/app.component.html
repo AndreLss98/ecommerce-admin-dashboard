@@ -1,6 +1,13 @@
 <mat-toolbar color="primary">
-    <span>LenoFX</span><span class="font-weight-light ml-1">painel</span>
+    <div class="mr-2" routerLink="/">
+        <span>LenoFX</span><span class="font-weight-light ml-1">painel</span>
+    </div>
+
+    <button mat-flat-button color="primary" routerLink="creditos">Créditos</button>
+    <button mat-flat-button color="primary" routerLink="bundles">Bundles</button>
+    <button mat-flat-button color="primary" routerLink="usuarios">Usuários</button>
 </mat-toolbar>
+
 <div class="container">
     <router-outlet></router-outlet>
 </div>

@@ -14,6 +14,14 @@ const routes: Routes = [
   {
     path: "creditos",
     loadChildren: () => import("./modules/creditos/creditos.module").then(m => m.CreditosModule)
+  },
+  {
+    path: "bundles",
+    loadChildren: () => import("./modules/bundles/bundles.module").then(m => m.BundlesModule)
+  },
+  {
+    path: "usuarios",
+    loadChildren: () => import("./modules/usuarios/usuarios.module").then(m => m.UsuariosModule)
   }
 ];
 
