@@ -5,36 +5,34 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {MatDialogModule} from '@angular/material/dialog';
-import {MatButtonModule} from '@angular/material/button';
-import {MatNativeDateModule} from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
+import { MatButtonModule } from '@angular/material/button';
 
 import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
     AppComponent,
-    BasicModalComponent,
+    BasicModalComponent
   ],
   imports: [
     BrowserModule,
-    MatDialogModule,
     MatButtonModule,
+    MatDialogModule,
     MatToolbarModule,
     AppRoutingModule,
     HttpClientModule,
-    MatNativeDateModule,
     BrowserAnimationsModule,
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "pt-BR" }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

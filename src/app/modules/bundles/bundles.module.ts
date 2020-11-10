@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BundlesRoutingModule } from './bundles-routing.module';
 
 import { BundlesComponent } from './bundles.component';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { BundlesComponent } from './bundles.component';
   ],
   imports: [
     CommonModule,
+    ComponentsModule,
     BundlesRoutingModule
   ]
 })

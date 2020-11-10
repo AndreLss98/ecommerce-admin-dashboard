@@ -10,7 +10,7 @@ import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-mod
 import { CreditosService } from './creditos.service';
 
 @Component({
-  selector: 'app-creditos',
+  selector: 'creditos',
   templateUrl: './creditos.component.html',
   styleUrls: ['./creditos.component.scss']
 })
