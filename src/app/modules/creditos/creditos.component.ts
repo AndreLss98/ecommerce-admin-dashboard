@@ -40,7 +40,6 @@ export class CreditosComponent implements OnInit {
       start: [null, []],
       end: [null, []],
       creditos: [null, []],
-      creditos_usados: [null, []],
       agrupar_creditos: [false, []]
     });
 
@@ -82,7 +81,6 @@ export class CreditosComponent implements OnInit {
 
       this.filterForm.controls['nome'].setValue('');
       this.filterForm.controls['creditos'].setValue(null);
-      this.filterForm.controls['creditos_usados'].setValue(null);
     }, (error) => {
       this.isLoading = false;
       this.data = [];
@@ -116,7 +114,6 @@ export class CreditosComponent implements OnInit {
 
         this.filterForm.controls['nome'].setValue(response.data.user.CustomerName);
         this.filterForm.controls['creditos'].setValue(response.data.user.Credits);
-        this.filterForm.controls['creditos_usados'].setValue(this.dataSource.data.reduce((a, element) => a + element.CreditsUsed, 0));
       } else {
         this.data = [];
         this.dataSource.data = this.data;
@@ -130,6 +127,10 @@ export class CreditosComponent implements OnInit {
     }, () => {
       this.isLoading = false;
     });
+  }
+
+  getTotalCredits() {
+    return this.data.length? this.data.reduce((acc, el) => acc + el.CreditsUsed, 0) : 0;
   }
 
   private openErroDialog(message) {

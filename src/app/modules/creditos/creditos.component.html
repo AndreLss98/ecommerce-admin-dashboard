@@ -48,8 +48,8 @@
 
     <mat-divider class="w-100 my-4"></mat-divider>
 
-    <div class="row" *ngIf="filterForm.controls['nome'].value">
-        <div class="col">
+    <div class="row">
+        <div class="col" *ngIf="filterForm.controls['nome'].value">
             <mat-form-field appearance="standard" color="primary" class="w-100">
                 <mat-label>Nome</mat-label>
                 <input
@@ -58,7 +58,7 @@
                     type="text" readonly />
             </mat-form-field>
         </div>
-        <div class="col">
+        <div class="col" *ngIf="filterForm.controls['nome'].value">
             <mat-form-field appearance="standard" color="primary" class="w-100">
                 <mat-label>Créditos</mat-label>
                 <input
@@ -67,12 +67,12 @@
                     type="number" readonly />
             </mat-form-field>
         </div>
-        <div class="col">
+        <div class="col" *ngIf="getTotalCredits() > 0 || filterForm.controls['nome'].value">
             <mat-form-field appearance="standard" color="primary" class="w-100">
-                <mat-label>Créditos usados</mat-label>
+                <mat-label>Créditos utilizados</mat-label>
                 <input
                 matInput
-                formControlName="creditos_usados"
+                value="{{ getTotalCredits() }}"
                 type="number" readonly />
             </mat-form-field>
         </div>
@@ -88,20 +88,24 @@
         <ng-container matColumnDef="ItemTitle">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
         </ng-container>
       
         <ng-container matColumnDef="CreditsUsed">
           <mat-header-cell *matHeaderCellDef mat-sort-header> Crédito usado </mat-header-cell>
           <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
+          <mat-footer-cell *matFooterCellDef>{{ getTotalCredits() }}</mat-footer-cell>
         </ng-container>
     
         <ng-container matColumnDef="UsageDate">
             <mat-header-cell *matHeaderCellDef mat-sort-header> Data Utilização </mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.UsageDate | date:'short'}} </mat-cell>
-          </ng-container>
+            <mat-footer-cell *matFooterCellDef></mat-footer-cell>
+        </ng-container>
       
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        <mat-footer-row *matFooterRowDef="displayedColumns"></mat-footer-row>
     </mat-table>
     
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
