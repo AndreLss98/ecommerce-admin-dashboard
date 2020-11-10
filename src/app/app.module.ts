@@ -13,13 +13,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 
 registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
     AppComponent,
-    BasicModalComponent
+    BasicModalComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,
