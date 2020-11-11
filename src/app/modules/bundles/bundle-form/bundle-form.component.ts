@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { BundlesService } from '../bundles.service';
+import { MatDialog } from '@angular/material/dialog';
+import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 
 @Component({
   selector: 'app-bundle-form',
@@ -22,9 +24,10 @@ export class BundleFormComponent implements OnInit {
 
   constructor(
     public router: Router,
-    public route: ActivatedRoute,
-    public formBuilder: FormBuilder,
-    public bundleService: BundlesService
+    private matDialog: MatDialog,
+    private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    public bundleService: BundlesService,
   ) {
     this.bundleForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
@@ -44,6 +47,15 @@ export class BundleFormComponent implements OnInit {
     setTimeout(() => {
       this._resetForm();
       this.router.url.includes('edit')? this.bundleForm.get('nome').disable() : this.bundleForm.get('nome').enable();
+    })
+  }
+
+  onSubmit() {
+    this.matDialog.open(BasicModalComponent, {
+      data: {
+        title: "Parabéns",
+        message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
+      }
     })
   }
 
