@@ -14,6 +14,7 @@ import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
+import { RouterModule, Router } from '@angular/router';
 
 registerLocaleData(localePt);
 
@@ -30,7 +31,7 @@ registerLocaleData(localePt);
     MatToolbarModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     { provide: LOCALE_ID, useValue: "pt-BR" }
