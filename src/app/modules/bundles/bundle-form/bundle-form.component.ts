@@ -40,6 +40,13 @@ export class BundleFormComponent implements OnInit {
     );
   }
 
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this._resetForm();
+      this.router.url.includes('edit')? this.bundleForm.get('nome').disable() : this.bundleForm.get('nome').enable();
+    })
+  }
+
   add(plugin): void {
     const tempPlugin = this.bundleService.plugins.find(el => el.ItemTitle === plugin.value);
     if (tempPlugin) {
@@ -79,5 +86,14 @@ export class BundleFormComponent implements OnInit {
         
         return found === undefined && search;
       });
+  }
+
+  private _resetForm() {
+    const temp = this.route.snapshot.data['bundle'];
+    this.bundleForm.reset({
+      nome: temp.ItemTitle,
+      selected_plugins: temp.Plugins
+    });
+    this.bundleForm.get('plugin_name').setValue('');
   }
 }
