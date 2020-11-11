@@ -12,10 +12,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { CreditosComponent } from './creditos.component';
 import { CreditosRoutingModule } from './creditos-routing.module';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +28,7 @@ import { CreditosRoutingModule } from './creditos-routing.module';
     MatTableModule,
     MatInputModule,
     MatButtonModule,
+    ComponentsModule,
     MatDividerModule,
     MatPaginatorModule,
     MatFormFieldModule,
@@ -36,7 +37,6 @@ import { CreditosRoutingModule } from './creditos-routing.module';
     MatNativeDateModule,
     MatSlideToggleModule,
     CreditosRoutingModule,
-    MatProgressSpinnerModule,
   ]
 })
 export class CreditosModule { }
