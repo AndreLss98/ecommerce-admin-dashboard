@@ -9,7 +9,7 @@
         <mat-form-field appearance="standard" class="w-100">
             <mat-chip-list #chipList aria-label="Plugins selection">
               <mat-chip
-                *ngFor="let plugin of selectedPlugins"
+                *ngFor="let plugin of bundleForm.controls['selected_plugins'].value"
                 [selectable]="true"
                 [removable]="true"
                 (removed)="remove(plugin)">

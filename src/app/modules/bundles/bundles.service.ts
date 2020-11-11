@@ -67,4 +67,8 @@ export class BundlesService {
   public getAllPlugins() {
     return of(this.plugins);
   }
+
+  public getBundleById(ProductID) {
+    return of(this.bundles.find(el => el.ProductID == ProductID));
+  }
 }
