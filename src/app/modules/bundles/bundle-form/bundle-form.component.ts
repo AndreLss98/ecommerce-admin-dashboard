@@ -96,4 +96,8 @@ export class BundleFormComponent implements OnInit {
     });
     this.bundleForm.get('plugin_name').setValue('');
   }
+
+  goBack() {
+    this.router.navigate(['/bundles'], { replaceUrl: true });
+  }
 }

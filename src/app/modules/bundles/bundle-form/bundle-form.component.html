@@ -10,7 +10,7 @@
             <mat-chip-list #chipList aria-label="Plugins selection">
               <mat-chip
                 *ngFor="let plugin of bundleForm.get('selected_plugins').value"
-                [selectable]="true"
+                [selectable]="false"
                 [removable]="true"
                 (removed)="remove(plugin)">
                 {{ plugin.ItemTitle }}
@@ -22,13 +22,30 @@
                 formControlName="plugin_name"
                 [matAutocomplete]="auto"
                 [matChipInputFor]="chipList"
-                (matChipInputTokenEnd)="add($event)">
+                (matChipInputTokenEnd)="add($event)" />
+                <mat-error *ngIf="bundleForm.get('selected_plugins').invalid">O bundle deve conter no mínimo dois plugins</mat-error>
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-              <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.ItemTitle">
-                {{ plugin.ItemTitle }}
-              </mat-option>
+                <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.ItemTitle">
+                    {{ plugin.ItemTitle }}
+                </mat-option>
             </mat-autocomplete>
         </mat-form-field>
+
+        <div class="float-right">
+            <button
+                mat-raised-button
+                type="button" (click)="goBack()">
+                Cancelar
+            </button>
+            <button
+                mat-raised-button
+                color="primary"
+                type="submit"
+                class="ml-3"
+                [disabled]="bundleForm.invalid">
+                    {{ router.url.includes('new')? 'Salvar' : 'Atualizar' }}
+            </button>
+        </div>
     </form>
 </div>
