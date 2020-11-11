@@ -21,6 +21,7 @@ export class BundleFormComponent implements OnInit {
   public filteredPlugins : Observable<any>;
 
   public bundleForm: FormGroup;
+  public isLoading: boolean = false;
 
   constructor(
     public router: Router,
@@ -51,12 +52,24 @@ export class BundleFormComponent implements OnInit {
   }
 
   onSubmit() {
-    this.matDialog.open(BasicModalComponent, {
-      data: {
-        title: "Parabéns",
-        message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
-      }
-    })
+    this.isLoading = true;
+    setTimeout(() => {
+      const dialogRefence = this.matDialog.open(BasicModalComponent, {
+        data: {
+          title: "Parabéns",
+          message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
+        }
+      });
+
+      dialogRefence.afterOpened().subscribe(() => {
+        this.isLoading = false;
+      });
+
+      dialogRefence.beforeClosed().subscribe(() => {
+        this.router.navigate(['/bundles'], { replaceUrl: true });
+      });
+
+    }, 5000)
   }
 
   add(plugin): void {
