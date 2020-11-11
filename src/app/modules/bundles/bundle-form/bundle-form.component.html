@@ -1,0 +1,34 @@
+<div class="container pt-2">
+    <h1 class="m-0 p-0" style="color: white;">{{ router.url.includes('new')? 'Criar' : 'Editar' }} bundle</h1>
+    <form [formGroup]="bundleForm">
+        <mat-form-field appearance="standard" class="w-100">
+            <mat-label>Nome</mat-label>
+            <input matInput [disabled]="router.url.includes('edit')"/>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard" class="w-100">
+            <mat-chip-list #chipList aria-label="Plugins selection">
+              <mat-chip
+                *ngFor="let plugin of selectedPlugins"
+                [selectable]="true"
+                [removable]="true"
+                (removed)="remove(plugin)">
+                {{ plugin.ItemTitle }}
+                <mat-icon matChipRemove>cancel</mat-icon>
+              </mat-chip>
+              <input
+                placeholder="Adicionar plugin"
+                #pluginInput
+                formControlName="plugin_name"
+                [matAutocomplete]="auto"
+                [matChipInputFor]="chipList"
+                (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+              <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.ItemTitle">
+                {{ plugin.ItemTitle }}
+              </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </form>
+</div>

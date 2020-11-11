@@ -53,7 +53,7 @@ export class BundlesComponent implements OnInit {
   }
 
   private fetchAllBundles() {
-    this.bundleService.getAll().subscribe(response => {
+    this.bundleService.getAllBundles().subscribe(response => {
       this.dataSource.data = this.data = response;
     });    
   }
