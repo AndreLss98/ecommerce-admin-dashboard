@@ -80,11 +80,13 @@
         </div>
     </form>
     
-    <div *ngIf="isLoading" class="row d-flex justify-content-center my-4">
-        <custom-load></custom-load>
-    </div>
     
-    <div class="mat-elevation-z8 my-2">
+    <div class="mat-elevation-z8 my-2 position-relative">
+        <div *ngIf="isLoading"
+            class="d-flex justify-content-center align-items-center position-absolute w-100 h-100"
+            style="background-color: #42424299; z-index: 1;">
+            <custom-load></custom-load>
+        </div>
         <mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="ItemTitle">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
