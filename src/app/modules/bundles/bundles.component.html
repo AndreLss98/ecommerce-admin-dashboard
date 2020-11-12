@@ -27,7 +27,7 @@
                 <mat-cell *matCellDef="let row" class="d-flex justify-content-around">
                     <button
                         mat-icon-button
-                        [routerLink]="'edit/' + row.handle">
+                        (click)="editBundle(row)">
                         <mat-icon>create</mat-icon>
                     </button>
                     <button

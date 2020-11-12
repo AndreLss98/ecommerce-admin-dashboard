@@ -9,12 +9,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
-import { MatDialogModule } from '@angular/material/dialog';
+import { AlertModalComponent } from './shared/modals/alert-modal/alert-modal.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
-import { RouterModule, Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(localePt);
 
@@ -22,10 +23,12 @@ registerLocaleData(localePt);
   declarations: [
     AppComponent,
     BasicModalComponent,
-    PageNotFoundComponent
+    AlertModalComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,
+    MatIconModule,
     MatButtonModule,
     MatDialogModule,
     MatToolbarModule,

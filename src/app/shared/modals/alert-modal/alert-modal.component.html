@@ -1,0 +1,9 @@
+<h1 mat-dialog-title class="d-flex align-items-center">
+    {{ data.title }}
+    <mat-icon class="mx-2" color="warn">warning</mat-icon>
+</h1>
+<div mat-dialog-content>{{ data.message }}</div>
+<div mat-dialog-actions>
+  <button mat-flat-button [mat-dialog-close]="false">Fechar</button>
+  <button mat-flat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>Continuar</button>
+</div>
