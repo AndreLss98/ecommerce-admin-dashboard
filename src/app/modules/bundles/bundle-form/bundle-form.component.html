@@ -26,7 +26,7 @@
                 <mat-error *ngIf="bundleForm.get('selected_plugins').invalid">O bundle deve conter no mínimo dois plugins</mat-error>
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.ItemTitle">
+                <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.title">
                     {{ plugin.title }}
                 </mat-option>
             </mat-autocomplete>
@@ -48,10 +48,6 @@
             </button>
         </div>
     </form>
-
-    <div class="my-2 w-100 d-flex justify-content-center">
-        <work-in-progress></work-in-progress>
-    </div>
 </div>
 
 <ng-template #loading>

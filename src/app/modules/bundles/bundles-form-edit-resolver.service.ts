@@ -12,6 +12,6 @@ export class BundlesFormEditResolverService implements Resolve<any> {
   ) { }
   
   resolve(route: ActivatedRouteSnapshot) {
-    return this.bundleService.getBundleById(route.paramMap.get('id'));
+    return this.bundleService.getBundleById(route.paramMap.get('handle'));
   }
 }

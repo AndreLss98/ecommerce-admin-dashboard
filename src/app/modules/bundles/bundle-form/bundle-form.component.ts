@@ -7,6 +7,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BundlesService } from '../bundles.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
+import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-bundle-form',
@@ -42,22 +43,38 @@ export class BundleFormComponent implements OnInit {
       startWith(''),
       map((plugin: string | null) => this._filterPlugin(plugin))
     );
+    
+    this.isLoading = true;
+    this.bundleService.getAllPlugins().subscribe(({ products }) => {
+      this.bundleService.plugins = products.filter(el => !el.handle.includes('pack'));
+      this._resetForm();
+    }, (error) => {
+      this.isLoading = false;
+      this.matDialog.open(BasicModalComponent, {
+        data: {
+          title: 'Aviso!',
+          message: 'Erro de conexão.'
+        }
+      });
+    }, () => {
+      this.isLoading = false;
+    });
   }
 
   ngAfterViewInit() {
     setTimeout(() => {
-      this._resetForm();
       this.router.url.includes('edit')? this.bundleForm.get('nome').disable() : this.bundleForm.get('nome').enable();
-    })
+    });
   }
 
   onSubmit() {
     this.isLoading = true;
     setTimeout(() => {
-      const dialogRefence = this.matDialog.open(BasicModalComponent, {
+      const dialogRefence = this.matDialog.open(AlertModalComponent, {
         data: {
-          title: "Parabéns",
-          message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
+          title: "Aviso!",
+          // message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
+          message: "Ainda não é possivel realizar alterações nos bundles"
         }
       });
 
@@ -65,11 +82,11 @@ export class BundleFormComponent implements OnInit {
         this.isLoading = false;
       });
 
-      dialogRefence.beforeClosed().subscribe(() => {
-        this.router.navigate(['/bundles'], { replaceUrl: true });
+      dialogRefence.beforeClosed().subscribe((data) => {
+        data? this.router.navigate(['/bundles'], { replaceUrl: true }) : null;
       });
 
-    }, 5000)
+    }, 3000)
   }
 
   add(plugin): void {
@@ -94,7 +111,7 @@ export class BundleFormComponent implements OnInit {
     let temp = this.bundleForm.get('selected_plugins').value;
     temp.push(
       this.bundleService.plugins
-        .find(el => el.ItemTitle === event.option.viewValue)
+        .find(el => el.title === event.option.viewValue)
     );
     this.bundleForm.get('selected_plugins').setValue(temp);
     this.bundleForm.controls['plugin_name'].setValue(null);
@@ -105,9 +122,9 @@ export class BundleFormComponent implements OnInit {
     return this.bundleService.plugins
       .filter(el => {
         const found = this.bundleForm.get('selected_plugins').value
-          .find(pl => pl.ItemTitle.toLowerCase() === el.ItemTitle.toLowerCase());
+          .find(pl => pl.title.toLowerCase() === el.title.toLowerCase());
         
-        const search = plugin? el.ItemTitle.toLowerCase().indexOf(plugin.toLowerCase()) === 0 : true;
+        const search = plugin? el.title.toLowerCase().indexOf(plugin.toLowerCase()) === 0 : true;
         
         return found === undefined && search;
       });
@@ -117,7 +134,7 @@ export class BundleFormComponent implements OnInit {
     const temp = this.route.snapshot.data['bundle'];
     this.bundleForm.reset({
       nome: temp.title,
-      selected_plugins: temp.plugins
+      selected_plugins: temp.plugins.map(el => this.bundleService.plugins.find(plugin => plugin.id == el.ProductID))
     });
     this.bundleForm.get('plugin_name').setValue('');
   }

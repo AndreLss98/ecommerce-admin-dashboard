@@ -1,7 +1,7 @@
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { shareReplay } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 
@@ -26,6 +26,10 @@ export class BundlesService {
     return this._plugins;
   }
 
+  set plugins(plugins) {
+    this._plugins = plugins;
+  }
+
   constructor(
     private http: HttpClient
   ) { }
@@ -36,11 +40,12 @@ export class BundlesService {
   }
 
   public getAllPlugins() {
-    return of(this.plugins);
+    const params = new HttpParams().append('limit', '500');
+    return this.http.get<any>('https://lenofx.com/products.json', { params });
   }
 
   public getBundleById(handle) {
-    return of(this.bundles.find(el => el.handle == handle));
+    return this.http.get<any>(`${environment.backendURL}/products/bundle/${handle}`);
   }
 
   public getProductsOfBundle(bundleID) {

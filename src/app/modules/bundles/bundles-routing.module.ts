@@ -15,7 +15,7 @@ const routes: Routes = [
     component: BundleFormComponent
   },
   {
-    path: 'edit/:id',
+    path: 'edit/:handle',
     component: BundleFormComponent,
     resolve: {
       bundle: BundlesFormEditResolverService
