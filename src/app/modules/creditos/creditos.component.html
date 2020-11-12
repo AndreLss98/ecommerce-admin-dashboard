@@ -80,6 +80,10 @@
         </div>
     </form>
     
+    <mat-form-field appearence="standard" class="w-100">
+        <mat-label>Buscar</mat-label>
+        <input matInput (keyup)="applyFilter(filterInput.value)" #filterInput autocomplete="off" />
+    </mat-form-field>
     
     <div class="mat-elevation-z8 my-2 position-relative">
         <div *ngIf="isLoading"

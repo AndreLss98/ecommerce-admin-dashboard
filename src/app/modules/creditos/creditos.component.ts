@@ -58,6 +58,10 @@ export class CreditosComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
+  
+  applyFilter(search: string) {
+    this.dataSource.filter = search.trim().toLowerCase();
+  }
 
   search() {
     if (this.filterForm.controls['email'].value) {

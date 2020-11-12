@@ -5,8 +5,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { BundlesService } from './bundles.service';
-import { flatMap } from 'rxjs/operators';
-import { merge, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-bundles',
