@@ -5,6 +5,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 import { BundlesService } from './bundles.service';
+import { flatMap } from 'rxjs/operators';
+import { merge, Observable, of } from 'rxjs';
 
 @Component({
   selector: 'app-bundles',
@@ -54,11 +56,13 @@ export class BundlesComponent implements OnInit {
 
   private fetchAllBundles() {
     this.isLoading = true;
-    
-    this.bundleService.getAllBundles().subscribe(response => {
-      this.dataSource.data = this.data = response.products;
-      console.log(response.products);
-      this.isLoading = false;
+    this.bundleService.getAllBundles().subscribe(({ products: bundles }) => {
+      this.bundleService.bundles = this.dataSource.data = this.data = bundles;
+      bundles.forEach(el => {
+        this.bundleService.getProductsOfBundle(el.id).subscribe((products) => {
+          el.plugins = products;
+        });
+      });
     }, (error) => {
       this.isLoading = false;
     }, () => {

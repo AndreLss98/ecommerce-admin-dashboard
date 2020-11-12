@@ -13,7 +13,7 @@
                 [selectable]="false"
                 [removable]="true"
                 (removed)="remove(plugin)">
-                {{ plugin.ItemTitle }}
+                {{ plugin.title }}
                 <mat-icon matChipRemove>cancel</mat-icon>
               </mat-chip>
               <input
@@ -27,7 +27,7 @@
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.ItemTitle">
-                    {{ plugin.ItemTitle }}
+                    {{ plugin.title }}
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
@@ -48,6 +48,10 @@
             </button>
         </div>
     </form>
+
+    <div class="my-2 w-100 d-flex justify-content-center">
+        <work-in-progress></work-in-progress>
+    </div>
 </div>
 
 <ng-template #loading>

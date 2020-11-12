@@ -27,13 +27,14 @@
                 <mat-cell *matCellDef="let row" class="d-flex justify-content-around">
                     <button
                         mat-icon-button
-                        [routerLink]="'edit/' + row.ProductID">
+                        [routerLink]="'edit/' + row.handle">
                         <mat-icon>create</mat-icon>
                     </button>
                     <button
                         mat-icon-button
-                        (click)="expandedBundle = row === expandedBundle? null : row">
-                        <mat-icon>visibility</mat-icon>
+                        (click)="expandedBundle = row === expandedBundle? null : row"
+                        [disabled]="row.plugins?.length == 0">
+                        <mat-icon>{{ row.plugins?.length? 'visibility' : 'visibility_off' }}</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
@@ -41,7 +42,7 @@
             <ng-container matColumnDef="expandedDetail">
                 <mat-cell *matCellDef="let element">
                     <ul>
-                        <li *ngFor="let plugin of element.Plugins">{{ plugin.ItemTitle }}</li>
+                        <li *ngFor="let plugin of element.plugins">{{ plugin.Handle }}</li>
                     </ul>
                 </mat-cell>
             </ng-container>
@@ -55,9 +56,5 @@
                 style="overflow: hidden"></mat-row>
         </mat-table>
         <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
-    </div>
-
-    <div class="my-2 w-100 d-flex justify-content-center">
-        <work-in-progress></work-in-progress>
     </div>
 </div>

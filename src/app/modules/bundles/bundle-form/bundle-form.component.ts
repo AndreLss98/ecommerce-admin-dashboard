@@ -116,8 +116,8 @@ export class BundleFormComponent implements OnInit {
   private _resetForm() {
     const temp = this.route.snapshot.data['bundle'];
     this.bundleForm.reset({
-      nome: temp.ItemTitle,
-      selected_plugins: temp.Plugins
+      nome: temp.title,
+      selected_plugins: temp.plugins
     });
     this.bundleForm.get('plugin_name').setValue('');
   }
