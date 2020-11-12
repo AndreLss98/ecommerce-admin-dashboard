@@ -1,5 +1,6 @@
 import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -58,10 +59,14 @@ export class BundlesService {
     return this._mockPlugins;
   }
 
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) {
+
+  }
 
   public getAllBundles() {
-    return of(this.bundles);    
+    return this.http.get<any>('https://lenofx.com/collections/promotional-packs/products.json');
   }
 
   public getAllPlugins() {

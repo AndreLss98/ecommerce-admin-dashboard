@@ -29,7 +29,7 @@ export class BundlesComponent implements OnInit {
   public data = [];
   public filteredData = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-  public displayedColumns: string[] = ['ItemTitle', 'Edit'];
+  public displayedColumns: string[] = ['title', 'Edit'];
 
   public isLoading: boolean = false;
 
@@ -53,8 +53,16 @@ export class BundlesComponent implements OnInit {
   }
 
   private fetchAllBundles() {
+    this.isLoading = true;
+    
     this.bundleService.getAllBundles().subscribe(response => {
-      this.dataSource.data = this.data = response;
-    });    
+      this.dataSource.data = this.data = response.products;
+      console.log(response.products);
+      this.isLoading = false;
+    }, (error) => {
+      this.isLoading = false;
+    }, () => {
+      this.isLoading = false;
+    });
   }
 }

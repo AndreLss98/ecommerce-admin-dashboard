@@ -7,20 +7,32 @@
         <mat-label>Buscar</mat-label>
         <input matInput (keyup)="applyFilter(filterInput.value)" #filterInput autocomplete="off">
     </mat-form-field>
-    <div class="mat-elevation-z8">
+
+    
+    <div class="mat-elevation-z8 position-relative">
+        <div *ngIf="isLoading"
+            class="d-flex justify-content-center align-items-center position-absolute w-100 h-100"
+            style="background-color: #42424299; z-index: 1;">
+            <custom-load></custom-load>
+        </div>
+
         <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
-            <ng-container matColumnDef="ItemTitle">
+            <ng-container matColumnDef="title">
                 <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Bundle</mat-header-cell>
-                <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.ItemTitle}} </mat-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.title}} </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Edit">
                 <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                 <mat-cell *matCellDef="let row" class="d-flex justify-content-around">
-                    <button mat-icon-button [routerLink]="'edit/' + row.ProductID">
+                    <button
+                        mat-icon-button
+                        [routerLink]="'edit/' + row.ProductID">
                         <mat-icon>create</mat-icon>
                     </button>
-                    <button mat-icon-button (click)="expandedBundle = row === expandedBundle? null : row">
+                    <button
+                        mat-icon-button
+                        (click)="expandedBundle = row === expandedBundle? null : row">
                         <mat-icon>visibility</mat-icon>
                     </button>
                 </mat-cell>
