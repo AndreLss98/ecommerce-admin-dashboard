@@ -51,4 +51,8 @@ export class BundlesService {
   public getProductsOfBundle(bundleID) {
     return this.http.get<any>(`${environment.backendURL}/products/bundle-products/${bundleID}`);
   }
+
+  public saveBundle(bundle) {
+    return this.http.post(`${environment.backendURL}/products/bundle`, bundle);
+  }
 }

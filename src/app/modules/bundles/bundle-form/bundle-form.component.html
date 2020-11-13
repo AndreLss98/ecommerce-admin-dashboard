@@ -23,7 +23,9 @@
                 [matAutocomplete]="auto"
                 [matChipInputFor]="chipList"
                 (matChipInputTokenEnd)="add($event)" />
-                <mat-error *ngIf="bundleForm.get('selected_plugins').invalid">O bundle deve conter no mínimo dois plugins</mat-error>
+                <mat-error *ngIf="bundleForm.get('selected_plugins').invalid">
+                    O bundle deve conter no mínimo dois plugins
+                </mat-error>
             </mat-chip-list>
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                 <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.title">

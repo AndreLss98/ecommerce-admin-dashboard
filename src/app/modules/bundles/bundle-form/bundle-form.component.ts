@@ -34,7 +34,7 @@ export class BundleFormComponent implements OnInit {
     this.bundleForm = this.formBuilder.group({
       nome: ['', [Validators.required]],
       plugin_name: ['', []],
-      selected_plugins: [[], [Validators.minLength(2)]]
+      selected_plugins: [[], [Validators.minLength(2), Validators.required]]
     });
   }
 
@@ -69,24 +69,25 @@ export class BundleFormComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    setTimeout(() => {
-      const dialogRefence = this.matDialog.open(AlertModalComponent, {
+    console.log(this.route.snapshot.data['bundle']);
+    console.log(this.bundleForm.value);
+
+    this.bundleService.saveBundle({
+        BundleID: this.route.snapshot.data['bundle'].id,
+        Products: this.bundleForm.get('selected_plugins').value.map(el => el.id) }
+    ).subscribe((response) => {
+      this.isLoading = false;
+      const dialogRefence = this.matDialog.open(BasicModalComponent, {
         data: {
-          title: "Aviso!",
-          // message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso`
-          message: "Ainda não é possivel realizar alterações nos bundles"
+          title: "Parabéns!",
+          message: `Bundle ${this.router.url.includes('new')? 'salvo' : 'atualizado'} com sucesso.`
         }
       });
 
-      dialogRefence.afterOpened().subscribe(() => {
-        this.isLoading = false;
-      });
-
       dialogRefence.beforeClosed().subscribe((data) => {
-        data? this.router.navigate(['/bundles'], { replaceUrl: true }) : null;
+        this.router.navigate(['/bundles'], { replaceUrl: true });
       });
-
-    }, 3000)
+    });
   }
 
   add(plugin): void {
