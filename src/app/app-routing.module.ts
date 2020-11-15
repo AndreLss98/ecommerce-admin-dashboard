@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
+import { AuthGuard } from './shared/guards/auth-guard';
 
 const routes: Routes = [
   {
@@ -15,19 +16,23 @@ const routes: Routes = [
   },
   {
     path: "home",
-    loadChildren: () => import("./modules/home/home.module").then(m => m.HomeModule)
+    loadChildren: () => import("./modules/home/home.module").then(m => m.HomeModule),
+    canActivate: [AuthGuard]
   },
   {
     path: "creditos",
-    loadChildren: () => import("./modules/creditos/creditos.module").then(m => m.CreditosModule)
+    loadChildren: () => import("./modules/creditos/creditos.module").then(m => m.CreditosModule),
+    canActivate: [AuthGuard]
   },
   {
     path: "bundles",
-    loadChildren: () => import("./modules/bundles/bundles.module").then(m => m.BundlesModule)
+    loadChildren: () => import("./modules/bundles/bundles.module").then(m => m.BundlesModule),
+    canActivate: [AuthGuard]
   },
   {
     path: "usuarios",
-    loadChildren: () => import("./modules/usuarios/usuarios.module").then(m => m.UsuariosModule)
+    loadChildren: () => import("./modules/usuarios/usuarios.module").then(m => m.UsuariosModule),
+    canActivate: [AuthGuard]
   },
   {
     path: "**",

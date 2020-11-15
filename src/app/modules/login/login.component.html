@@ -2,12 +2,12 @@
     <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Sign In">
             <mat-card>
-                <form>
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
                     <div class="row">
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput type="email" />
+                                <input matInput formControlName="email" type="email" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -16,7 +16,7 @@
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Senha</mat-label>
-                                <input matInput type="password" />
+                                <input matInput formControlName="senha" type="password" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -25,7 +25,8 @@
                             <button
                                 mat-raised-button
                                 class="float-right"
-                                type="submit" color="primary">
+                                type="submit" color="primary"
+                                [disabled]="loginForm.invalid || loginForm.pristine">
                                 Sign In
                             </button>
                         </div>

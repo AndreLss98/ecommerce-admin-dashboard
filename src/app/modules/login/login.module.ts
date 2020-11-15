@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
 import { MatTabsModule } from '@angular/material/tabs';
@@ -25,6 +25,7 @@ import { LoginComponent } from './login.component';
     MatButtonModule,
     LoginRoutingModule,
     MatFormFieldModule,
+    ReactiveFormsModule,
   ]
 })
 export class LoginModule { }
