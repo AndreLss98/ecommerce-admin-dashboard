@@ -122,12 +122,12 @@ export class BundleFormComponent implements OnInit {
   private _filterPlugin(plugin: string): any[] {
     return this.bundleService.plugins
       .filter(el => {
-        const found = this.bundleForm.get('selected_plugins').value
-          .find(pl => pl.title.toLowerCase() === el.title.toLowerCase());
+        const founded = this.bundleForm.get('selected_plugins').value
+          .some(pl => pl.title.toLowerCase() === el.title.toLowerCase());
         
         const search = plugin? el.title.toLowerCase().indexOf(plugin.toLowerCase()) === 0 : true;
         
-        return found === undefined && search;
+        return !founded && search;
       });
   }
 
