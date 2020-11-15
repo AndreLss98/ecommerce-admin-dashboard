@@ -5,17 +5,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MatToolbarModule } from '@angular/material/toolbar';
-
 import { AppRoutingModule } from './app-routing.module';
+
+import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
 import { AlertModalComponent } from './shared/modals/alert-modal/alert-modal.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
-import { MatIconModule } from '@angular/material/icon';
 
 registerLocaleData(localePt);
 
