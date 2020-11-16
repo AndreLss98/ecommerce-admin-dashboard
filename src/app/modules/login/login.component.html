@@ -7,7 +7,10 @@
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput formControlName="email" type="email" />
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="Email" type="email" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -16,11 +19,14 @@
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Senha</mat-label>
-                                <input matInput formControlName="senha" type="password" />
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="Senha" type="password" />
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="!isLoading; else loading">
                         <div class="col">
                             <button
                                 mat-raised-button
@@ -42,7 +48,23 @@
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput formControlName="email" type="email" />
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="email"
+                                    type="email" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-form-field appearance="standard" class="w-100">
+                                <mat-label>Nome</mat-label>
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="nome"
+                                    type="email" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -50,20 +72,26 @@
                         <div class="col-md">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Senha</mat-label>
-                                <input matInput formControlName="senha" type="password" />
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="senha" type="password" />
                             </mat-form-field>
                         </div>
 
                         <div class="col-md">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Confirmar Senha</mat-label>
-                                <input matInput formControlName="confirmaSenha" type="password" />
-                                <mat-error *ngIf="signUpForm.hasError('notSame')">As senhas não coincidem.</mat-error>
+                                <input
+                                    matInput
+                                    autocomplete="off"
+                                    formControlName="confirmaSenha" type="password" />
+                                <mat-error *ngIf="signUpForm.get('confirmaSenha').hasError('notSame')">As senhas não coincidem.</mat-error>
                             </mat-form-field>
                         </div>
                     </div>
 
-                    <div class="row">
+                    <div class="row" *ngIf="!isLoading; else loading">
                         <div class="col">
                             <button
                                 mat-raised-button
@@ -79,3 +107,9 @@
         </mat-tab>
     </mat-tab-group>
 </div>
+
+<ng-template #loading>
+    <div class="d-flex justify-content-center">
+        <custom-load></custom-load>
+    </div>
+</ng-template>

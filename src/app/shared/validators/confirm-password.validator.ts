@@ -1,5 +1,5 @@
 import { FormGroup } from '@angular/forms';
 
 export function checkPasswords(form: FormGroup) {
-    return form.get('senha').value === form.get('confirmaSenha').value? null : { notSame: true };
+    form.get('senha').value === form.get('confirmaSenha').value? null : form.get('confirmaSenha').setErrors({ notSame: true });
 }

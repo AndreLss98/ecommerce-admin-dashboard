@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 
 import { LoginRoutingModule } from './login-routing.module';
 import { LoginComponent } from './login.component';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { LoginComponent } from './login.component';
     MatCardModule,
     MatInputModule,
     MatButtonModule,
+    ComponentsModule,
     LoginRoutingModule,
     MatFormFieldModule,
     ReactiveFormsModule,

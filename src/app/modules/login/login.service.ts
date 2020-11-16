@@ -18,6 +18,10 @@ export class LoginService {
     return this.http.post<any>(`${environment.backendURL}/auth/login`, user);
   }
 
+  public signup(user) {
+    return this.http.post<any>(`${environment.backendURL}/auth/signup`, user);
+  }
+
   public logout() {
     sessionStorage.removeItem('user');
     this.router.navigate(['/login'], { replaceUrl: true });
