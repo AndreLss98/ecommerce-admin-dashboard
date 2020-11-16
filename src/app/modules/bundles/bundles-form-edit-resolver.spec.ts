@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BundlesFormEditResolverService } from './bundles-form-edit-resolver';
+import { BundlesFormEditResolver } from './bundles-form-edit-resolver';
 
 describe('BundlesFormEditResolverService', () => {
-  let service: BundlesFormEditResolverService;
+  let service: BundlesFormEditResolver;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(BundlesFormEditResolverService);
+    service = TestBed.inject(BundlesFormEditResolver);
   });
 
   it('should be created', () => {
