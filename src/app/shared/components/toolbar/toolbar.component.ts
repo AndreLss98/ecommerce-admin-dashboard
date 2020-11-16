@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from 'src/app/modules/login/login.service';
 
 @Component({
   selector: 'toolbar',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public loginService: LoginService
+  ) { }
 
   ngOnInit(): void {
-  }
 
+  }
 }

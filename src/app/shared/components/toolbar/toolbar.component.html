@@ -2,8 +2,22 @@
     <div class="mr-2" routerLink="/home">
         <span>LenoFX</span><span class="font-weight-light ml-1">Painel</span>
     </div>
+    <div class="d-none d-sm-block">
+        <button mat-flat-button color="primary" routerLink="/creditos">Créditos</button>
+        <button mat-flat-button color="primary" routerLink="/bundles">Bundles</button>
+        <button mat-flat-button color="primary" routerLink="/usuarios">Usuários</button>
+    </div>
 
-    <button mat-flat-button color="primary" routerLink="/creditos">Créditos</button>
-    <button mat-flat-button color="primary" routerLink="/bundles">Bundles</button>
-    <button mat-flat-button color="primary" routerLink="/usuarios">Usuários</button>
+    <span style="flex: 1 1 auto;"></span>
+    
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+    </button>
 </mat-toolbar>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="loginService.logout()">
+        <mat-icon>power_settings_new</mat-icon>
+        <span>Logout</span>
+    </button>
+</mat-menu>
