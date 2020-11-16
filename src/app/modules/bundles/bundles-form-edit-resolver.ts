@@ -5,7 +5,7 @@ import { BundlesService } from './bundles.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BundlesFormEditResolverService implements Resolve<any> {
+export class BundlesFormEditResolver implements Resolve<any> {
 
   constructor(
     private bundleService: BundlesService

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { BundlesFormEditResolverService } from './bundles-form-edit-resolver.service';
+import { BundlesFormEditResolverService } from './bundles-form-edit-resolver';
 
 describe('BundlesFormEditResolverService', () => {
   let service: BundlesFormEditResolverService;

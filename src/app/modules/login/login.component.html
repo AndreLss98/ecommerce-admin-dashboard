@@ -34,14 +34,15 @@
                 </form>
             </mat-card>
         </mat-tab>
+
         <mat-tab label="Sign Up">
             <mat-card class="mat-elevation-z8">
-                <form>
+                <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
                     <div class="row">
                         <div class="col">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Email</mat-label>
-                                <input matInput type="email" />
+                                <input matInput formControlName="email" type="email" />
                             </mat-form-field>
                         </div>
                     </div>
@@ -49,14 +50,15 @@
                         <div class="col-md">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Senha</mat-label>
-                                <input matInput type="password" />
+                                <input matInput formControlName="senha" type="password" />
                             </mat-form-field>
                         </div>
 
                         <div class="col-md">
                             <mat-form-field appearance="standard" class="w-100">
                                 <mat-label>Confirmar Senha</mat-label>
-                                <input matInput type="password" />
+                                <input matInput formControlName="confirmaSenha" type="password" />
+                                <mat-error *ngIf="signUpForm.hasError('notSame')">As senhas não coincidem.</mat-error>
                             </mat-form-field>
                         </div>
                     </div>
@@ -66,7 +68,8 @@
                             <button
                                 mat-raised-button
                                 class="float-right"
-                                type="submit" color="primary">
+                                type="submit" color="primary"
+                                [disabled]="signUpForm.invalid">
                                 Sign Up
                             </button>
                         </div>

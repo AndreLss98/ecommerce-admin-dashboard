@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+
 import { LoginService } from './login.service';
 
 @Component({
@@ -11,6 +12,7 @@ import { LoginService } from './login.service';
 export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
+  public signUpForm: FormGroup;
 
   constructor(
     private router: Router,
@@ -20,7 +22,13 @@ export class LoginComponent implements OnInit {
     this.loginForm = formBuilder.group({
       email: ['', [Validators.email, Validators.required]],
       senha: ['', [Validators.minLength(6), Validators.required]]
-    })
+    });
+
+    this.signUpForm = formBuilder.group({
+      email: ['', [Validators.email, Validators.required]],
+      senha: ['', [Validators.minLength(6), Validators.required]],
+      confirmaSenha: ['', [Validators.minLength(6), Validators.required]],
+    });
   }
 
   ngOnInit(): void {
@@ -37,6 +45,10 @@ export class LoginComponent implements OnInit {
     }, () => {
     
     });
+  }
+
+  onSignUp() {
+
   }
 
 }
