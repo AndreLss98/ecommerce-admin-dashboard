@@ -82,9 +82,15 @@ export class LoginComponent implements OnInit {
           confirmaSenha: ''
         });
       });
-    }, (error) => {
+    }, ({error}) => {
       console.log(error);
       this.isLoading = false;
+      this.matDialog.open(BasicModalComponent, {
+        data: {
+          title: 'Aviso!',
+          message: error.message
+        }
+      })
     }, () => {
       this.isLoading = false;
     });
