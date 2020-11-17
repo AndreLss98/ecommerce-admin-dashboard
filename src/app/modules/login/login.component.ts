@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
 
   public loginForm: FormGroup;
   public signUpForm: FormGroup;
+  public silentRefresh;
 
   public isLoading: boolean = false;
 
@@ -49,6 +50,16 @@ export class LoginComponent implements OnInit {
       this.isLoading = false;
       sessionStorage.setItem('user', JSON.stringify(response));
       this.router.navigate(['/creditos'], { replaceUrl: true });
+
+      this.silentRefresh = setInterval(() => {
+        this.loginService.refreshSession()
+        .subscribe(() => {
+          sessionStorage.setItem('user', JSON.stringify(response));
+        }, (error) => {
+          clearInterval(this.silentRefresh);
+        });
+      }, response.ExpiresAt - 2000);
+
     }, ({ error }) => {
       this.matDialog.open(BasicModalComponent, { 
         data: { title: 'Aviso!', message: error.message }
