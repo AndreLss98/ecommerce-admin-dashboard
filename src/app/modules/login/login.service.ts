@@ -9,6 +9,16 @@ import { environment } from 'src/environments/environment';
 })
 export class LoginService {
 
+  private _silentRefresh;
+
+  get silentRefresh() {
+    return this._silentRefresh;
+  }
+
+  set silentRefresh(refresh) {
+    this._silentRefresh = refresh;
+  }
+
   constructor(
     private router: Router,
     private http: HttpClient,
@@ -31,6 +41,7 @@ export class LoginService {
 
   public logout() {
     sessionStorage.removeItem('user');
+    clearInterval(this._silentRefresh);
     this.router.navigate(['/login'], { replaceUrl: true });
   }
 
