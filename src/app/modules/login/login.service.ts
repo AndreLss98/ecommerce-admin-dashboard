@@ -35,8 +35,6 @@ export class LoginService {
   }
 
   public refreshSession() {
-    console.log('Vai atualizar a sessao');
-    
     const httpOptions = {
       headers: new HttpHeaders({
         "Content-Type": "application/json",
