@@ -58,6 +58,6 @@ export class BundlesService {
   }
 
   public saveBundle(bundle) {
-    return this.http.post(`${environment.backendURL}/products/bundle`, bundle);
+    return this.http.post(`${environment.backendURL}/products/bundle`, bundle, { withCredentials: true });
   }
 }

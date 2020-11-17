@@ -7,7 +7,6 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { BundlesService } from '../bundles.service';
 import { MatDialog } from '@angular/material/dialog';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
-import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-bundle-form',
@@ -69,8 +68,6 @@ export class BundleFormComponent implements OnInit {
 
   onSubmit() {
     this.isLoading = true;
-    console.log(this.route.snapshot.data['bundle']);
-    console.log(this.bundleForm.value);
 
     this.bundleService.saveBundle({
         BundleID: this.route.snapshot.data['bundle'].id,
@@ -87,6 +84,20 @@ export class BundleFormComponent implements OnInit {
       dialogRefence.beforeClosed().subscribe((data) => {
         this.router.navigate(['/bundles'], { replaceUrl: true });
       });
+    }, (error) => {
+      this.isLoading = false;
+      console.log(error);
+      if (error.status === 401) {
+        this.matDialog.open(BasicModalComponent, {
+          data: {
+            title: 'Aviso!',
+            message: 'Sua sessão expirou, você será redirecionado para o login.'
+          },
+          disableClose: true
+        }).afterClosed().subscribe(() => {
+          this.router.navigate(['/login'], { replaceUrl: true });
+        });
+      }
     });
   }
 
