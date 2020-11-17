@@ -1,13 +1,25 @@
 <mat-toolbar color="primary">
-    <div class="mr-2" routerLink="/home">
-        <span>LenoFX</span><span class="font-weight-light ml-1">Painel</span>
-    </div>
-    <div class="d-none d-sm-block">
-        <button mat-flat-button color="primary" routerLink="/creditos">Créditos</button>
-        <button mat-flat-button color="primary" routerLink="/bundles">Bundles</button>
-        <button mat-flat-button color="primary" routerLink="/usuarios">Usuários</button>
+    <div class="d-none d-sm-flex">
+        <div class="mr-2" routerLink="/home">
+            <span>LenoFX</span><span class="font-weight-light ml-1">Painel</span>
+        </div>
+        <div class="d-none d-sm-block">
+            <button mat-flat-button color="primary" routerLink="/creditos">Créditos</button>
+            <button mat-flat-button color="primary" routerLink="/bundles">Bundles</button>
+            <button mat-flat-button color="primary" routerLink="/usuarios">Usuários</button>
+        </div>
     </div>
 
+    <div class="d-flex d-sm-none">
+        <button mat-icon-button (click)="onToggle()">
+            <mat-icon>menu</mat-icon>
+        </button>
+    </div>
+
+    <span style="flex: 1 1 auto;" class="d-flex d-sm-none"></span>
+    <div class="mr-2 d-flex d-sm-none" routerLink="/home">
+        <span>LenoFX</span><span class="font-weight-light ml-1">Painel</span>
+    </div>
     <span style="flex: 1 1 auto;"></span>
     
     <button mat-icon-button [matMenuTriggerFor]="menu">

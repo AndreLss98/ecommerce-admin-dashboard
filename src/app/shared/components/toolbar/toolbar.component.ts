@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LoginService } from 'src/app/modules/login/login.service';
 
 @Component({
@@ -8,11 +8,18 @@ import { LoginService } from 'src/app/modules/login/login.service';
 })
 export class ToolbarComponent implements OnInit {
 
+  @Output('toggle')
+  public toggle = new EventEmitter();
+
   constructor(
     public loginService: LoginService
   ) { }
 
   ngOnInit(): void {
 
+  }
+
+  onToggle() {
+    this.toggle.emit();
   }
 }

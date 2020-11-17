@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<toolbar
+    *ngIf="!router.url.includes('login')"
+    (toggle)="drawer.toggle()"></toolbar>
+
+<mat-drawer-container autosize style="min-height: 95%;">
+    <mat-drawer #drawer mode="over" class="px-3">
+        <div class="d-flex flex-column" (click)="drawer.toggle()">
+            <button mat-flat-button routerLink="/creditos" class="my-2">Créditos</button>
+            <button mat-flat-button routerLink="/bundles" class="my-2">Bundles</button>
+            <button mat-flat-button routerLink="/usuarios" class="my-2">Usuários</button>
+        </div>
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+</mat-drawer-container>
