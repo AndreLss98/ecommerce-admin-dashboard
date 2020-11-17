@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
@@ -15,11 +15,18 @@ export class LoginService {
   ) { }
 
   public login(user) {
-    return this.http.post<any>(`${environment.backendURL}/auth/login`, user);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+      })
+    }
+
+    return this.http.post<any>(`${environment.backendURL}/auth/login`, user, { ...httpOptions, withCredentials: true });
   }
 
   public signup(user) {
-    return this.http.post<any>(`${environment.backendURL}/auth/signup`, user);
+    return this.http.post<any>(`${environment.backendURL}/auth/signup`, user, { withCredentials: true });
   }
 
   public logout() {

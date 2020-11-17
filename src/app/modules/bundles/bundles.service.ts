@@ -1,7 +1,6 @@
-import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { shareReplay } from 'rxjs/operators';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 
@@ -45,11 +44,17 @@ export class BundlesService {
   }
 
   public getBundleById(handle) {
-    return this.http.get<any>(`${environment.backendURL}/products/bundle/${handle}`);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": "true",
+      })
+    }
+    return this.http.get<any>(`${environment.backendURL}/products/bundle/${handle}`, { ...httpOptions, withCredentials: true });
   }
 
   public getProductsOfBundle(bundleID) {
-    return this.http.get<any>(`${environment.backendURL}/products/bundle-products/${bundleID}`);
+    return this.http.get<any>(`${environment.backendURL}/products/bundle-products/${bundleID}`, { withCredentials: true });
   }
 
   public saveBundle(bundle) {
