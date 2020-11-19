@@ -34,7 +34,8 @@ export class BundlesService {
   ) { }
 
   public getAllBundles() {
-    return this.http.get<any>('https://lenofx.com/collections/promotional-packs/products.json')
+    const params = new HttpParams().append('limit', '500');
+    return this.http.get<any>('https://lenofx.com/collections/promotional-packs/products.json', { params })
       .pipe(shareReplay(1));
   }
 
