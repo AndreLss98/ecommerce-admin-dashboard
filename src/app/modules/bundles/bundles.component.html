@@ -38,7 +38,7 @@
             <ng-container matColumnDef="expandedDetail">
                 <mat-cell *matCellDef="let element">
                     <ul>
-                        <li *ngFor="let plugin of element.plugins">{{ plugin.Handle }}</li>
+                        <li type="1" *ngFor="let plugin of element.plugins">{{ plugin.Handle }}</li>
                     </ul>
                 </mat-cell>
             </ng-container>
