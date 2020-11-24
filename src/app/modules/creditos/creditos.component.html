@@ -73,7 +73,7 @@
                         type="number" readonly />
                 </mat-form-field>
             </div>
-            <div class="col" *ngIf="getTotalCredits() > 0 || filterForm.controls['nome'].value">
+            <div class="col" *ngIf="(getTotalCredits() > 0 || filterForm.controls['nome'].value) && !filterForm.get('type_view').value">
                 <mat-form-field appearance="standard" color="primary" class="w-100">
                     <mat-label>Créditos utilizados</mat-label>
                     <input
@@ -104,7 +104,7 @@
             </ng-container>
           
             <ng-container matColumnDef="CreditsUsed">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> Crédito usado </mat-header-cell>
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{ countColumn }} </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
               <mat-footer-cell *matFooterCellDef>{{ getTotalCredits() }}</mat-footer-cell>
             </ng-container>

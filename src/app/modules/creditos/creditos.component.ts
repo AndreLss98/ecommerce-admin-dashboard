@@ -28,6 +28,7 @@ export class CreditosComponent implements OnInit {
   public displayedColumns: string[] = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
 
   public filterForm: FormGroup;
+  public countColumn = 'Créditos usados';
 
   constructor(
     private matDialog: MatDialog,
@@ -153,14 +154,32 @@ export class CreditosComponent implements OnInit {
   }
 
   private checkGroup() {
-    this.filteredData = this.data.filter(el => el['CreditsUsed'] == this.filterForm.get('type_view').value? 0 : 1);
+
+    this.displayedColumns = ['ItemTitle'];
+
+    if (this.filterForm.get('type_view').value) {
+      this.filteredData = this.data.filter(el => el['CreditsUsed'] == 0);
+      this.countColumn = 'Qtd. Downloads';
+    } else {
+      this.filteredData = this.data.filter(el => el['CreditsUsed'] == 1);
+      this.countColumn = 'Créditos usados';
+    }
 
     if (this.filterForm.get('agrupar_creditos').value) {
       this.filteredData = this.groupBy(this.filteredData, 'ItemTitle', 'CreditsUsed');
-      this.displayedColumns = ['ItemTitle', 'CreditsUsed'];
     } else {
       this.filteredData = this.filteredData;
-      this.displayedColumns = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
+    }
+
+    if (!this.filterForm.get('agrupar_creditos').value) {
+      this.displayedColumns.push('UsageDate');
+    }
+
+    if (
+      (this.filterForm.get('agrupar_creditos').value && this.filterForm.get('type_view').value) ||
+      !this.filterForm.get('type_view').value
+    ) {
+      this.displayedColumns.push('CreditsUsed');
     }
 
     this.dataSource.data = this.filteredData;
@@ -168,8 +187,14 @@ export class CreditosComponent implements OnInit {
 
   private groupBy(originalBuffer, key: string, accumulator: string) {
     return originalBuffer.reduce((buffer, element) => {
-      const temp = buffer.find(el => el[key] === element[key]);
-      temp? temp[accumulator] += element[accumulator] : buffer.push({ ...element });
+      let temp = buffer.find(el => el[key] === element[key]);
+      if (temp) {
+        ++temp[accumulator];
+      } else {
+        temp = { ...element };
+        temp[accumulator] = 1;
+        buffer.push(temp);
+      }
       return buffer;
     }, []);
   }
