@@ -40,10 +40,15 @@
         </div>
     
         <div *ngIf="data.length" class="row my-2">
-            <div class="col p-0">
+            <div class="col">
                 <mat-slide-toggle
                     color="primary"
-                    formControlName="agrupar_creditos">Agrupar créditos</mat-slide-toggle>
+                    formControlName="agrupar_creditos">Agrupar plugins</mat-slide-toggle>
+            </div>
+            <div class="col">
+                <mat-slide-toggle
+                    color="primary"
+                    formControlName="type_view">Plugins free</mat-slide-toggle>
             </div>
         </div>
     

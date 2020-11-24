@@ -40,11 +40,18 @@ export class CreditosComponent implements OnInit {
       start: [null, []],
       end: [null, []],
       creditos: [null, []],
-      agrupar_creditos: [false, []]
+      agrupar_creditos: [false, []],
+      type_view: [false, []]
     });
 
     this.dataSource = new MatTableDataSource(this.data);
+    
     this.filterForm.controls['agrupar_creditos'].valueChanges
+      .subscribe(() => {
+        this.checkGroup();
+      });
+
+    this.filterForm.controls['type_view'].valueChanges
       .subscribe(() => {
         this.checkGroup();
       });
@@ -80,7 +87,7 @@ export class CreditosComponent implements OnInit {
     ).subscribe(response => {
       this.isLoading = false;
 
-      this.data = response.data.credits
+      this.data = response.data.credits;
       this.checkGroup();
 
       this.filterForm.controls['nome'].setValue('');
@@ -134,11 +141,10 @@ export class CreditosComponent implements OnInit {
   }
 
   getTotalCredits() {
-    return this.data.length? this.data.reduce((acc, el) => acc + el.CreditsUsed, 0) : 0;
+    return this.filteredData.length? this.filteredData.reduce((acc, el) => acc + el.CreditsUsed, 0) : 0;
   }
 
   private openErroDialog(message) {
-    
     this.matDialog.open(BasicModalComponent, {
       data: {
         title: "Aviso!", message
@@ -147,11 +153,13 @@ export class CreditosComponent implements OnInit {
   }
 
   private checkGroup() {
-    if (this.filterForm.controls['agrupar_creditos'].value) {
-      this.filteredData = this.groupBy(this.data, 'ItemTitle', 'CreditsUsed');
+    this.filteredData = this.data.filter(el => el['CreditsUsed'] == this.filterForm.get('type_view').value? 0 : 1);
+
+    if (this.filterForm.get('agrupar_creditos').value) {
+      this.filteredData = this.groupBy(this.filteredData, 'ItemTitle', 'CreditsUsed');
       this.displayedColumns = ['ItemTitle', 'CreditsUsed'];
     } else {
-      this.filteredData = this.data;
+      this.filteredData = this.filteredData;
       this.displayedColumns = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
     }
 
@@ -161,7 +169,7 @@ export class CreditosComponent implements OnInit {
   private groupBy(originalBuffer, key: string, accumulator: string) {
     return originalBuffer.reduce((buffer, element) => {
       const temp = buffer.find(el => el[key] === element[key]);
-      temp? temp[accumulator] += element[accumulator] : buffer.push({...element});
+      temp? temp[accumulator] += element[accumulator] : buffer.push({ ...element });
       return buffer;
     }, []);
   }
