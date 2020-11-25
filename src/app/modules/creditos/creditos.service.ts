@@ -9,15 +9,14 @@ import { HTTP_OPTIONS } from 'src/app/shared/http_options';
 })
 export class CreditosService {
 
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient) { }
 
   getUserCreditsUsed(userEmail: string) {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
         CustomerName
         CustomerEmail
+        CustomerID
         Credits
         CreditosUsados {
           ItemTitle
@@ -40,5 +39,9 @@ export class CreditosService {
     }`;
 
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
+  }
+
+  updateCredits(CustomerID, Credits) {
+    return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
   }
 }

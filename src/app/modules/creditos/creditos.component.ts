@@ -8,6 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 
 import { CreditosService } from './creditos.service';
+import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'creditos',
@@ -30,6 +31,16 @@ export class CreditosComponent implements OnInit {
   public filterForm: FormGroup;
   public countColumn = 'Créditos usados';
 
+  public currentUser = {
+    CustomerID: null,
+    creditos: 0,
+    nome: '',
+    originalQtdOfCredits: 0,
+  }
+
+  public minValueOfCredits = 0;
+  public confirmUpdateCreditsModal;
+
   constructor(
     private matDialog: MatDialog,
     private formBuilder: FormBuilder,
@@ -37,10 +48,8 @@ export class CreditosComponent implements OnInit {
   ) {
     this.filterForm = formBuilder.group({
       email: ['', []],
-      nome: ['', []],
       start: [null, []],
       end: [null, []],
-      creditos: [null, []],
       agrupar_creditos: [false, []],
       type_view: [false, []]
     });
@@ -77,6 +86,36 @@ export class CreditosComponent implements OnInit {
     } else if (this.filterForm.controls['start'].value) {
       this.searchInterval();
     }
+  }
+
+  onUpdateCredits() {
+    setTimeout(() => {
+      if (this.currentUser.creditos !== this.currentUser.originalQtdOfCredits && !this.confirmUpdateCreditsModal) {
+        this.confirmUpdateCreditsModal = this.matDialog.open(AlertModalComponent, {
+          data: {
+            title: "Atenção",
+            message: "Confirma alteração de quantidade de créditos do usuário?"
+          },
+          disableClose: true
+        });
+  
+        this.confirmUpdateCreditsModal.afterOpened().subscribe(() => {
+          (document.activeElement as any).blur();
+        });
+  
+        this.confirmUpdateCreditsModal.afterClosed().subscribe((data) => {
+          this.confirmUpdateCreditsModal = null;
+          if (data) {
+            this.creditosService.updateCredits(this.currentUser.CustomerID, this.currentUser.creditos)
+            .subscribe((response) => {
+              this.currentUser.originalQtdOfCredits = this.currentUser.creditos;
+            });
+          } else {
+            this.currentUser.creditos = this.currentUser.originalQtdOfCredits;
+          }
+        });
+      }
+    });
   }
 
   searchInterval() {
@@ -124,8 +163,15 @@ export class CreditosComponent implements OnInit {
         this.data = response.data.user.CreditosUsados
         this.checkGroup();
 
-        this.filterForm.controls['nome'].setValue(response.data.user.CustomerName);
-        this.filterForm.controls['creditos'].setValue(response.data.user.Credits);
+        this.currentUser = {
+          CustomerID: response.data.user.CustomerID,
+          creditos: response.data.user.Credits,
+          nome: response.data.user.CustomerName,
+          originalQtdOfCredits: response.data.user.Credits
+        };
+
+        this.minValueOfCredits = response.data.user.Credits >= 0? response.data.user.Credits : 0;
+        
       } else {
         this.data = [];
         this.dataSource.data = this.data;

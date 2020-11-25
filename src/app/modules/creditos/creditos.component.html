@@ -51,39 +51,44 @@
                     formControlName="type_view">Plugins free</mat-slide-toggle>
             </div>
         </div>
-    
-        <mat-divider class="w-100 my-4"></mat-divider>
-    
-        <div class="row">
-            <div class="col" *ngIf="filterForm.controls['nome'].value">
-                <mat-form-field appearance="standard" color="primary" class="w-100">
-                    <mat-label>Nome</mat-label>
-                    <input
-                        matInput
-                        formControlName="nome"
-                        type="text" readonly />
-                </mat-form-field>
-            </div>
-            <div class="col" *ngIf="filterForm.controls['nome'].value">
-                <mat-form-field appearance="standard" color="primary" class="w-100">
-                    <mat-label>Créditos</mat-label>
-                    <input
-                        matInput
-                        formControlName="creditos"
-                        type="number" readonly />
-                </mat-form-field>
-            </div>
-            <div class="col" *ngIf="(getTotalCredits() > 0 || filterForm.controls['nome'].value) && !filterForm.get('type_view').value">
-                <mat-form-field appearance="standard" color="primary" class="w-100">
-                    <mat-label>Créditos utilizados</mat-label>
-                    <input
-                    matInput
-                    value="{{ getTotalCredits() }}"
-                    type="number" readonly />
-                </mat-form-field>
-            </div>
-        </div>
     </form>
+    
+    <mat-divider class="w-100 my-4"></mat-divider>
+
+    <div class="row">
+        <div class="col" *ngIf="currentUser.nome">
+            <mat-form-field appearance="standard" color="primary" class="w-100">
+                <mat-label>Nome</mat-label>
+                <input
+                    matInput
+                    [value]="currentUser.nome"
+                    type="text" readonly />
+            </mat-form-field>
+        </div>
+        <div class="col" *ngIf="currentUser.nome">
+            <mat-form-field appearance="standard" color="primary" class="w-100">
+                <mat-label>Créditos</mat-label>
+                <input
+                    matInput
+                    [(ngModel)]="currentUser.creditos"
+                    [min]="minValueOfCredits"
+                    step="1"
+                    (keyup.enter)="onUpdateCredits($event)"
+                    (blur)="onUpdateCredits($event)"
+                    type="number" />
+                    <mat-hint align="end">Editável</mat-hint>
+            </mat-form-field>
+        </div>
+        <div class="col" *ngIf="(getTotalCredits() > 0 || currentUser.nome) && !filterForm.get('type_view').value">
+            <mat-form-field appearance="standard" color="primary" class="w-100">
+                <mat-label>Créditos utilizados</mat-label>
+                <input
+                matInput
+                value="{{ getTotalCredits() }}"
+                type="number" readonly />
+            </mat-form-field>
+        </div>
+    </div>
     
     <mat-form-field appearence="standard" class="w-100">
         <mat-label>Buscar</mat-label>
