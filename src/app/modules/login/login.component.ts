@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         }, (error) => {
           clearInterval(this.loginService.silentRefresh);
         });
-      }, response.ExpiresAt - 2000);
+      }, response.ExpiresAt - 5000);
 
     }, ({ error }) => {
       this.matDialog.open(BasicModalComponent, { 
