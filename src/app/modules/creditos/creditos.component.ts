@@ -90,7 +90,10 @@ export class CreditosComponent implements OnInit {
 
   onUpdateCredits() {
     setTimeout(() => {
-      if (this.currentUser.creditos !== this.currentUser.originalQtdOfCredits && !this.confirmUpdateCreditsModal) {
+      if (
+        this.currentUser.creditos > this.currentUser.originalQtdOfCredits &&
+        !this.confirmUpdateCreditsModal
+      ) {
         this.confirmUpdateCreditsModal = this.matDialog.open(AlertModalComponent, {
           data: {
             title: "Atenção",
@@ -114,6 +117,8 @@ export class CreditosComponent implements OnInit {
             this.currentUser.creditos = this.currentUser.originalQtdOfCredits;
           }
         });
+      } else if (this.currentUser.creditos < this.currentUser.originalQtdOfCredits) {
+        this.currentUser.creditos = this.currentUser.originalQtdOfCredits;
       }
     });
   }
