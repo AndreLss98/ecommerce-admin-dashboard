@@ -29,11 +29,11 @@ const routes: Routes = [
     loadChildren: () => import("./modules/bundles/bundles.module").then(m => m.BundlesModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: "usuarios",
-    loadChildren: () => import("./modules/usuarios/usuarios.module").then(m => m.UsuariosModule),
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: "usuarios",
+  //   loadChildren: () => import("./modules/usuarios/usuarios.module").then(m => m.UsuariosModule),
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: "**",
     component: PageNotFoundComponent
