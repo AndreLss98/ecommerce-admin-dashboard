@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
@@ -26,6 +27,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     CommonModule,
     FormsModule,
     MatSortModule,
+    MatIconModule,
     MatTableModule,
     MatInputModule,
     MatButtonModule,

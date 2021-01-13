@@ -149,5 +149,11 @@
         </mat-table>
         
         <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+
+        <div class="d-flex justify-content-end">
+            <button mat-icon-button (click)="generateReport()" [disabled]="!dataSource.data.length">
+                <mat-icon>get_app</mat-icon>
+            </button>
+        </div>
     </div>
 </div>

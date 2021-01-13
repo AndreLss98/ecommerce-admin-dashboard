@@ -12,6 +12,7 @@ import { CreditosService } from './creditos.service';
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'creditos',
@@ -47,8 +48,9 @@ export class CreditosComponent implements OnInit {
   public confirmUpdateCreditsModal;
 
   constructor(
-    private router: ActivatedRoute,
+    private http: HttpClient,
     private matDialog: MatDialog,
+    private router: ActivatedRoute,
     private formBuilder: FormBuilder,
     private creditosService: CreditosService,
   ) {
@@ -303,5 +305,18 @@ export class CreditosComponent implements OnInit {
       }
       return buffer;
     }, []);
+  }
+
+  public generateReport() {
+    this.isLoading = true;
+    this.creditosService.generateReport(this.dataSource.data).subscribe((response) => {
+      this.isLoading = false;
+      window.location.href = response.reportUrl;
+    }, (error) => {
+      this.isLoading = false;
+      console.log(error);
+    }, () => {
+      this.isLoading = false;
+    });
   }
 }

@@ -47,4 +47,8 @@ export class CreditosService {
   updateCredits(CustomerID, Credits) {
     return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
   }
+
+  generateReport(json) {
+    return this.http.post<any>(`${environment.backendURL}/credits/generate-csv`, json);
+  }
 }
