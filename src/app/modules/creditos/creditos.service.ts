@@ -29,12 +29,15 @@ export class CreditosService {
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
   }
 
-  getAllInInterval(start, end) {
+  getAllInInterval(start, end, itemID?) {
     const body = `{
-      credits(start: "${start}", end: "${end}") {
+      credits(start: "${start}", end: "${end}" ${itemID? 'itemID: ' + itemID : '\r'}) {
         ItemTitle
         CreditsUsed
-        UsageDate
+        UsageDate,
+        Customer {
+          CustomerEmail
+        }
       }
     }`;
 

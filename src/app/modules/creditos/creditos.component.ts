@@ -1,3 +1,4 @@
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
@@ -9,6 +10,8 @@ import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-mod
 
 import { CreditosService } from './creditos.service';
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'creditos',
@@ -24,9 +27,11 @@ export class CreditosComponent implements OnInit {
 
   public isLoading: boolean = false;
   public dataSource: MatTableDataSource<any>;
+  public plugins = [];
+  public filteredPlugins: Observable<any>;
   public data = [];
   public filteredData = [];
-  public displayedColumns: string[] = ['ItemTitle', 'UsageDate', 'CreditsUsed'];
+  public displayedColumns: string[] = ['ItemTitle', 'CustomerEmail', 'UsageDate', 'CreditsUsed'];
 
   public filterForm: FormGroup;
   public countColumn = 'Créditos usados';
@@ -42,16 +47,18 @@ export class CreditosComponent implements OnInit {
   public confirmUpdateCreditsModal;
 
   constructor(
+    private router: ActivatedRoute,
     private matDialog: MatDialog,
     private formBuilder: FormBuilder,
-    private creditosService: CreditosService
+    private creditosService: CreditosService,
   ) {
     this.filterForm = formBuilder.group({
       email: ['', []],
       start: [null, []],
       end: [null, []],
       agrupar_creditos: [false, []],
-      type_view: [false, []]
+      type_view: [false, []],
+      plugin_name: [ '', [] ]
     });
 
     this.dataSource = new MatTableDataSource(this.data);
@@ -65,10 +72,29 @@ export class CreditosComponent implements OnInit {
       .subscribe(() => {
         this.checkGroup();
       });
+
+    this.filterForm.controls['email'].valueChanges
+      .subscribe(() => {
+        if (this.filterForm.get('email').value) this.filterForm.get('plugin_name').setValue('');
+      });
+
+    this.filterForm.controls['plugin_name'].valueChanges
+      .subscribe(() => {
+        if (this.filterForm.get('plugin_name').value) this.filterForm.get('email').setValue('');
+      });
+
+      this.plugins = this.router.snapshot.data.plugins.products;
   }
 
   ngOnInit(): void {
+    this.filteredPlugins = this.filterForm.get('plugin_name').valueChanges.pipe(
+      startWith(''),
+      map((plugin: string | null) => this._filterPlugins(plugin))
+    )
+  }
 
+  private _filterPlugins(plugin: string): any[] {
+    return this.plugins.filter(el => el.title.toLowerCase().includes(plugin.toLocaleLowerCase()))
   }
 
   ngAfterViewInit() {
@@ -125,19 +151,44 @@ export class CreditosComponent implements OnInit {
 
   searchInterval() {
     this.isLoading = true;
-
+    let tempPluginSearch = this.filterForm.get('plugin_name').value;
+    let tempPlugin = null;
+    if (tempPluginSearch) {
+      tempPlugin = this.plugins.find(el => el.title.toLowerCase() === tempPluginSearch.toLowerCase());
+      if (!tempPlugin) {
+        this.openErroDialog("Plugin não encontrado.");
+        this.isLoading = false;
+        return
+      } else {
+        this.currentUser = {
+          CustomerID: null,
+          creditos: 0,
+          nome: '',
+          originalQtdOfCredits: 0,
+        }
+      }
+    }
+    
     this.creditosService.getAllInInterval(
       this.filterForm.controls['start'].value.toISOString().replace(/\T.{1,}/, 'T01:00:00.000Z'),
-      this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : ''
+      this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : '',
+      tempPluginSearch? this.plugins.find(el => el.title.toLowerCase() === this.filterForm.get('plugin_name').value.toLowerCase()).id : null
     ).subscribe(response => {
       this.isLoading = false;
-
       this.data = response.data.credits;
-      this.checkGroup();
+      this.data = this.data.map(el => {
+        let temp = { ...el, CustomerEmail: el.Customer? el.Customer.CustomerEmail : '' };
+        delete temp.Customer;
+        return temp;
+      });
 
-      this.filterForm.controls['nome'].setValue('');
-      this.filterForm.controls['creditos'].setValue(null);
+      this.checkGroup();
+      try {
+        this.filterForm.controls['nome'].setValue('');
+        this.filterForm.controls['creditos'].setValue(null);
+      } catch (error) { }
     }, (error) => {
+      console.log(error)
       this.isLoading = false;
       this.data = [];
       this.dataSource.data = this.data;
@@ -208,10 +259,14 @@ export class CreditosComponent implements OnInit {
 
     this.displayedColumns = ['ItemTitle'];
 
-    if (this.filterForm.get('type_view').value) {
+    if (!this.filterForm.get('email').value && !this.filterForm.get('agrupar_creditos').value) {
+      this.displayedColumns.push('CustomerEmail');
+    }
+
+    if (this.data && this.filterForm.get('type_view').value) {
       this.filteredData = this.data.filter(el => el['CreditsUsed'] == 0);
       this.countColumn = 'Qtd. Downloads';
-    } else {
+    } else if (this.data) {
       this.filteredData = this.data.filter(el => el['CreditsUsed'] == 1);
       this.countColumn = 'Créditos usados';
     }

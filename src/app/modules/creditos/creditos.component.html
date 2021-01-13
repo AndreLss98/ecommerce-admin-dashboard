@@ -14,6 +14,22 @@
                 </mat-form-field>
             </div>
             <div class="col">
+                <mat-form-field appearance="standard" color="primary" class="w-100">
+                    <mat-label>Plugin</mat-label>
+                    <input
+                        matInput
+                        placeholder="Digital Sounds"
+                        #pluginInput
+                        formControlName="plugin_name"
+                        [matAutocomplete]="auto" />
+                        <mat-autocomplete #auto="matAutocomplete">
+                            <mat-option *ngFor="let plugin of filteredPlugins | async" [value]="plugin.title">
+                              {{ plugin.title }}
+                            </mat-option>
+                        </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col">
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Período</mat-label>
                     <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
@@ -39,7 +55,7 @@
             </div>
         </div>
     
-        <div *ngIf="data.length" class="row my-2">
+        <div *ngIf="data?.length" class="row my-2">
             <div class="col">
                 <mat-slide-toggle
                     color="primary"
@@ -102,6 +118,7 @@
             <custom-load></custom-load>
         </div>
         <mat-table [dataSource]="dataSource" matSort>
+
             <ng-container matColumnDef="ItemTitle">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
@@ -112,6 +129,12 @@
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{ countColumn }} </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.CreditsUsed}} </mat-cell>
               <mat-footer-cell *matFooterCellDef>{{ getTotalCredits() }}</mat-footer-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="CustomerEmail">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Cliente </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.CustomerEmail}} </mat-cell>
+                <mat-footer-cell *matFooterCellDef></mat-footer-cell>
             </ng-container>
         
             <ng-container matColumnDef="UsageDate">

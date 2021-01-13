@@ -12,6 +12,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { CreditosComponent } from './creditos.component';
 import { CreditosRoutingModule } from './creditos-routing.module';
@@ -37,6 +38,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     MatNativeDateModule,
     MatSlideToggleModule,
     CreditosRoutingModule,
+    MatAutocompleteModule,
   ]
 })
 export class CreditosModule { }
