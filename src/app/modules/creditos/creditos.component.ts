@@ -1,18 +1,20 @@
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
+
+import * as moment from 'moment';
+import exporterReport from 'export-from-json';
 
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 
 import { CreditosService } from './creditos.service';
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
-import { Observable } from 'rxjs';
-import { map, startWith } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 
 @Component({
   selector: 'creditos',
@@ -48,7 +50,6 @@ export class CreditosComponent implements OnInit {
   public confirmUpdateCreditsModal;
 
   constructor(
-    private http: HttpClient,
     private matDialog: MatDialog,
     private router: ActivatedRoute,
     private formBuilder: FormBuilder,
@@ -307,22 +308,29 @@ export class CreditosComponent implements OnInit {
     }, []);
   }
 
-  public generateReport(type: string) {
-    this.isLoading = true;
-    this.creditosService.generateReport(this.dataSource.data, type).subscribe(async (response) => {
-      this.isLoading = false;
-      let content_disposition = response.headers.get('content-disposition');
-      const filename =content_disposition.substr(content_disposition.lastIndexOf('=') + 1);
-      let downloadLink = document.createElement('a');
-      downloadLink.href = window.URL.createObjectURL(new Blob([await response.body.arrayBuffer()], { type: response.body.type }));
-      downloadLink.setAttribute('download', filename);
-      document.body.appendChild(downloadLink);
-      downloadLink.click();
-    }, (error) => {
-      this.isLoading = false;
-      console.log(error);
-    }, () => {
-      this.isLoading = false;
-    });
+  public generateReport(exportType) {
+    // this.isLoading = true;
+    let fileType  = 'text/palin';
+    const report = exporterReport({
+      data: this.dataSource.data,
+      fileName: `relatorio-${moment().format()}`,
+      exportType,
+      processor (content, type, fileName) {
+        switch (type) {
+          case 'csv':
+            fileType = 'text/csv';
+            break;
+          case 'xls':
+            fileType = 'application/ms-excel';
+            break;
+        }
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob([content], { type: fileType }));
+        downloadLink.setAttribute('download', fileName);
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        window.URL.revokeObjectURL(downloadLink.href);
+      }
+  });
   }
 }
