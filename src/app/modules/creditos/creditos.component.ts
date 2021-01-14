@@ -307,11 +307,17 @@ export class CreditosComponent implements OnInit {
     }, []);
   }
 
-  public generateReport() {
+  public generateReport(type: string) {
     this.isLoading = true;
-    this.creditosService.generateReport(this.dataSource.data).subscribe((response) => {
+    this.creditosService.generateReport(this.dataSource.data, type).subscribe(async (response) => {
       this.isLoading = false;
-      window.location.href = response.reportUrl;
+      let content_disposition = response.headers.get('content-disposition');
+      const filename =content_disposition.substr(content_disposition.lastIndexOf('=') + 1);
+      let downloadLink = document.createElement('a');
+      downloadLink.href = window.URL.createObjectURL(new Blob([await response.body.arrayBuffer()], { type: response.body.type }));
+      downloadLink.setAttribute('download', filename);
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
     }, (error) => {
       this.isLoading = false;
       console.log(error);

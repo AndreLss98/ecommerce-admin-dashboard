@@ -151,9 +151,13 @@
         <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
 
         <div class="d-flex justify-content-end">
-            <button mat-icon-button (click)="generateReport()" [disabled]="!dataSource.data.length">
+            <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!dataSource.data.length">
                 <mat-icon>get_app</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="generateReport('csv')">CSV</button>
+                <button mat-menu-item (click)="generateReport('xls')">Excel</button>
+            </mat-menu>
         </div>
     </div>
 </div>

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 import { HTTP_OPTIONS } from 'src/app/shared/http_options';
@@ -48,7 +48,11 @@ export class CreditosService {
     return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
   }
 
-  generateReport(json) {
-    return this.http.post<any>(`${environment.backendURL}/credits/generate-csv`, json);
+  generateReport(json, type: string) {
+    const params = new HttpParams().append('type', type);
+    return this.http.post<any>(`${environment.backendURL}/credits/generate-report`, json, { 
+      params, responseType: 'blob' as 'json',
+      observe: 'response'
+    });
   }
 }
