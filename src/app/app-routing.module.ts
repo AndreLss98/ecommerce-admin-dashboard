@@ -35,6 +35,11 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
   {
+    path: "plugins",
+    loadChildren: () => import("./modules/plugins/plugins.module").then(m => m.PluginsModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: "**",
     component: PageNotFoundComponent
   }

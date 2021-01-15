@@ -18,6 +18,7 @@ import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.com
 import { AlertModalComponent } from './shared/modals/alert-modal/alert-modal.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
 import { ComponentsModule } from './shared/components/components.module';
+import { PluginsComponent } from './modules/plugins/plugins.component';
 
 registerLocaleData(localePt);
 
@@ -27,6 +28,7 @@ registerLocaleData(localePt);
     BasicModalComponent,
     AlertModalComponent,
     PageNotFoundComponent,
+    PluginsComponent,
   ],
   imports: [
     BrowserModule,
