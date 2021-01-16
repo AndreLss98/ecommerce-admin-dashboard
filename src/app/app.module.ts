@@ -13,12 +13,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
+import { ComponentsModule } from './shared/components/components.module';
+
 import { AppComponent } from './app.component';
 import { BasicModalComponent } from './shared/modals/basic-modal/basic-modal.component';
 import { AlertModalComponent } from './shared/modals/alert-modal/alert-modal.component';
 import { PageNotFoundComponent } from './modules/page-not-found/page-not-found.component';
-import { ComponentsModule } from './shared/components/components.module';
-import { PluginsComponent } from './modules/plugins/plugins.component';
 
 registerLocaleData(localePt);
 
@@ -27,8 +27,7 @@ registerLocaleData(localePt);
     AppComponent,
     BasicModalComponent,
     AlertModalComponent,
-    PageNotFoundComponent,
-    PluginsComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

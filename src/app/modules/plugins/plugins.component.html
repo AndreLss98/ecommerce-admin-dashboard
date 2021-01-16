@@ -1,1 +1,37 @@
-<p>plugins works!</p>
+<div class="container mb-5">
+    <form [formGroup]="filterForm" class="d-flex flex-column align-items-center justify-content-center">
+        <div class="row">
+            <div class="col">
+                <mat-form-field appearance="standard">
+                    <mat-label>Filtrar por:</mat-label>
+                    <mat-select formControlName="filtro">
+                      <mat-option value="1">Categoria</mat-option>
+                      <mat-option value="2">Preço</mat-option>
+                      <mat-option value="3">Versão</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col d-flex align-items-center">
+                <button
+                    mat-raised-button
+                    color="primary"
+                    type="submit">Atualizar</button>
+            </div>
+        </div>
+    </form>
+
+    <mat-table [dataSource]="filteredDataSource" matSort>
+        <ng-container matColumnDef="Id">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Title">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Título </mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+</div>
