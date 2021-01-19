@@ -1,14 +1,37 @@
 <div class="container mb-5">
     <form [formGroup]="filterForm" class="d-flex flex-column align-items-center justify-content-center">
         <div class="row">
+            <div class="col" class="d-flex justify-content-center align-items-center">
+                Filtrar por:
+            </div>
             <div class="col">
                 <mat-form-field appearance="standard">
-                    <mat-label>Filtrar por:</mat-label>
+                    <mat-label>Categoria</mat-label>
                     <mat-select formControlName="filtro">
-                      <mat-option value="1">Categoria</mat-option>
-                      <mat-option value="2">Preço</mat-option>
-                      <mat-option value="3">Versão</mat-option>
+                      <mat-option value="1">Categoria 1</mat-option>
+                      <mat-option value="2">Categoria 2</mat-option>
+                      <mat-option value="3">Categoria 3</mat-option>
+                      <mat-option value="4">Categoria 4</mat-option>
+                      <mat-option value="5">Categoria 5</mat-option>
                     </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <mat-form-field appearance="standard">
+                    <mat-label>Versão</mat-label>
+                    <mat-select formControlName="filtro">
+                      <mat-option value="1.0.0">1.0.0</mat-option>
+                      <mat-option value="2.0.0">2.0.0</mat-option>
+                      <mat-option value="3.0.0">3.0.0</mat-option>
+                      <mat-option value="4.0.0">4.0.0</mat-option>
+                      <mat-option value="5.0.0">5.0.0</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <mat-form-field appearance="standard">
+                    <mat-label>Preço</mat-label>
+                    <input matInput placeholder="$49.90">
                 </mat-form-field>
             </div>
             <div class="col d-flex align-items-center">
@@ -36,23 +59,23 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Versão </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     {{row?.Version}}
-                    <button mat-icon-button>
-                        <mat-icon>search</mat-icon>
+                    <button mat-icon-button (click)="registerLogs()">
+                        <mat-icon>history</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Resolution">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="d-flex justify-content-center">
-                    <p class="text-center">{{ Typy(row, 'metafields.aspect-ratios').safeObject | removeHtml }}</p>
+                <mat-cell *matCellDef="let row">
+                    <p>{{ Typy(row, 'metafields.aspect-ratios').safeObject | removeHtml }}</p>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Software">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
-                <mat-cell *matCellDef="let row" class="d-flex justify-content-center align-itens-center">
-                    <p class="text-center">{{ Typy(row, 'metafields.requirements').safeObject | removeHtml }}</p>
+                <mat-cell *matCellDef="let row">
+                    <p>{{ Typy(row, 'metafields.requirements').safeObject | removeHtml }}</p>
                 </mat-cell>
             </ng-container>
     

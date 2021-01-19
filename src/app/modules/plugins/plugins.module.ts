@@ -10,14 +10,16 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
 
 @NgModule({
-  declarations: [ PluginsComponent ],
+  declarations: [ PluginsComponent, HistoryLogsModalComponent ],
   imports: [
     FormsModule,
     CommonModule,
@@ -27,6 +29,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    MatDialogModule,
     ComponentsModule,
     MatFormFieldModule,
     MatPaginatorModule,

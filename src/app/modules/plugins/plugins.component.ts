@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { BundlesService } from '../bundles/bundles.service';
 
 import { t as typy } from 'typy';
+import { MatDialog } from '@angular/material/dialog';
+import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
 
 @Component({
   selector: 'app-plugins',
@@ -31,13 +33,13 @@ export class PluginsComponent implements OnInit {
   public displayedColumns: string[] = ['Title', 'Version', 'Resolution', 'Software'];
 
   constructor(
+    private matDialog: MatDialog,
     private formBuilder: FormBuilder,
     private bundleService: BundlesService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
   ) {
 
     this.dataSource = this.activatedRoute.snapshot.data.plugins.data.products;
-    console.log(this.dataSource)
     this.filteredDataSource = new MatTableDataSource(this.dataSource);
 
     this.filterForm = formBuilder.group({
@@ -62,7 +64,7 @@ export class PluginsComponent implements OnInit {
           temp.metafields = {
             requirements: '-'
           };
-          temp.metafields['aspect-ratios'] = '-';
+          temp.metafields['aspect-ratios'] = 'N/A';
 
           res.body.map(meta => {
             temp.metafields[`${meta.namespace}`.normalize()] = meta.value;
@@ -80,6 +82,10 @@ export class PluginsComponent implements OnInit {
       this.filteredDataSource.sort = this.sort;
       this.filteredDataSource.paginator = this.paginator;
     });
+  }
+
+  registerLogs() {
+    this.matDialog.open(HistoryLogsModalComponent)
   }
 
 }
