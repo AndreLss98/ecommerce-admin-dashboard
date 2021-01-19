@@ -27,7 +27,7 @@ registerLocaleData(localePt);
     AppComponent,
     BasicModalComponent,
     AlertModalComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
   ],
   imports: [
     BrowserModule,

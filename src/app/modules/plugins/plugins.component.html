@@ -40,13 +40,15 @@
             <ng-container matColumnDef="Search">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Histórico</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <mat-icon>search</mat-icon>
+                    <button mat-icon-button aria-label="Example icon button with a home icon">
+                        <mat-icon>search</mat-icon>
+                    </button>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Resolution">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{ Typy(row, 'metafields.csv-list').safeObject }}</mat-cell>
+                <mat-cell *matCellDef="let row">{{ Typy(row, 'metafields.csv-list').safeObject | removeHtml }}</mat-cell>
             </ng-container>
     
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

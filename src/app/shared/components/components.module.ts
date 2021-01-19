@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { ToolbarComponent } from './toolbar/toolbar.component';
+import { RemoveHtmlPipe } from 'src/app/shared/pipes/remove-html.pipe';
 import { CustomLoadComponent } from './custom-load/custom-load.component';
 import { WorkInProgressComponent } from './work-in-progress/work-in-progress.component';
 
@@ -15,7 +16,8 @@ import { WorkInProgressComponent } from './work-in-progress/work-in-progress.com
   declarations: [
     WorkInProgressComponent,
     CustomLoadComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    RemoveHtmlPipe
   ],
   imports: [
     CommonModule,
@@ -28,7 +30,8 @@ import { WorkInProgressComponent } from './work-in-progress/work-in-progress.com
   exports: [
     WorkInProgressComponent,
     CustomLoadComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    RemoveHtmlPipe
   ]
 })
 export class ComponentsModule { }
