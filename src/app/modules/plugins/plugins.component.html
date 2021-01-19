@@ -34,13 +34,9 @@
     
             <ng-container matColumnDef="Version">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Versão </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row?.Version}} </mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="Search">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Histórico</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <button mat-icon-button aria-label="Example icon button with a home icon">
+                    {{row?.Version}}
+                    <button mat-icon-button>
                         <mat-icon>search</mat-icon>
                     </button>
                 </mat-cell>
@@ -48,7 +44,16 @@
 
             <ng-container matColumnDef="Resolution">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{ Typy(row, 'metafields.csv-list').safeObject | removeHtml }}</mat-cell>
+                <mat-cell *matCellDef="let row" class="d-flex justify-content-center">
+                    <p class="text-center">{{ Typy(row, 'metafields.aspect-ratios').safeObject | removeHtml }}</p>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Software">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
+                <mat-cell *matCellDef="let row" class="d-flex justify-content-center align-itens-center">
+                    <p class="text-center">{{ Typy(row, 'metafields.requirements').safeObject | removeHtml }}</p>
+                </mat-cell>
             </ng-container>
     
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

@@ -28,7 +28,7 @@ export class PluginsComponent implements OnInit {
   public dataSource;
   public filteredDataSource: MatTableDataSource<any>;
 
-  public displayedColumns: string[] = ['Title', 'Version', 'Search', 'Resolution'];
+  public displayedColumns: string[] = ['Title', 'Version', 'Resolution', 'Software'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -59,9 +59,13 @@ export class PluginsComponent implements OnInit {
         const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
         const temp = this.dataSource.find(plugin => plugin.ProductID === id);
         if (temp) {
-          temp.metafields = {};
+          temp.metafields = {
+            requirements: '-'
+          };
+          temp.metafields['aspect-ratios'] = '-';
+
           res.body.map(meta => {
-            temp.metafields[`${meta.key}`.normalize()] = meta.value;
+            temp.metafields[`${meta.namespace}`.normalize()] = meta.value;
           });
         }
       })
