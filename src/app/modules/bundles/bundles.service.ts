@@ -44,6 +44,11 @@ export class BundlesService {
     return this.http.get<any>('https://lenofx.com/products.json', { params });
   }
 
+  public getPluginMetafields(id) {
+    const params = new HttpParams().append('id', id.toString());
+    return this.http.get<any>(`${environment.backendURL}/products/metafields`, { withCredentials: true, params, observe: 'response' });
+  }
+
   public getBundleById(handle) {
     const httpOptions = {
       headers: new HttpHeaders({

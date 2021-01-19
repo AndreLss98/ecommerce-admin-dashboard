@@ -86,7 +86,7 @@ export class CreditosComponent implements OnInit {
         if (this.filterForm.get('plugin_name').value) this.filterForm.get('email').setValue('');
       });
 
-      this.plugins = this.router.snapshot.data.plugins.products;
+    this.plugins = this.router.snapshot.data.plugins.products;
   }
 
   ngOnInit(): void {

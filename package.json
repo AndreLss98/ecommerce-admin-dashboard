@@ -25,6 +25,7 @@
     "moment": "^2.29.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
+    "typy": "^3.3.0",
     "zone.js": "~0.10.2"
   },
   "devDependencies": {

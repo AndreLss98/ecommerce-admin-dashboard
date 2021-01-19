@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 import { HTTP_OPTIONS } from 'src/app/shared/http_options';

@@ -20,18 +20,38 @@
         </div>
     </form>
 
-    <mat-table [dataSource]="filteredDataSource" matSort>
-        <ng-container matColumnDef="Id">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
-        </ng-container>
+    <div class="mat-elevation-z8 my-2 position-relative">
+        <mat-table [dataSource]="filteredDataSource" matSort>
+            <ng-container matColumnDef="Id">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Title">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Título </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row?.Title}} </mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Version">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Versão </mat-header-cell>
+                <mat-cell *matCellDef="let row"> {{row?.Version}} </mat-cell>
+            </ng-container>
 
-        <ng-container matColumnDef="Title">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> Título </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
-        </ng-container>
+            <ng-container matColumnDef="Search">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Histórico</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    <mat-icon>search</mat-icon>
+                </mat-cell>
+            </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-    </mat-table>
+            <ng-container matColumnDef="Resolution">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
+                <mat-cell *matCellDef="let row">{{ Typy(row, 'metafields.csv-list').safeObject }}</mat-cell>
+            </ng-container>
+    
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+        </mat-table>
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
 </div>
