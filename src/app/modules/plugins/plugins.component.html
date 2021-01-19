@@ -66,14 +66,14 @@
             </ng-container>
 
             <ng-container matColumnDef="Resolution">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>Resoluções</mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     <p>{{ Typy(row, 'metafields.aspect-ratios').safeObject | removeHtml }}</p>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Software">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef>Requisitos</mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     <p>{{ Typy(row, 'metafields.requirements').safeObject | removeHtml }}</p>
                 </mat-cell>
