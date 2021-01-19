@@ -1,9 +1,17 @@
 <h1 mat-dialog-title>History Logs</h1>
-<div mat-dialog-content>Registre aqui os logs da versão</div>
-<mat-form-field appearance="standard" class="w-100">
-    <mat-label>Logs</mat-label>
-    <textarea matInput rows="7"t></textarea>
-</mat-form-field>
+<div mat-dialog-content>
+    <form>
+        <mat-form-field class="w-100">
+            <mat-label>Versão</mat-label>
+            <input matInput placeholder="1.0.0" value="1.0.0">
+        </mat-form-field>
+    
+        <mat-form-field appearance="standard" class="w-100">
+            <mat-label>Logs</mat-label>
+            <textarea matInput rows="7"></textarea>
+        </mat-form-field>
+    </form>
+</div>
 <div mat-dialog-actions>
     <button mat-flat-button mat-dialog-close>Fechar</button>
     <button mat-flat-button color="primary">Salvar</button>
