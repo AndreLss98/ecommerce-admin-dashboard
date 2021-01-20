@@ -12,7 +12,7 @@ export class PluginsGraphqlResolver implements Resolve<any> {
   resolve() {
     return this.graphQLService.getInfo(`{
       products {
-        Title, Version, ProductID
+        Title, Version, ProductID, UpgradedVersionAt
       }
     }`);
   }

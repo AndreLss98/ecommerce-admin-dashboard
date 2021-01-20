@@ -7,7 +7,7 @@
             <div class="col">
                 <mat-form-field appearance="standard">
                     <mat-label>Categoria</mat-label>
-                    <mat-select formControlName="filtro">
+                    <mat-select formControlName="categoria">
                       <mat-option value="1">Categoria 1</mat-option>
                       <mat-option value="2">Categoria 2</mat-option>
                       <mat-option value="3">Categoria 3</mat-option>
@@ -19,7 +19,7 @@
             <div class="col">
                 <mat-form-field appearance="standard">
                     <mat-label>Versão</mat-label>
-                    <mat-select formControlName="filtro">
+                    <mat-select formControlName="versao">
                       <mat-option value="1.0.0">1.0.0</mat-option>
                       <mat-option value="2.0.0">2.0.0</mat-option>
                       <mat-option value="3.0.0">3.0.0</mat-option>
@@ -31,7 +31,7 @@
             <div class="col">
                 <mat-form-field appearance="standard">
                     <mat-label>Preço</mat-label>
-                    <input matInput placeholder="$49.90">
+                    <input matInput formControlName="preco" placeholder="$49.90">
                 </mat-form-field>
             </div>
             <div class="col d-flex align-items-center">

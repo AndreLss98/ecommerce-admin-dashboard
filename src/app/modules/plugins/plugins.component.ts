@@ -44,12 +44,19 @@ export class PluginsComponent implements OnInit {
     this.filteredDataSource = new MatTableDataSource(this.dataSource);
 
     this.filterForm = formBuilder.group({
-      filtro: ['', []]
+      categoria: ['', []],
+      versao: ['', []],
+      preco: [null, []]
     });
+
+    this.filterForm.get('versao').valueChanges.subscribe((data) => {
+      this.filteredDataSource.data = this.dataSource.filter(plugin => {
+        return plugin.Version.substr(0, plugin.Version.indexOf('.')) === data.substr(0, data.indexOf('.'))
+      });
+    })
   }
 
   ngOnInit(): void {
-    
     const requests = new Observable(request => {
       this.dataSource.forEach((plugin, index) => {
         setTimeout(() => request.next(this.bundleService.getPluginMetafields(plugin.ProductID)), (index + 1) * 500)
@@ -57,21 +64,25 @@ export class PluginsComponent implements OnInit {
       setTimeout(() => request.complete(), this.dataSource.length * 500);
     });
 
-    requests.pipe().subscribe((response: Observable<any>) => {
-      response.subscribe((res) => {
-        const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
-        const temp = this.dataSource.find(plugin => plugin.ProductID === id);
-        if (temp) {
-          temp.metafields = {
-            requirements: { value: 'N/A', id: null }
-          };
-          temp.metafields['aspect-ratios'] = { value: 'N/A', id: null };
-
-          res.body.map(meta => {
-            temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
-          });
-        }
-      })
+    requests.subscribe((response: Observable<any>) => {
+      try {
+        response.subscribe((res) => {
+          const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
+          const temp = this.dataSource.find(plugin => plugin.ProductID === id);
+          if (temp) {
+            temp.metafields = {
+              requirements: { value: 'N/A', id: null }
+            };
+            temp.metafields['aspect-ratios'] = { value: 'N/A', id: null };
+  
+            res.body.map(meta => {
+              temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
+            });
+          }
+        })
+      } catch (error) {
+        console.log(error)
+      }
     }, (error) => {
       // ToDo: tratar erro na busca pelos metafields de um produto
     });
@@ -96,7 +107,8 @@ export class PluginsComponent implements OnInit {
 
         this.bundleService.savePluginLogMetafield(response.id, response).subscribe((response) => {
           plugin.Version = response.version;
-          plugin.metafields['history-log'] = { value: response.metafield.value, id: response.metafield.id }
+          plugin.UpgradedVersionAt = response.UpgradedVersionAt;
+          plugin.metafields['history-log'] = response.metafield? { value: response.metafield.value, id: response.metafield.id } : { value: '', id: null };
         }, (error) => {
           console.log(error);
         }, () => {

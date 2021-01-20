@@ -7,6 +7,7 @@
                 matInput
                 placeholder="1.0.0"
                 formControlName="version">
+                <mat-hint *ngIf="data.UpgradedVersionAt">Atualizado em: {{ data.UpgradedVersionAt | date: 'dd/MM/yyyy' }}</mat-hint>
         </mat-form-field>
     
         <mat-form-field appearance="standard" class="w-100">
