@@ -63,9 +63,9 @@ export class PluginsComponent implements OnInit {
         const temp = this.dataSource.find(plugin => plugin.ProductID === id);
         if (temp) {
           temp.metafields = {
-            requirements: '-'
+            requirements: { value: 'N/A', id: null }
           };
-          temp.metafields['aspect-ratios'] = 'N/A';
+          temp.metafields['aspect-ratios'] = { value: 'N/A', id: null };
 
           res.body.map(meta => {
             temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
