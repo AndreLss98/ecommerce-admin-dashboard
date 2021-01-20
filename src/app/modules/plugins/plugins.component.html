@@ -59,7 +59,7 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Versão </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     {{row?.Version}}
-                    <button mat-icon-button (click)="registerLogs()">
+                    <button mat-icon-button (click)="registerLogs(row)">
                         <mat-icon>history</mat-icon>
                     </button>
                 </mat-cell>
@@ -68,14 +68,14 @@
             <ng-container matColumnDef="Resolution">
                 <mat-header-cell *matHeaderCellDef>Resoluções</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <p>{{ Typy(row, 'metafields.aspect-ratios').safeObject | removeHtml }}</p>
+                    <p>{{ Typy(row, 'metafields.aspect-ratios.value').safeObject | removeHtml }}</p>
                 </mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="Software">
                 <mat-header-cell *matHeaderCellDef>Requisitos</mat-header-cell>
                 <mat-cell *matCellDef="let row">
-                    <p>{{ Typy(row, 'metafields.requirements').safeObject | removeHtml }}</p>
+                    <p>{{ Typy(row, 'metafields.requirements.value').safeObject | removeHtml }}</p>
                 </mat-cell>
             </ng-container>
     

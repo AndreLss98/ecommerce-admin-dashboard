@@ -22,6 +22,8 @@ export class PluginsComponent implements OnInit {
 
   readonly Typy = typy;
 
+  public isLoading: boolean = false;
+
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   
@@ -29,7 +31,6 @@ export class PluginsComponent implements OnInit {
   
   public dataSource;
   public filteredDataSource: MatTableDataSource<any>;
-
   public displayedColumns: string[] = ['Title', 'Version', 'Resolution', 'Software'];
 
   constructor(
@@ -67,13 +68,13 @@ export class PluginsComponent implements OnInit {
           temp.metafields['aspect-ratios'] = 'N/A';
 
           res.body.map(meta => {
-            temp.metafields[`${meta.namespace}`.normalize()] = meta.value;
+            temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
           });
         }
       })
     }, (error) => {
-      console.log(error)
-    })
+      // ToDo: tratar erro na busca pelos metafields de um produto
+    });
 
   }
 
@@ -84,8 +85,25 @@ export class PluginsComponent implements OnInit {
     });
   }
 
-  registerLogs() {
-    this.matDialog.open(HistoryLogsModalComponent)
+  registerLogs(plugin) {
+    const dialogRef = this.matDialog.open(HistoryLogsModalComponent, {
+      data: plugin
+    });
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        response['logs'] = { value: response['logs'], id: null };
+        if (typy(plugin, 'metafields.history-log.id').safeObject) response['logs']['id'] = typy(plugin, 'metafields.history-log.id').safeObject;
+
+        this.bundleService.savePluginLogMetafield(response.id, response).subscribe((response) => {
+          plugin.Version = response.version;
+          plugin.metafields['history-log'] = { value: response.metafield.value, id: response.metafield.id }
+        }, (error) => {
+          console.log(error);
+        }, () => {
+          // ToDo: Finalize loading
+        });
+      }
+    });
   }
 
 }

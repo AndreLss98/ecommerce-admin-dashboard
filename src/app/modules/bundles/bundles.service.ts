@@ -49,6 +49,11 @@ export class BundlesService {
     return this.http.get<any>(`${environment.backendURL}/products/metafields`, { withCredentials: true, params, observe: 'response' });
   }
 
+  public savePluginLogMetafield(id, metas) {
+    delete metas.id;
+    return this.http.post<any>(`${environment.backendURL}/products/metafields/${id}`, metas, { withCredentials: true });
+  }
+
   public getBundleById(handle) {
     const httpOptions = {
       headers: new HttpHeaders({
