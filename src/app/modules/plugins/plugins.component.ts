@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
 
 import { MatSort } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { BundlesService } from '../bundles/bundles.service';
 
 import { t as typy } from 'typy';
-import { MatDialog } from '@angular/material/dialog';
 import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
 
 @Component({
@@ -25,7 +25,9 @@ export class PluginsComponent implements OnInit {
   public isLoading: boolean = false;
   public marjorVersions: string[] = [];
   public prices: number[] = [];
+  public categorias: string[] = [];
   public getMetafieldsObserver;
+  public getTagsObserver;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -42,8 +44,8 @@ export class PluginsComponent implements OnInit {
     private bundleService: BundlesService,
     private activatedRoute: ActivatedRoute,
   ) {
-
     this.dataSource = this.activatedRoute.snapshot.data.plugins.data.products;
+    console.log(this.dataSource)
     this.dataSource = this.dataSource.filter(el => el.Title);
     this.filteredDataSource = new MatTableDataSource(this.dataSource);
 
@@ -56,6 +58,8 @@ export class PluginsComponent implements OnInit {
       if (element.RetailPrice && !buffer.includes(element.RetailPrice)) buffer.push(element.RetailPrice);
       return buffer;
     }, []);
+
+    this.categorias = this.activatedRoute.snapshot.data.categorias.collections.map(cat => cat.title);
 
     this.prices.sort((first, second) => first - second);
     this.marjorVersions.sort();
@@ -75,23 +79,32 @@ export class PluginsComponent implements OnInit {
       if (data.preco) {
         this.filteredDataSource.data = this.filteredDataSource.data.filter(plugin => plugin.RetailPrice === data.preco);
       }
+
+      if (data.categoria) {
+        this.filteredDataSource.data = this.filteredDataSource.data.filter(plugin => plugin.tags && plugin.tags.includes(data.categoria));
+      }
     })
   }
 
   ngOnInit(): void {
 
-    this.filterForm.get('categoria').disable();
-
-    const requests = new Observable(request => {
+    const metafieldsRequests = new Observable(request => {
       this.dataSource.forEach((plugin, index) => {
         setTimeout(() => request.next(this.bundleService.getPluginMetafields(plugin.ProductID)), (index + 1) * 500)
       });
       setTimeout(() => request.complete(), this.dataSource.length * 500);
     });
 
-    this.getMetafieldsObserver = requests.subscribe((response: Observable<any>) => {
+    const tagsRequests = new Observable(request => {
+      this.dataSource.forEach(plugin => {
+        request.next(this.bundleService.getPluginShopifyDetails(plugin.Handle));
+      });
+      request.complete();
+    });
+
+    this.getMetafieldsObserver = metafieldsRequests.subscribe((observer: Observable<any>) => {
       try {
-        response.subscribe((res) => {
+        observer.subscribe((res) => {
           const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
           const temp = this.dataSource.find(plugin => plugin.ProductID === id);
           if (temp) {
@@ -110,6 +123,18 @@ export class PluginsComponent implements OnInit {
       }
     }, (error) => {
       // ToDo: tratar erro na busca pelos metafields de um produto
+    });
+
+    this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
+      try {
+        observer.subscribe((res) => {
+          const handle = res.url.substring(res.url.lastIndexOf('/') + 1, res.url.lastIndexOf('.'));
+          const temp = this.dataSource.find(plugin => plugin.Handle === handle);
+          if (temp) temp.tags = res.body.product.tags;
+        }, (err) => {
+
+        });
+      } catch (error) {}
     });
 
   }

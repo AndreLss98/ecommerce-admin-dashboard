@@ -8,11 +8,8 @@
                 <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Categoria</mat-label>
                     <mat-select formControlName="categoria">
-                      <mat-option value="1">Categoria 1</mat-option>
-                      <mat-option value="2">Categoria 2</mat-option>
-                      <mat-option value="3">Categoria 3</mat-option>
-                      <mat-option value="4">Categoria 4</mat-option>
-                      <mat-option value="5">Categoria 5</mat-option>
+                      <mat-option>-</mat-option>
+                      <mat-option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>

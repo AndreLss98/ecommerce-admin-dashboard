@@ -1,15 +1,18 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { PluginsGraphqlResolver } from './plugins-graphql-resolver';
 
 import { PluginsComponent } from './plugins.component';
+
+import { PluginsGraphqlResolver } from './plugins-graphql-resolver';
+import { CollectionsResolver } from 'src/app/shared/resolvers/collections.resolver';
 
 const routes: Routes = [
   {
     path: '',
     component: PluginsComponent,
     resolve: {
-      plugins: PluginsGraphqlResolver
+      plugins: PluginsGraphqlResolver,
+      categorias: CollectionsResolver
     }
   }
 ];
