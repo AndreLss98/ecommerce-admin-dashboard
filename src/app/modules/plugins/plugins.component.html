@@ -5,7 +5,7 @@
                 Filtrar por:
             </div>
             <div class="col">
-                <mat-form-field appearance="standard">
+                <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Categoria</mat-label>
                     <mat-select formControlName="categoria">
                       <mat-option value="1">Categoria 1</mat-option>
@@ -17,7 +17,7 @@
                 </mat-form-field>
             </div>
             <div class="col">
-                <mat-form-field appearance="standard">
+                <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Versão</mat-label>
                     <mat-select formControlName="versao">
                       <mat-option>-</mat-option>
@@ -26,7 +26,7 @@
                 </mat-form-field>
             </div>
             <div class="col">
-                <mat-form-field appearance="standard">
+                <mat-form-field appearance="standard" class="w-100">
                     <mat-label>Preço</mat-label>
                     <mat-select formControlName="preco">
                       <mat-option>-</mat-option>
@@ -42,6 +42,8 @@
             </div> -->
         </div>
     </form>
+
+    <mat-divider class="w-100 my-4"></mat-divider>
 
     <div class="mat-elevation-z8 my-2 position-relative">
         <mat-table [dataSource]="filteredDataSource" matSort>
