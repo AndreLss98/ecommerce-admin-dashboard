@@ -31,14 +31,13 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <!-- <div class="col d-flex align-items-center">
-                <button
-                    mat-raised-button
-                    color="primary"
-                    type="submit">Atualizar</button>
-            </div> -->
         </div>
     </form>
+
+    <mat-form-field appearence="standard" class="w-100">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput (keyup)="applyFilter(filterInput.value)" #filterInput autocomplete="off" />
+    </mat-form-field>
 
     <mat-divider class="w-100 my-4"></mat-divider>
 

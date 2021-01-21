@@ -171,4 +171,8 @@ export class PluginsComponent implements OnInit {
     });
   }
 
+  applyFilter(search: string) {
+    this.filteredDataSource.filter = search.trim().toLowerCase();
+  }
+
 }
