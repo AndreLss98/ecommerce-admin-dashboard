@@ -23,6 +23,9 @@ export class PluginsComponent implements OnInit {
   readonly Typy = typy;
 
   public isLoading: boolean = false;
+  public marjorVersions: string[] = [];
+  public prices: number[] = [];
+  public getMetafieldsObserver;
 
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,7 +34,7 @@ export class PluginsComponent implements OnInit {
   
   public dataSource;
   public filteredDataSource: MatTableDataSource<any>;
-  public displayedColumns: string[] = ['Title', 'Version', 'Resolution', 'Software'];
+  public displayedColumns: string[] = ['Title', 'Version', 'RetailPrice', 'Resolution', 'Software'];
 
   constructor(
     private matDialog: MatDialog,
@@ -41,7 +44,21 @@ export class PluginsComponent implements OnInit {
   ) {
 
     this.dataSource = this.activatedRoute.snapshot.data.plugins.data.products;
+    this.dataSource = this.dataSource.filter(el => el.Title);
     this.filteredDataSource = new MatTableDataSource(this.dataSource);
+
+    this.marjorVersions = this.dataSource.reduce((buffer, element) => {
+      if (!buffer.includes(element.Version)) buffer.push(element.Version);
+      return buffer;
+    }, []);
+
+    this.prices = this.dataSource.reduce((buffer, element) => {
+      if (element.RetailPrice && !buffer.includes(element.RetailPrice)) buffer.push(element.RetailPrice);
+      return buffer;
+    }, []);
+
+    this.prices.sort((first, second) => first - second);
+    this.marjorVersions.sort();
 
     this.filterForm = formBuilder.group({
       categoria: ['', []],
@@ -49,14 +66,22 @@ export class PluginsComponent implements OnInit {
       preco: [null, []]
     });
 
-    this.filterForm.get('versao').valueChanges.subscribe((data) => {
-      this.filteredDataSource.data = this.dataSource.filter(plugin => {
-        return plugin.Version.substr(0, plugin.Version.indexOf('.')) === data.substr(0, data.indexOf('.'))
-      });
+    this.filterForm.valueChanges.subscribe((data) => {
+      this.filteredDataSource.data = this.dataSource;
+      if (data.versao) {
+        this.filteredDataSource.data = this.filteredDataSource.data.filter(plugin => plugin.Version === data.versao);
+      }
+
+      if (data.preco) {
+        this.filteredDataSource.data = this.filteredDataSource.data.filter(plugin => plugin.RetailPrice === data.preco);
+      }
     })
   }
 
   ngOnInit(): void {
+
+    this.filterForm.get('categoria').disable();
+
     const requests = new Observable(request => {
       this.dataSource.forEach((plugin, index) => {
         setTimeout(() => request.next(this.bundleService.getPluginMetafields(plugin.ProductID)), (index + 1) * 500)
@@ -64,7 +89,7 @@ export class PluginsComponent implements OnInit {
       setTimeout(() => request.complete(), this.dataSource.length * 500);
     });
 
-    requests.subscribe((response: Observable<any>) => {
+    this.getMetafieldsObserver = requests.subscribe((response: Observable<any>) => {
       try {
         response.subscribe((res) => {
           const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
@@ -79,9 +104,9 @@ export class PluginsComponent implements OnInit {
               temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
             });
           }
-        })
+        }, (error) => {});
       } catch (error) {
-        console.log(error)
+        // console.log(error)
       }
     }, (error) => {
       // ToDo: tratar erro na busca pelos metafields de um produto
@@ -96,6 +121,10 @@ export class PluginsComponent implements OnInit {
     });
   }
 
+  ngOnDestroy() {
+    this.getMetafieldsObserver.unsubscribe();
+  }
+
   registerLogs(plugin) {
     const dialogRef = this.matDialog.open(HistoryLogsModalComponent, {
       data: plugin
@@ -108,7 +137,7 @@ export class PluginsComponent implements OnInit {
         this.bundleService.savePluginLogMetafield(response.id, response).subscribe((response) => {
           plugin.Version = response.version;
           plugin.UpgradedVersionAt = response.UpgradedVersionAt;
-          plugin.metafields['history-log'] = response.metafield? { value: response.metafield.value, id: response.metafield.id } : { value: '', id: null };
+          plugin.metafields['history-log'] = response.metafields? { value: response.metafield.value, id: response.metafield.id } : { value: '', id: null };
         }, (error) => {
           console.log(error);
         }, () => {

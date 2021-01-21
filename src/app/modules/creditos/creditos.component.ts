@@ -309,9 +309,8 @@ export class CreditosComponent implements OnInit {
   }
 
   public generateReport(exportType) {
-    // this.isLoading = true;
     let fileType  = 'text/palin';
-    const report = exporterReport({
+    exporterReport({
       data: this.dataSource.data,
       fileName: `relatorio-${moment().format()}`,
       exportType,

@@ -18,7 +18,7 @@ export class HistoryLogsModalComponent implements OnInit {
   ) {
     this.logForm = formBuilder.group({
       version: [data.Version, [Validators.required, Validators.pattern(/[0-9]+\.[0-9]+\.[0-9]/), Validators.maxLength(20)]],
-      logs: [data.metafields['history-log']? data.metafields['history-log'].value : '', []]
+      logs: [data.metafields && data.metafields['history-log']? data.metafields['history-log'].value : '', []]
     });
   }
 

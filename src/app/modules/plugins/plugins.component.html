@@ -20,26 +20,26 @@
                 <mat-form-field appearance="standard">
                     <mat-label>Versão</mat-label>
                     <mat-select formControlName="versao">
-                      <mat-option value="1.0.0">1.0.0</mat-option>
-                      <mat-option value="2.0.0">2.0.0</mat-option>
-                      <mat-option value="3.0.0">3.0.0</mat-option>
-                      <mat-option value="4.0.0">4.0.0</mat-option>
-                      <mat-option value="5.0.0">5.0.0</mat-option>
+                      <mat-option>-</mat-option>
+                      <mat-option *ngFor="let version of marjorVersions" [value]="version">{{ version }}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
             <div class="col">
                 <mat-form-field appearance="standard">
                     <mat-label>Preço</mat-label>
-                    <input matInput formControlName="preco" placeholder="$49.90">
+                    <mat-select formControlName="preco">
+                      <mat-option>-</mat-option>
+                      <mat-option *ngFor="let price of prices" [value]="price">{{ price | currency }}</mat-option>
+                    </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col d-flex align-items-center">
+            <!-- <div class="col d-flex align-items-center">
                 <button
                     mat-raised-button
                     color="primary"
                     type="submit">Atualizar</button>
-            </div>
+            </div> -->
         </div>
     </form>
 
@@ -62,6 +62,13 @@
                     <button mat-icon-button (click)="registerLogs(row)">
                         <mat-icon>history</mat-icon>
                     </button>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="RetailPrice">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Preço </mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                    {{row?.RetailPrice | currency}}
                 </mat-cell>
             </ng-container>
 
