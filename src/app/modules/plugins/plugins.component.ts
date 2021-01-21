@@ -45,7 +45,6 @@ export class PluginsComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
   ) {
     this.dataSource = this.activatedRoute.snapshot.data.plugins.data.products;
-    console.log(this.dataSource)
     this.dataSource = this.dataSource.filter(el => el.Title);
     this.filteredDataSource = new MatTableDataSource(this.dataSource);
 
