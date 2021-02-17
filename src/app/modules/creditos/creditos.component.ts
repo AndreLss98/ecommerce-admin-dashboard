@@ -15,6 +15,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { CreditosService } from './creditos.service';
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
+import { ChangePluginModalComponent } from './change-plugin-modal/change-plugin-modal.component';
 
 @Component({
   selector: 'creditos',
@@ -208,7 +209,7 @@ export class CreditosComponent implements OnInit {
     .subscribe(response => {
       if (response.data.user) {
         this.isLoading = false;
-
+        console.log(response)
         if (this.filterForm.controls['start'].value) {
           response.data.user.CreditosUsados = response.data.user.CreditosUsados
             .filter(credit => Number(credit.UsageDate) >= this.filterForm.controls['start'].value.setHours(0, 0, 0, 0));
@@ -330,6 +331,32 @@ export class CreditosComponent implements OnInit {
         downloadLink.click();
         window.URL.revokeObjectURL(downloadLink.href);
       }
-  });
+    });
+  }
+
+  public alterPluginModal(currentPlugin) {
+    if (!this.filterForm.get('agrupar_creditos').value && !this.filterForm.get('type_view').value && this.filterForm.get('email').value) {
+      const dialogRef = this.matDialog.open(ChangePluginModalComponent, {
+        maxHeight: '400px',
+        data: { currentPlugin }
+      });
+
+      dialogRef.afterClosed().subscribe((result) => {
+        (document.activeElement as any).blur();
+        if (result) {
+          const confirmActionModalRef = this.matDialog.open(AlertModalComponent, {
+            data: {
+              title: "Atenção",
+              message: `Confirma a troca de plugins? De: ${currentPlugin.ItemTitle} Para: ${result.title} `
+            },
+            disableClose: true
+          })
+
+          confirmActionModalRef.afterClosed().subscribe((confirmResult) => {
+            //ToDo: Make request here
+          })
+        }
+      });
+    }
   }
 }

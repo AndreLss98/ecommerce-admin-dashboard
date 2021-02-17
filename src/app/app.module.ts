@@ -44,6 +44,6 @@ registerLocaleData(localePt);
   providers: [
     { provide: LOCALE_ID, useValue: "pt-BR" }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [ AppComponent ],
 })
 export class AppModule { }

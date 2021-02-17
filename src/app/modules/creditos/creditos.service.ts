@@ -21,7 +21,8 @@ export class CreditosService {
         CreditosUsados {
           ItemTitle
           CreditsUsed
-          UsageDate
+          UsageDate,
+          ItemID
         }
       }
     }`;

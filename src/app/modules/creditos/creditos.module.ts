@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
+import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,10 +20,12 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { CreditosComponent } from './creditos.component';
 import { CreditosRoutingModule } from './creditos-routing.module';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { ChangePluginModalComponent } from './change-plugin-modal/change-plugin-modal.component';
 
 @NgModule({
   declarations: [
-    CreditosComponent
+    CreditosComponent,
+    ChangePluginModalComponent
   ],
   imports: [
     CommonModule,
@@ -30,6 +33,7 @@ import { ComponentsModule } from 'src/app/shared/components/components.module';
     MatMenuModule,
     MatSortModule,
     MatIconModule,
+    MatListModule,
     MatTableModule,
     MatInputModule,
     MatButtonModule,

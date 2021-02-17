@@ -121,7 +121,9 @@
 
             <ng-container matColumnDef="ItemTitle">
               <mat-header-cell *matHeaderCellDef mat-sort-header> Plugin </mat-header-cell>
-              <mat-cell *matCellDef="let row"> {{row.ItemTitle}} </mat-cell>
+              <mat-cell *matCellDef="let row">
+                  <button mat-button (click)="alterPluginModal(row)">{{ row.ItemTitle }}</button>
+                </mat-cell>
               <mat-footer-cell *matFooterCellDef>Total</mat-footer-cell>
             </ng-container>
           

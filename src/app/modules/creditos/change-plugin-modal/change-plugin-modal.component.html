@@ -1,0 +1,7 @@
+<h1>Alterar Plugin</h1>
+<mat-action-list>
+    <custom-load *ngIf="isLoading"></custom-load>
+    <button mat-list-item *ngFor="let plugin of plugins" (click)="changePlugin(plugin)">
+        {{ plugin.title }}
+    </button>
+</mat-action-list>
