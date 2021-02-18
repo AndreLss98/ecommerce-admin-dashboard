@@ -357,7 +357,6 @@ export class CreditosComponent implements OnInit {
               this.creditosService.alterPlugin(
                 this.filterForm.get('email').value, currentPlugin.ItemID, result
               ).subscribe(response => {
-                console.log(response);
                 this.searchUser();
               }, (error) => {
                 console.log(error);
