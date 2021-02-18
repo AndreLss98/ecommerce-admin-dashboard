@@ -22,9 +22,8 @@ export class ChangePluginModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.data)
     this.bundleService.getAllPlugins().subscribe(({ products }) => {
-      this.plugins = products.filter(plugin => plugin.id !== parseInt(this.data.currentPlugin.ItemID));
+      this.plugins = products.filter(plugin => plugin.id !== parseInt(this.data.currentPlugin.ItemID) && !plugin.handle.includes('pack'));
       this.isLoading = false;
     }, (error) => {
       this.isLoading = false;
