@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 
     }, ({ error }) => {
       this.matDialog.open(BasicModalComponent, { 
-        data: { title: 'Aviso!', message: error.message }
+        data: { title: 'Aviso!', message: error.message || 'Falha de conexão com o servidor' }
       });
       console.log('Auth error: ', error);
       sessionStorage.removeItem('user');
@@ -92,13 +92,13 @@ export class LoginComponent implements OnInit {
           confirmaSenha: ''
         });
       });
-    }, ({error}) => {
+    }, ({ error }) => {
       console.log(error);
       this.isLoading = false;
       this.matDialog.open(BasicModalComponent, {
         data: {
           title: 'Aviso!',
-          message: error.message
+          message: error.message || 'Falha de conexão com o servidor'
         }
       })
     }, () => {
