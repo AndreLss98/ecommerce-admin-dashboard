@@ -21,20 +21,17 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Créditos</mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.Credits}} </mat-cell>
             </ng-container>
-
-
-            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row
-                *matRowDef="let row; columns: displayedColumns"></mat-row>
-                        <ng-container matColumnDef="Edit">
-                <mat-header-cell *matHeaderCellDef> </mat-header-cell>
-                <mat-cell *matCellDef="let row" class="d-flex justify-content-around">
-                    <button mat-icon-button>
+            <ng-container matColumnDef="Edit">
+                <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 2;">
+                    <button mat-icon-button (click)="editUser(row)">
                         <mat-icon>create</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
-        <mat-paginator (page) = "pageEvent = OnChange($event)" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        <mat-paginator (page) = "pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
     </div>
 </div>

@@ -30,8 +30,14 @@ export class UsuariosService {
   getAllUsuarios(pageNumber: number, limit: number){
     const body = `{
         users(pageNumber: ${pageNumber}, limit: ${limit}) {
-          CustomerName,
-          Credits
+          previousPage,
+          nextPage,
+          totalItems,
+          data{
+              CustomerName,
+              Credits,
+              CustomerEmail
+          }
         }
     }`;
     
@@ -43,7 +49,7 @@ export class UsuariosService {
         CustomerEmail
         LinksDownload {
           ItemTitle,
-          orderDate
+          OrderData
         }
       }
     }`;

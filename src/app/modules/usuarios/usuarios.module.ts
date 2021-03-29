@@ -17,11 +17,13 @@ import { UsuariosComponent } from './usuarios.component';
 
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
 
 
 @NgModule({
   declarations: [
-    UsuariosComponent
+    UsuariosComponent,
+    UsuariosFormComponent
   ],
   imports: [
     CommonModule,

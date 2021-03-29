@@ -25,12 +25,14 @@ export class UsuariosComponent implements OnInit {
   public sort: MatSort;
 
   @ViewChild(MatPaginator)
-  public paginator: MatPaginator;
   pageEvent : PageEvent;
+  paginator: MatPaginator;
   data : any = [];
   public filteredData = [];
   public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
   public displayedColumns: string[] = ['CustomerName','Credits','Edit'];
+  totalItems: number;
+  previousPage: number;
 
   public isLoading: boolean = false;
   
@@ -42,19 +44,20 @@ export class UsuariosComponent implements OnInit {
   ) { }
   
   ngOnInit(): void {
-    this.getAllUsuarios(10);
-    this.OnChange(null);
+    this.getAllUsuarios(0,10);
   }
   public OnChange(event ? : PageEvent){
-    this.getAllUsuarios(event.pageSize);
+    if(!event) return;     
+    this.getAllUsuarios(event.pageIndex,event.pageSize);
     return event;
   }
-  getAllUsuarios(valueLimit){
+  getAllUsuarios(offset,valueLimit){
     this.isLoading = true;
-    this._usuarioService.getAllUsuarios(1,valueLimit).subscribe(({data}) => {
-      this._usuarioService.usuarios = this.dataSource.data = this.data = data.users;
-      
+    this._usuarioService.getAllUsuarios(offset + 1,valueLimit).subscribe(({data}) => {
+      this._usuarioService.usuarios = this.dataSource.data = this.data = data.users.data;
       console.log(data);
+      this.totalItems = data.users.totalItems;
+      this.previousPage = data.users.previousPage;
     },
     (error) => {
       this.isLoading = false;
@@ -62,14 +65,16 @@ export class UsuariosComponent implements OnInit {
       this.isLoading = false;
     });
   }
-
+  editUser(usuario){
+    console.log(usuario);
+    this.router.navigate([`usuarios/edit/${usuario.CustomerEmail}`]);
+  }
 
   getUserInfo(usuario){
     console.log(usuario);
   }
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
   }
 
   applyFilter(search: string) {
