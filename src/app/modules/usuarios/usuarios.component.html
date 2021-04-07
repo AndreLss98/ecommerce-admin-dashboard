@@ -1,9 +1,21 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <mat-form-field appearance="standard" color="primary" class="w-100">
+                <mat-label>Buscar</mat-label>
+                <input #searchInput matInput autocomplete="off">
+            </mat-form-field>
+        </div>
+        <div class="col-2 d-flex align-items-center justify-content-center">
+            <button mat-raised-button color="primary" (click)="searchUser(searchInput.value)" [disabled]="!searchInput.value">Buscar</button>
+        </div>
+    </div>
+</div>
 <div class="container mb-5">
     <mat-form-field appearance="standard" color="primary" class="w-100">
-        <mat-label>Buscar</mat-label>
-        <input matInput (keyup)="applyFilter(filterInput.value)" #filterInput autocomplete="off">
+        <mat-label>Filtrar</mat-label>
+        <input #filterInput matInput (keyup)="applyFilter(filterInput.value)" autocomplete="off">
     </mat-form-field>
-
     
     <div class="mat-elevation-z8 position-relative">
         <div *ngIf="isLoading"
@@ -17,13 +29,17 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Nome</mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.CustomerName}} </mat-cell>
             </ng-container>
+            <ng-container matColumnDef="CustomerEmail">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Email</mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.CustomerEmail}} </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="Credits">
-                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Créditos</mat-header-cell>
-                <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.Credits}} </mat-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Créditos</mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.Credits}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Edit">
-                <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-                <mat-cell *matCellDef="let row" style="flex-grow: 2;">
+                <mat-header-cell *matHeaderCellDef mat-sort-header  style="flex-grow: 1;"></mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 1;">
                     <button mat-icon-button (click)="editUser(row)">
                         <mat-icon>create</mat-icon>
                     </button>
@@ -32,6 +48,6 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
-        <mat-paginator (page) = "pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        <mat-paginator (page)="pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
     </div>
 </div>

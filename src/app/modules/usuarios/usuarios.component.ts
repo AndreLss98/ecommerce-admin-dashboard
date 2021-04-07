@@ -1,24 +1,16 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
-import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+
 import { UsuariosService } from './usuarios.service';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.component.html',
-  styleUrls: ['./usuarios.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
-      state('expanded', style({ height: '*', visibility: 'visible' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ])
-  ]
+  styleUrls: ['./usuarios.component.scss']
 })
 export class UsuariosComponent implements OnInit {
   @ViewChild(MatSort)
@@ -26,60 +18,62 @@ export class UsuariosComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   pageEvent : PageEvent;
+
   paginator: MatPaginator;
+  public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
+  
   data : any = [];
   public filteredData = [];
-  public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-  public displayedColumns: string[] = ['CustomerName','Credits','Edit'];
+  public displayedColumns: string[] = ['CustomerName', 'CustomerEmail', 'Credits', 'Edit'];
+  
   totalItems: number;
   previousPage: number;
 
   public isLoading: boolean = false;
   
   constructor(
-    private _usuarioService: UsuariosService,
     private router: Router,
-    private matDialog: MatDialog,
+    public usuarioService: UsuariosService,
   ) { }
   
   ngOnInit(): void {
-    this.getAllUsuarios(0,10);
+    this.getAllUsuarios(0, 10);
   }
-  public OnChange(event ? : PageEvent){
+
+  ngAfterViewInit() {
+    this.dataSource.sort = this.sort;
+  }
+
+  public OnChange(event ? : PageEvent) {
     if(!event) return;     
-    this.getAllUsuarios(event.pageIndex,event.pageSize);
+    this.getAllUsuarios(event.pageIndex, event.pageSize);
     return event;
   }
-  getAllUsuarios(offset,valueLimit){
+
+  getAllUsuarios(offset, valueLimit) {
     this.isLoading = true;
-    this._usuarioService.getAllUsuarios(offset + 1,valueLimit).subscribe(({data}) => {
-      this._usuarioService.usuarios = this.dataSource.data = this.data = data.users.data;
-      console.log(data);
+
+    this.usuarioService.getAllUsuarios(offset + 1,valueLimit).subscribe(({ data }) => {
+      this.usuarioService.usuarios = this.dataSource.data = this.data = data.users.data;
       this.totalItems = data.users.totalItems;
       this.previousPage = data.users.previousPage;
-    },
-    (error) => {
+    }, (error) => {
       this.isLoading = false;
     }, () => {
       this.isLoading = false;
     });
   }
-  editUser(usuario){
-    console.log(usuario);
+
+  editUser(usuario) {
     this.router.navigate([`usuarios/edit/${usuario.CustomerEmail}`]);
   }
 
-  getUserInfo(usuario){
-    console.log(usuario);
-  }
-  ngAfterViewInit() {
-    this.dataSource.sort = this.sort;
+  searchUser(email: string) {
+    this.router.navigate([`usuarios/edit/${email}`]);
   }
 
   applyFilter(search: string) {
     this.dataSource.filter = search.trim().toLowerCase();
   }
-
-
 }
 
