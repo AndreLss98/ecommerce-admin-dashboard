@@ -1,5 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
 import { HTTP_OPTIONS } from 'src/app/shared/http_options';
 import { environment } from 'src/environments/environment';
 
@@ -48,12 +49,15 @@ export class UsuariosService {
       user(CustomerEmail: "${userEmail}") {
         CustomerEmail CustomerID CustomerName Credits
         LinksDownload {
-          ItemTitle,
-          OrderData
+          LinkID, ItemTitle, OrderDate
         }
       }
     }`;
 
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
+  }
+
+  deletePluginFromHistory(linkId: number) {
+    return this.http.delete(`${environment.backendURL}/users/plugins/${linkId}`);
   }
 }

@@ -54,7 +54,7 @@
       <ng-container matColumnDef="Delete">
         <mat-header-cell *matHeaderCellDef style="flex-grow: 1;"></mat-header-cell>
         <mat-cell *matCellDef="let row" style="flex-grow: 1;">
-          <button mat-icon-button>
+          <button mat-icon-button (click)="deletePlugin(row)">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>

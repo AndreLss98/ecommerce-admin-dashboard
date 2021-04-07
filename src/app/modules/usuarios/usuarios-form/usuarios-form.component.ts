@@ -9,6 +9,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { UsuariosService } from '../usuarios.service';
+import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -78,5 +79,27 @@ export class UsuariosFormComponent implements OnInit {
   
   applyFilter(search: string) {
     this.dataSource.filter = search.trim().toLowerCase();
+  }
+
+  deletePlugin(plugin) {
+    const dialogReference = this.matDialog.open(AlertModalComponent, {
+      data: {
+        title: 'Aviso',
+        message: `Tem certeza que deseja excluir ${plugin.ItemTitle} do histórico do usuário?`
+      }
+    });
+
+    dialogReference.afterClosed().subscribe((data) => {
+      if(data) {
+        this.usuariosService.deletePluginFromHistory(plugin.LinkID).subscribe((response) => {
+          this.dataSource.data = this.data = this.currentUser.LinksDownload = this.currentUser.LinksDownload
+            .filter(element => element.LinkID !== plugin.LinkID);
+        }, (error) => {
+          console.log(error);
+        }, () => {
+
+        });
+      }
+    });
   }
 }
