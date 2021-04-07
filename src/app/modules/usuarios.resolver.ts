@@ -12,6 +12,6 @@ export class UsuariosResolver implements Resolve<any> {
   ) { }
 
   resolve(route: ActivatedRouteSnapshot){
-    return this.usuariosService.getUserHistory(route.paramMap.get('CustomerEmail'));
+    return this.usuariosService.getUserHistory(route.paramMap.get('email'));
   }
 }

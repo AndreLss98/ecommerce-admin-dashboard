@@ -36,7 +36,6 @@ export class UsuariosComponent implements OnInit {
 
   public isLoading: boolean = false;
   
-  public expandedUser;
   constructor(
     private _usuarioService: UsuariosService,
     private router: Router,

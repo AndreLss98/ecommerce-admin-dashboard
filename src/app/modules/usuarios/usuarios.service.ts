@@ -47,6 +47,7 @@ export class UsuariosService {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
         CustomerEmail
+        CustomerID
         LinksDownload {
           ItemTitle,
           OrderData
