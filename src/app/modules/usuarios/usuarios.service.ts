@@ -47,9 +47,9 @@ export class UsuariosService {
   getUserHistory(userEmail: string) {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
-        CustomerEmail CustomerID CustomerName Credits
+        CustomerEmail CustomerID ShopifyCustomerNumber CustomerName Credits
         LinksDownload {
-          LinkID, ItemTitle, OrderDate
+          LinkID ItemTitle OrderDate ItemID
         }
       }
     }`;
@@ -57,7 +57,15 @@ export class UsuariosService {
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
   }
 
-  deletePluginFromHistory(linkId: number) {
+  deletePluginFromHistoric(linkId: number) {
     return this.http.delete(`${environment.backendURL}/users/plugins/${linkId}`);
+  }
+
+  addPluginInHistoricUser(ProductID: number, CustomerID: number) {
+    return this.http.post(`${environment.backendURL}/users/plugins/${ProductID}`, { CustomerID });
+  }
+
+  alterPluginInHistoricUser(linkId: number, CustomerID: number, oldPlugin: number, newPlugin) {
+    return this.http.put(`${environment.backendURL}/users/plugins/${linkId}`, { CustomerID, newPlugin, oldPlugin });
   }
 }

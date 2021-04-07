@@ -9,7 +9,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
 import { UsuariosService } from '../usuarios.service';
+
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
+import { ChangePluginModalComponent } from '../../creditos/change-plugin-modal/change-plugin-modal.component';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -55,6 +57,7 @@ export class UsuariosFormComponent implements OnInit {
   }
   public set currentUser(value: any) {
     this._currentUser = value;
+    console.log(this._currentUser)
   }
 
   ngOnInit(): void {
@@ -91,7 +94,7 @@ export class UsuariosFormComponent implements OnInit {
 
     dialogReference.afterClosed().subscribe((data) => {
       if(data) {
-        this.usuariosService.deletePluginFromHistory(plugin.LinkID).subscribe((response) => {
+        this.usuariosService.deletePluginFromHistoric(plugin.LinkID).subscribe((response) => {
           this.dataSource.data = this.data = this.currentUser.LinksDownload = this.currentUser.LinksDownload
             .filter(element => element.LinkID !== plugin.LinkID);
         }, (error) => {
@@ -101,5 +104,60 @@ export class UsuariosFormComponent implements OnInit {
         });
       }
     });
+  }
+
+  alterPlugin(currentPlugin) {
+    const dialogRef = this.matDialog.open(ChangePluginModalComponent, {
+      maxHeight: '400px',
+      data: { currentPlugin }
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        const confirmActionModalRef = this.matDialog.open(AlertModalComponent, {
+          data: {
+            title: "Atenção",
+            message: `Confirma a troca de plugins? De: ${currentPlugin.ItemTitle} Para: ${data.title} `
+          },
+          disableClose: true
+        });
+
+        confirmActionModalRef.afterClosed().subscribe((confirmResult) => {
+          if (confirmResult) {
+            this.usuariosService.alterPluginInHistoricUser(
+              currentPlugin.LinkID,
+              this.currentUser.ShopifyCustomerNumber,
+              currentPlugin.ItemID,
+              data
+            ).subscribe(() => {
+              console.log('Plugin alterado');
+            }, (error) => {
+              console.log(error)
+            }, () => {
+
+            });
+          }
+        });
+      }
+    });
+  }
+
+  addPlugin() {
+    const dialogRef = this.matDialog.open(ChangePluginModalComponent, {
+      maxHeight: '400px',
+      data: { }
+    });
+
+    dialogRef.afterClosed().subscribe((data) => {
+      if (data) {
+        this.usuariosService.addPluginInHistoricUser(data.id, this.currentUser.ShopifyCustomerNumber).subscribe((response) => {
+          console.log(response);
+        }, (error) => {
+          console.log(error);
+        }, () => {
+
+        });
+      }
+    })
   }
 }

@@ -45,7 +45,7 @@
       <ng-container matColumnDef="Edit">
         <mat-header-cell *matHeaderCellDef style="flex-grow: 1;"></mat-header-cell>
         <mat-cell *matCellDef="let row" style="flex-grow: 1;">
-          <button mat-icon-button>
+          <button mat-icon-button (click)="alterPlugin(row)">
             <mat-icon>create</mat-icon>
           </button>
         </mat-cell>
@@ -67,7 +67,7 @@
   </div>
   
   <div class="buttonFixedScroll position-fixed">
-    <button mat-fab color="primary">
+    <button mat-fab color="primary" (click)="addPlugin()">
       <mat-icon>add</mat-icon>
     </button>
   </div>
