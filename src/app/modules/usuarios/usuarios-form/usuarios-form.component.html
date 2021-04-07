@@ -1,38 +1,73 @@
-<div class="container mb-5 pt-3">
-  <h1 class="m-0 p-0" style="color: white;"> Plugins do Usuário </h1>
+<div class="container mt-2">
+  <h1 class="m-0 p-0">Usuário</h1>
+  <form [formGroup]="userForm">
+    <div class="row">
+      <div class="col">
+        <mat-form-field appearance="standard" class="w-100">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" type="text" readonly/>
+        </mat-form-field>
+      </div>
+  
+      <div class="col">
+        <mat-form-field appearance="standard" class="w-100">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" type="text" readonly/>
+        </mat-form-field>
+      </div>
+  
+      <div class="col">
+        <mat-form-field appearance="standard" class="w-100">
+          <mat-label>Créditos</mat-label>
+          <input matInput formControlName="creditos" min="0" type="number" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="container mt-2 mb-5">
+  <h2 class="m-0 p-0">Plugins</h2>
+
   <mat-form-field appearance="standard" color="primary" class="w-100">
     <mat-label>Buscar</mat-label>
-    <input matInput (keyup)="applyFilter(filterInput.value)" #filterInput autocomplete="off">
+    <input #filterInput matInput (keyup)="applyFilter(filterInput.value)" autocomplete="off" />
   </mat-form-field>
+
   <div class="mat-elevation-z8 position-relative">
-    <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+    <mat-table [dataSource]="dataSource" matSort>
+      
       <ng-container matColumnDef="PluginName">
         <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Nome</mat-header-cell>
         <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.ItemTitle}} </mat-cell>
       </ng-container>
+      
       <ng-container matColumnDef="Edit">
-        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-        <mat-cell *matCellDef="let row" style="flex-grow: 2;">
+        <mat-header-cell *matHeaderCellDef style="flex-grow: 1;"></mat-header-cell>
+        <mat-cell *matCellDef="let row" style="flex-grow: 1;">
           <button mat-icon-button>
             <mat-icon>create</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
+      
       <ng-container matColumnDef="Delete">
-        <mat-header-cell *matHeaderCellDef mat-sort-header></mat-header-cell>
-        <mat-cell *matCellDef="let row" style="flex-grow: 2;">
+        <mat-header-cell *matHeaderCellDef style="flex-grow: 1;"></mat-header-cell>
+        <mat-cell *matCellDef="let row" style="flex-grow: 1;">
           <button mat-icon-button>
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
+      
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
   </div>
-  <div class="buttonFixedScroll">
-    <button mat-fab color="primary" aria-label="Example icon button with a delete icon">
+  
+  <div class="buttonFixedScroll position-fixed">
+    <button mat-fab color="primary">
       <mat-icon>add</mat-icon>
     </button>
   </div>

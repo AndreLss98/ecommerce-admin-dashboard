@@ -32,7 +32,7 @@ export class UsuariosService {
           previousPage,
           nextPage,
           totalItems,
-          data{
+          data {
               CustomerName,
               Credits,
               CustomerEmail
@@ -46,8 +46,7 @@ export class UsuariosService {
   getUserHistory(userEmail: string) {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
-        CustomerEmail
-        CustomerID
+        CustomerEmail CustomerID CustomerName Credits
         LinksDownload {
           ItemTitle,
           OrderData

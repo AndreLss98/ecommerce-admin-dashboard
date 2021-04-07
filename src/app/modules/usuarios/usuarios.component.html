@@ -24,7 +24,7 @@
             <custom-load></custom-load>
         </div>
 
-        <mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+        <mat-table [dataSource]="dataSource" matSort>
             <ng-container matColumnDef="CustomerName">
                 <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 2;">Nome</mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 2;"> {{row.CustomerName}} </mat-cell>

@@ -1,12 +1,13 @@
+import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+
+import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
+
 import { UsuariosService } from '../usuarios.service';
 
 @Component({
@@ -15,32 +16,61 @@ import { UsuariosService } from '../usuarios.service';
   styleUrls: ['./usuarios-form.component.scss']
 })
 export class UsuariosFormComponent implements OnInit {
+  private _currentUser: any;
+
   @ViewChild(MatSort)
   public sort: MatSort;
 
   @ViewChild(MatPaginator)
   public paginator: MatPaginator;
-  public filteredDownload: Observable<any>;
+  
   public userForm: FormGroup;
+  public filteredDownload: Observable<any>;
 
   public usuariosform: UsuariosFormComponent;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-  public displayedColumns: string[] = ['PluginName','Edit','Delete'];
+  
   data : any = [];
   public isLoading: boolean = false;
+  public displayedColumns: string[] = ['PluginName', 'Edit', 'Delete'];
   
 
   constructor(
     public router: Router,
-    public activeRoute: ActivatedRoute,
     private matDialog: MatDialog,
-    public usuariosService: UsuariosService
-  ) { }
+    private formBuilder: FormBuilder,
+    public activeRoute: ActivatedRoute,
+    public usuariosService: UsuariosService,
+  ) {
+    this.userForm = formBuilder.group({
+      nome: [""],
+      email: [""],
+      creditos: [null, [Validators.min(0), Validators.required]]
+    });
+  }
+
+  public get currentUser(): any {
+    return this._currentUser;
+  }
+  public set currentUser(value: any) {
+    this._currentUser = value;
+  }
 
   ngOnInit(): void {
-    console.log(this.activeRoute.snapshot.data);
-    this.dataSource.data = this.data = this.activeRoute.snapshot.data.usuario.data.user.LinksDownload;
-  }3
+    this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
+    if(this.currentUser) {
+      this.dataSource.data = this.data = this.currentUser.LinksDownload;
+      
+      setTimeout(() => {
+        this.userForm.reset({
+          nome: this.currentUser.CustomerName,
+          email: this.currentUser.CustomerEmail,
+          creditos: this.currentUser.Credits
+        })
+      },)
+    }
+  }
+
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
@@ -49,6 +79,4 @@ export class UsuariosFormComponent implements OnInit {
   applyFilter(search: string) {
     this.dataSource.filter = search.trim().toLowerCase();
   }
-
-
 }
