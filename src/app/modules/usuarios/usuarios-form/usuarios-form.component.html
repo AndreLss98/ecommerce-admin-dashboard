@@ -19,7 +19,16 @@
       <div class="col">
         <mat-form-field appearance="standard" class="w-100">
           <mat-label>Créditos</mat-label>
-          <input matInput formControlName="creditos" min="0" type="number" />
+          <input 
+            id="creditos"
+            matInput
+            formControlName="creditos"
+            type="number"
+            [min]="minValueOfCredits"
+            step="1"
+            (keyup.enter)="onUpdateCredits()"
+            (blur)="onUpdateCredits()" />
+          <mat-hint align="end">Editável</mat-hint>
         </mat-form-field>
       </div>
     </div>

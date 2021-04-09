@@ -36,7 +36,10 @@ export class UsuariosFormComponent implements OnInit {
   data : any = [];
   public isLoading: boolean = false;
   public displayedColumns: string[] = ['PluginName', 'Edit', 'Delete'];
-  
+  private _urlAtual = window.location.href;
+
+  public minValueOfCredits = 0;
+  public confirmUpdateCreditsModal;
 
   constructor(
     public router: Router,
@@ -49,6 +52,7 @@ export class UsuariosFormComponent implements OnInit {
       nome: [""],
       email: [""],
       creditos: [null, [Validators.min(0), Validators.required]]
+
     });
   }
 
@@ -57,7 +61,6 @@ export class UsuariosFormComponent implements OnInit {
   }
   public set currentUser(value: any) {
     this._currentUser = value;
-    console.log(this._currentUser)
   }
 
   ngOnInit(): void {
@@ -97,6 +100,7 @@ export class UsuariosFormComponent implements OnInit {
         this.usuariosService.deletePluginFromHistoric(plugin.LinkID).subscribe((response) => {
           this.dataSource.data = this.data = this.currentUser.LinksDownload = this.currentUser.LinksDownload
             .filter(element => element.LinkID !== plugin.LinkID);
+            window.location.href= this._urlAtual;
         }, (error) => {
           console.log(error);
         }, () => {
@@ -131,13 +135,16 @@ export class UsuariosFormComponent implements OnInit {
               data
             ).subscribe(() => {
               console.log('Plugin alterado');
+              window.location.href= this._urlAtual;
             }, (error) => {
               console.log(error)
             }, () => {
 
             });
+            
           }
         });
+        
       }
     });
   }
@@ -152,6 +159,7 @@ export class UsuariosFormComponent implements OnInit {
       if (data) {
         this.usuariosService.addPluginInHistoricUser(data.id, this.currentUser.ShopifyCustomerNumber).subscribe((response) => {
           console.log(response);
+          window.location.href= this._urlAtual;
         }, (error) => {
           console.log(error);
         }, () => {
@@ -159,5 +167,40 @@ export class UsuariosFormComponent implements OnInit {
         });
       }
     })
+  }
+  onUpdateCredits() {
+    console.log(this.currentUser)
+    setTimeout(() => {
+      if (
+        this.userForm.get("creditos").value > this.currentUser.Credits &&
+        !this.confirmUpdateCreditsModal
+      ) {
+        this.confirmUpdateCreditsModal = this.matDialog.open(AlertModalComponent, {
+          data: {
+            title: "Atenção",
+            message: "Confirma alteração de quantidade de créditos do usuário?"
+          },
+          disableClose: true
+        });
+  
+        this.confirmUpdateCreditsModal.afterOpened().subscribe(() => {
+          (document.activeElement as any).blur();
+        });
+  
+        this.confirmUpdateCreditsModal.afterClosed().subscribe((data) => {
+          this.confirmUpdateCreditsModal = null;
+          if (data) {
+            this.usuariosService.updateCredits(this.currentUser.CustomerID, this.userForm.get("creditos").value)
+            .subscribe((response) => {
+              this.currentUser.Credits = this.userForm.get("creditos").value ;
+            });
+          } else {
+            this.userForm.get("creditos").setValue( this.currentUser.Credits);
+          }
+        });
+      } else if (this.userForm.get("creditos").value < this.currentUser.Credits) {
+        this.userForm.get("creditos").setValue( this.currentUser.Credits);
+      }
+    });
   }
 }

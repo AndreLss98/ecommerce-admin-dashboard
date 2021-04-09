@@ -89,8 +89,8 @@
                     [(ngModel)]="currentUser.creditos"
                     [min]="minValueOfCredits"
                     step="1"
-                    (keyup.enter)="onUpdateCredits($event)"
-                    (blur)="onUpdateCredits($event)"
+                    (keyup.enter)="onUpdateCredits()"
+                    (blur)="onUpdateCredits()"
                     type="number" />
                     <mat-hint align="end">Editável</mat-hint>
             </mat-form-field>

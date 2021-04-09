@@ -16,6 +16,7 @@ import { CreditosService } from './creditos.service';
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 import { ChangePluginModalComponent } from './change-plugin-modal/change-plugin-modal.component';
+import { UsuariosService } from '../usuarios/usuarios.service';
 
 @Component({
   selector: 'creditos',
@@ -55,6 +56,7 @@ export class CreditosComponent implements OnInit {
     private router: ActivatedRoute,
     private formBuilder: FormBuilder,
     private creditosService: CreditosService,
+    private usuarioService: UsuariosService
   ) {
     this.filterForm = formBuilder.group({
       email: ['', []],
@@ -139,7 +141,7 @@ export class CreditosComponent implements OnInit {
         this.confirmUpdateCreditsModal.afterClosed().subscribe((data) => {
           this.confirmUpdateCreditsModal = null;
           if (data) {
-            this.creditosService.updateCredits(this.currentUser.CustomerID, this.currentUser.creditos)
+            this.usuarioService.updateCredits(this.currentUser.CustomerID, this.currentUser.creditos)
             .subscribe((response) => {
               this.currentUser.originalQtdOfCredits = this.currentUser.creditos;
             });
