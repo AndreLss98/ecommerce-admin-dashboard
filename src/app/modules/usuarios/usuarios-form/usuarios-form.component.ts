@@ -12,6 +12,8 @@ import { UsuariosService } from '../usuarios.service';
 
 import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 import { ChangePluginModalComponent } from '../../creditos/change-plugin-modal/change-plugin-modal.component';
+import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -43,12 +45,13 @@ export class UsuariosFormComponent implements OnInit {
 
   constructor(
     public router: Router,
+    private _location: Location,
     private matDialog: MatDialog,
     private formBuilder: FormBuilder,
     public activeRoute: ActivatedRoute,
     public usuariosService: UsuariosService,
   ) {
-    this.userForm = formBuilder.group({
+    this.userForm = this.formBuilder.group({
       nome: [""],
       email: [""],
       creditos: [null, [Validators.min(0), Validators.required]]
@@ -64,10 +67,10 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
-    if(this.currentUser) {
+    if(this.activeRoute.snapshot.data.usuario) {
+      this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
       this.dataSource.data = this.data = this.currentUser.LinksDownload;
-      
+
       setTimeout(() => {
         this.userForm.reset({
           nome: this.currentUser.CustomerName,
@@ -75,6 +78,18 @@ export class UsuariosFormComponent implements OnInit {
           creditos: this.currentUser.Credits
         })
       },)
+    } else {
+      const dialogRef = this.matDialog.open(BasicModalComponent, {
+        data: {
+          title: 'Aviso',
+          message: 'Usuário não encontrado.'
+        },
+        hasBackdrop: false
+      });
+
+      dialogRef.afterClosed().subscribe(() => {
+        this._location.back();
+      });
     }
   }
 
