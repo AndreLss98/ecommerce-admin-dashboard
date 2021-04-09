@@ -1,15 +1,16 @@
 <div class="container">
-    <div class="row justify-content-center">
+    <form (ngSubmit)="searchUser(searchInput.value)" class="row justify-content-center w-100">    
         <div class="col-4">
             <mat-form-field appearance="standard" color="primary" class="w-100">
                 <mat-label>Buscar</mat-label>
                 <input #searchInput matInput autocomplete="off">
             </mat-form-field>
         </div>
+
         <div class="col-2 d-flex align-items-center justify-content-center">
-            <button mat-raised-button color="primary" (click)="searchUser(searchInput.value)" [disabled]="!searchInput.value">Buscar</button>
+            <button type="submit" mat-raised-button color="primary" [disabled]="!searchInput.value">Buscar</button>
         </div>
-    </div>
+    </form>
 </div>
 <div class="container mb-5">
     <mat-form-field appearance="standard" color="primary" class="w-100">
