@@ -87,12 +87,7 @@
                 <input
                     matInput
                     [(ngModel)]="currentUser.creditos"
-                    [min]="minValueOfCredits"
-                    step="1"
-                    (keyup.enter)="onUpdateCredits()"
-                    (blur)="onUpdateCredits()"
-                    type="number" />
-                    <mat-hint align="end">Editável</mat-hint>
+                    type="number" readonly />
             </mat-form-field>
         </div>
         <div class="col" *ngIf="(getTotalCredits() > 0 || currentUser.nome) && !filterForm.get('type_view').value">

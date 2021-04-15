@@ -12,11 +12,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
-import { CreditosService } from './creditos.service';
-import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-modal.component';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
-import { ChangePluginModalComponent } from './change-plugin-modal/change-plugin-modal.component';
-import { UsuariosService } from '../usuarios/usuarios.service';
+
+import { CreditosService } from './creditos.service';
 
 @Component({
   selector: 'creditos',
@@ -56,7 +54,6 @@ export class CreditosComponent implements OnInit {
     private router: ActivatedRoute,
     private formBuilder: FormBuilder,
     private creditosService: CreditosService,
-    private usuarioService: UsuariosService
   ) {
     this.filterForm = formBuilder.group({
       email: ['', []],
@@ -118,41 +115,6 @@ export class CreditosComponent implements OnInit {
     } else if (this.filterForm.controls['start'].value) {
       this.searchInterval();
     }
-  }
-
-  onUpdateCredits() {
-    setTimeout(() => {
-      if (
-        this.currentUser.creditos > this.currentUser.originalQtdOfCredits &&
-        !this.confirmUpdateCreditsModal
-      ) {
-        this.confirmUpdateCreditsModal = this.matDialog.open(AlertModalComponent, {
-          data: {
-            title: "Atenção",
-            message: "Confirma alteração de quantidade de créditos do usuário?"
-          },
-          disableClose: true
-        });
-  
-        this.confirmUpdateCreditsModal.afterOpened().subscribe(() => {
-          (document.activeElement as any).blur();
-        });
-  
-        this.confirmUpdateCreditsModal.afterClosed().subscribe((data) => {
-          this.confirmUpdateCreditsModal = null;
-          if (data) {
-            this.usuarioService.updateCredits(this.currentUser.CustomerID, this.currentUser.creditos)
-            .subscribe((response) => {
-              this.currentUser.originalQtdOfCredits = this.currentUser.creditos;
-            });
-          } else {
-            this.currentUser.creditos = this.currentUser.originalQtdOfCredits;
-          }
-        });
-      } else if (this.currentUser.creditos < this.currentUser.originalQtdOfCredits) {
-        this.currentUser.creditos = this.currentUser.originalQtdOfCredits;
-      }
-    });
   }
 
   searchInterval() {

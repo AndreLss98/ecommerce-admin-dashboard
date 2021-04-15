@@ -44,8 +44,4 @@ export class CreditosService {
 
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
   }
-
-  updateCredits(CustomerID, Credits) {
-    return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
-  }
 }
