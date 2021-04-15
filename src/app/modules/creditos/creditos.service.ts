@@ -48,8 +48,4 @@ export class CreditosService {
   updateCredits(CustomerID, Credits) {
     return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
   }
-
-  alterPlugin(email, oldPlugin, newPlugin) {
-    return this.http.put(`${environment.backendURL}/credits/alter-plugin`, { email, oldPlugin, newPlugin });
-  }
 }
