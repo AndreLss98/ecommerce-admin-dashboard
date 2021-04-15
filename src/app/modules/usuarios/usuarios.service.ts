@@ -68,6 +68,7 @@ export class UsuariosService {
   alterPluginInHistoricUser(linkId: number, CustomerID: number, oldPlugin: number, newPlugin) {
     return this.http.put(`${environment.backendURL}/users/plugins/${linkId}`, { CustomerID, newPlugin, oldPlugin });
   }
+  
   updateCredits(CustomerID, Credits) {
     return this.http.put<any>(`${environment.backendURL}/users/credits/${CustomerID}`, { Credits }, { withCredentials: true });
   }

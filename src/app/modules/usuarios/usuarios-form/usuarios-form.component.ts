@@ -183,8 +183,8 @@ export class UsuariosFormComponent implements OnInit {
       }
     })
   }
+
   onUpdateCredits() {
-    console.log(this.currentUser)
     setTimeout(() => {
       if (
         this.userForm.get("creditos").value > this.currentUser.Credits &&
