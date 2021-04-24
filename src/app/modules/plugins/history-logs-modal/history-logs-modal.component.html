@@ -14,8 +14,30 @@
             <mat-label>Logs</mat-label>
             <textarea matInput rows="7" formControlName="logs"></textarea>
         </mat-form-field>
+
+        <div #dropZone class="dropzone mb-2 w-100 d-flex justify-content-center align-items-center">
+            Upload File
+            <div class="wheel">
+                <ul class="umbrella">
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                  <li class="color"></li>
+                </ul>
+            </div>
+
+        </div>
     </form>
 </div>
+
 <div mat-dialog-actions>
     <button mat-flat-button mat-dialog-close>Fechar</button>
     <button mat-flat-button color="primary" [mat-dialog-close]="onSave()" [disabled]="logForm.invalid || logForm.pristine">Salvar</button>

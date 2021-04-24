@@ -12,6 +12,7 @@ import { BundlesService } from '../bundles/bundles.service';
 
 import { t as typy } from 'typy';
 import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
+import { MetafieldsModalComponent } from './metafields-modal/metafields-modal.component';
 
 @Component({
   selector: 'app-plugins',
@@ -36,7 +37,7 @@ export class PluginsComponent implements OnInit {
   
   public dataSource;
   public filteredDataSource: MatTableDataSource<any>;
-  public displayedColumns: string[] = ['Title', 'Version', 'RetailPrice', 'Resolution', 'Software'];
+  public displayedColumns: string[] = ['Title', 'Version', 'RetailPrice'];
 
   constructor(
     private matDialog: MatDialog,
@@ -86,14 +87,6 @@ export class PluginsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-    const metafieldsRequests = new Observable(request => {
-      this.dataSource.forEach((plugin, index) => {
-        setTimeout(() => request.next(this.bundleService.getPluginMetafields(plugin.ProductID)), (index + 1) * 500)
-      });
-      setTimeout(() => request.complete(), this.dataSource.length * 500);
-    });
-
     const tagsRequests = new Observable(request => {
       this.dataSource.forEach(plugin => {
         request.next(this.bundleService.getPluginShopifyDetails(plugin.Handle));
@@ -101,30 +94,7 @@ export class PluginsComponent implements OnInit {
       request.complete();
     });
 
-    this.getMetafieldsObserver = metafieldsRequests.subscribe((observer: Observable<any>) => {
-      try {
-        observer.subscribe((res) => {
-          const id = parseInt(res.url.substr(res.url.lastIndexOf('=') + 1));
-          const temp = this.dataSource.find(plugin => plugin.ProductID === id);
-          if (temp) {
-            temp.metafields = {
-              requirements: { value: 'N/A', id: null }
-            };
-            temp.metafields['aspect-ratios'] = { value: 'N/A', id: null };
-  
-            res.body.map(meta => {
-              temp.metafields[`${meta.namespace}`.normalize()] = { value: meta.value, id: meta.id };
-            });
-          }
-        }, (error) => {});
-      } catch (error) {
-        // console.log(error)
-      }
-    }, (error) => {
-      // ToDo: tratar erro na busca pelos metafields de um produto
-    });
-
-    this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
+    /* this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
       try {
         observer.subscribe((res) => {
           const handle = res.url.substring(res.url.lastIndexOf('/') + 1, res.url.lastIndexOf('.'));
@@ -134,7 +104,7 @@ export class PluginsComponent implements OnInit {
 
         });
       } catch (error) {}
-    });
+    }); */
 
   }
 
@@ -146,12 +116,13 @@ export class PluginsComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.getMetafieldsObserver.unsubscribe();
+    // this.getMetafieldsObserver.unsubscribe();
   }
 
   registerLogs(plugin) {
     const dialogRef = this.matDialog.open(HistoryLogsModalComponent, {
-      data: plugin
+      data: plugin,
+      hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe((response) => {
       if (response) {
@@ -169,6 +140,16 @@ export class PluginsComponent implements OnInit {
         });
       }
     });
+  }
+
+  viewMetaFields(productId) {
+    
+    this.matDialog.open(MetafieldsModalComponent, {
+      data: {
+        productId
+      },
+      width: '75%',
+    })
   }
 
   applyFilter(search: string) {

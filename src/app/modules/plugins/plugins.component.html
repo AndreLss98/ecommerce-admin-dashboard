@@ -45,7 +45,7 @@
         <mat-table [dataSource]="filteredDataSource" matSort>
             <ng-container matColumnDef="Id">
                 <mat-header-cell *matHeaderCellDef mat-sort-header> Id </mat-header-cell>
-                <mat-cell *matCellDef="let row"> {{row.id}} </mat-cell>
+                <mat-cell *matCellDef="let row"> {{row.ProductID}} </mat-cell>
             </ng-container>
     
             <ng-container matColumnDef="Title">
@@ -54,11 +54,14 @@
             </ng-container>
     
             <ng-container matColumnDef="Version">
-                <mat-header-cell *matHeaderCellDef mat-sort-header> Versão </mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Versão/Meta </mat-header-cell>
                 <mat-cell *matCellDef="let row">
                     {{row?.Version}}
                     <button mat-icon-button (click)="registerLogs(row)">
                         <mat-icon>history</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="viewMetaFields(row.ProductID)">
+                        <mat-icon>extension</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>

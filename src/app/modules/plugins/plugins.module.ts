@@ -18,9 +18,10 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
+import { MetafieldsModalComponent } from './metafields-modal/metafields-modal.component';
 
 @NgModule({
-  declarations: [ PluginsComponent, HistoryLogsModalComponent ],
+  declarations: [ PluginsComponent, HistoryLogsModalComponent, MetafieldsModalComponent ],
   imports: [
     FormsModule,
     CommonModule,

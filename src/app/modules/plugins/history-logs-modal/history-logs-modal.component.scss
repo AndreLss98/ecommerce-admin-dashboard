@@ -1,0 +1,117 @@
+@import '~@angular/material/theming';
+$app-primary: mat-palette($mat-pink);
+
+.dropzone {
+    height: 200px;
+    border: 2px dashed white;
+    font-size: 1.5rem;
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    .wheel {
+        display: none;
+    }
+}
+
+.dropzone.dragging {
+    border-color: mat-color($app-primary);
+    color: mat-color($app-primary);
+}
+
+.dropzone.droped {
+    border-color: transparent;
+    padding: .5rem;
+
+    .wheel {
+        display: block;
+    }
+
+    &::after {
+        content: "Uploading...";
+        position: absolute;
+
+        z-index: 2;
+        top: 3px;
+        left: 3px;
+        width: calc(100% - 6px);
+        height: calc(100% - 6px);
+        background-color: #424242;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.dropzone.uploaded {
+    border-color: #a4ff00;
+    color: #a4ff00;
+
+    &::after {
+        content: "Uploaded!";
+        position: absolute;
+        z-index: 2;
+        top: 3px;
+        left: 3px;
+        width: calc(100% - 6px);
+        height: calc(100% - 6px);
+        background-color: #424242;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+@keyframes rotate {
+	100% {
+		transform: rotate(1turn);
+	}
+}
+
+@mixin circle($size) {
+    content: "";
+    position: absolute;
+    // border-radius: 50%;
+    width: $size;
+    height: $size;
+    left: calc(50% - #{$size/2});
+    top: calc(50% - #{$size/2});
+}
+
+$wheel: 20em;
+.wheel, .umbrella, .color {
+  @include circle($wheel);
+}
+
+.wheel {
+  overflow: hidden;
+  width: $wheel;
+  height: $wheel;
+  position: absolute;
+  animation: rotate .3s linear infinite;
+}
+
+.umbrella {
+  position: relative;
+  -webkit-filter: blur(1.7em);
+  -webkit-transform: scale(1.35);
+}
+.color, .color:nth-child(n+7):after {
+  clip: rect(0, $wheel, $wheel, #{$wheel/2});
+}
+.color:after, .color:nth-child(n+7) {
+  @include circle($wheel);
+  clip: rect(0, #{$wheel/2}, $wheel, 0);
+}
+
+$colors: (#9ED110, #50B517, #179067, #476EAF, #9f49ac, #CC42A2, #FF3BA7, #FF5800, #FF8100, #FEAC00, #FFCC00, #EDE604);
+@for $i from 0 to length($colors) {
+  .color:nth-child(#{1+$i}):after {
+    background-color: nth($colors, $i+1);
+    @if $i < 6 {
+      transform: rotate(#{30*(1+$i)}deg);
+      z-index: #{length($colors)-$i};
+    } @else {
+      transform: rotate(#{-30+(30*(1+$i))}deg);
+    }
+  }
+}

@@ -1,0 +1,20 @@
+<div class="mat-elevation-z8 my-2 position-relative">
+    <mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="Resolution">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Resoluções</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <p>{{ Typy(row, 'aspect-ratios.value').safeObject | removeHtml }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Software">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Requisitos</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <p>{{ Typy(row, 'requirements.value').safeObject | removeHtml }}</p>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+</div>
