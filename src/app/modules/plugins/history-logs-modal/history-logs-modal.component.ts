@@ -28,7 +28,6 @@ export class HistoryLogsModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     setTimeout(() => {
       this._dropzone.nativeElement.addEventListener('drop', (event) => {
         event.preventDefault();
@@ -63,7 +62,7 @@ export class HistoryLogsModalComponent implements OnInit {
   }
 
   uploadFile(file: File) {
-    this.pluginsService.uploadFile(file).subscribe((response) => {
+    this.pluginsService.uploadFile(this.data.ProductID, file).subscribe((response) => {
       this._dropzone.nativeElement.classList.add('uploaded');
     }, (error) => {
       console.log(error);

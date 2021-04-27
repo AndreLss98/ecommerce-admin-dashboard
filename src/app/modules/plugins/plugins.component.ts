@@ -87,14 +87,14 @@ export class PluginsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const tagsRequests = new Observable(request => {
+    /* const tagsRequests = new Observable(request => {
       this.dataSource.forEach(plugin => {
         request.next(this.bundleService.getPluginShopifyDetails(plugin.Handle));
       });
       request.complete();
-    });
+    }); */
 
-    this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
+    /* this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
       try {
         observer.subscribe((res) => {
           const handle = res.url.substring(res.url.lastIndexOf('/') + 1, res.url.lastIndexOf('.'));
@@ -104,8 +104,7 @@ export class PluginsComponent implements OnInit {
 
         });
       } catch (error) {}
-    });
-
+    }); */
   }
 
   ngAfterViewInit() {
