@@ -94,7 +94,7 @@ export class PluginsComponent implements OnInit {
       request.complete();
     });
 
-    /* this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
+    this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
       try {
         observer.subscribe((res) => {
           const handle = res.url.substring(res.url.lastIndexOf('/') + 1, res.url.lastIndexOf('.'));
@@ -104,7 +104,7 @@ export class PluginsComponent implements OnInit {
 
         });
       } catch (error) {}
-    }); */
+    });
 
   }
 
