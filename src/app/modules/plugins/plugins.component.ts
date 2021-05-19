@@ -92,9 +92,9 @@ export class PluginsComponent implements OnInit {
         request.next(this.bundleService.getPluginShopifyDetails(plugin.Handle));
       });
       request.complete();
-    }); */
+    });
 
-    /* this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
+    this.getTagsObserver = tagsRequests.subscribe((observer: Observable<any>) => {
       try {
         observer.subscribe((res) => {
           const handle = res.url.substring(res.url.lastIndexOf('/') + 1, res.url.lastIndexOf('.'));
@@ -126,12 +126,12 @@ export class PluginsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((response) => {
       if (response) {
         response['logs'] = { value: response['logs'], id: null };
-        if (typy(plugin, 'metafields.history-log.id').safeObject) response['logs']['id'] = typy(plugin, 'metafields.history-log.id').safeObject;
+        const historyLog = response.metafields.find(metas => metas.namespace === 'history-log');
+        if (historyLog) response['logs']['id'] = historyLog.id;
 
         this.bundleService.savePluginLogMetafield(response.id, response).subscribe((response) => {
           plugin.Version = response.version;
           plugin.UpgradedVersionAt = response.UpgradedVersionAt;
-          plugin.metafields['history-log'] = response.metafields? { value: response.metafield.value, id: response.metafield.id } : { value: '', id: null };
         }, (error) => {
           console.log(error);
         }, () => {
