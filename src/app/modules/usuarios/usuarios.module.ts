@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSortModule } from '@angular/material/sort';
 import { MatInputModule } from '@angular/material/input';
@@ -18,6 +19,8 @@ import { UsuariosComponent } from './usuarios.component';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -43,6 +46,9 @@ import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
     MatFormFieldModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMenuModule,
   ]
 })
 export class UsuariosModule { }
