@@ -35,6 +35,14 @@
             </div>
 
         </div>
+        <mat-hint *ngIf="data.UploadFileAt">Atualizado em: {{ data.UploadFileAt | date: 'dd/MM/yyyy HH:mm:ss' }}</mat-hint>
+
+        <div id="progress">
+            <mat-progress-bar  mode="determinate" [value]="progress" ></mat-progress-bar>
+            <span> {{progress}}% </span>
+        </div>
+
+
     </form>
 </div>
 
