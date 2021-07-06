@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 import { UsuariosService } from '../usuarios.service';
 
@@ -19,7 +20,8 @@ import * as moment from 'moment';
 @Component({
   selector: 'app-usuarios-form',
   templateUrl: './usuarios-form.component.html',
-  styleUrls: ['./usuarios-form.component.scss']
+  styleUrls: ['./usuarios-form.component.scss'],
+  providers: [DatePipe]
 })
 export class UsuariosFormComponent implements OnInit {
   private _currentUser: any;
@@ -51,12 +53,14 @@ export class UsuariosFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     public activeRoute: ActivatedRoute,
     public usuariosService: UsuariosService,
+    private datePipe: DatePipe,
   ) {
     this.userForm = this.formBuilder.group({
       nome: [""],
       email: [""],
       creditos: [null, [Validators.min(0), Validators.required]],
       acesso: [""],
+      lastaccess: [""]
 
     });
   }
@@ -72,13 +76,13 @@ export class UsuariosFormComponent implements OnInit {
     if(this.activeRoute.snapshot.data.usuario) {
       this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
       this.dataSource.data = this.data = this.currentUser.LinksDownload;
-
       setTimeout(() => {
         this.userForm.reset({
           nome: this.currentUser.CustomerName,
           email: this.currentUser.CustomerEmail,
           creditos: this.currentUser.Credits,
-          acesso: this.currentUser.LastAccess 
+          acesso: this.currentUser.TotalAccessLog,
+          lastaccess: this.datePipe.transform(this.currentUser.LastAccess, "dd/MM/yyyy") 
         })
       },)
     } else {

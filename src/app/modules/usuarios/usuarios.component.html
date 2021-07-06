@@ -11,6 +11,18 @@
                         type="email" />
                 </mat-form-field>
             </div>
+            <div class="col">
+                <mat-form-field appearance="standard" color="primary" class="w-100">
+                    <mat-label>Top Usuários</mat-label>
+                    <input
+                        matInput
+                        formControlName="top"
+                        min="0"
+                        autocomplete="false"
+                        placeholder="Ex.: 8"
+                        type="number" />
+                </mat-form-field>
+            </div>
             <div class="col-4">
                 <div class="col">
                     <mat-form-field appearance="standard" class="w-100">
@@ -31,10 +43,9 @@
                 </div>
             </div>
             <div class="col-2 d-flex align-items-center justify-content-center">
-                <button type="submit" mat-raised-button color="primary" [disabled]="!filterForm.controls['email'].value && !filterForm.controls['start'].value">Buscar</button>
+                <button type="submit" mat-raised-button color="primary" [disabled]="(!filterForm.controls['top'].value && !filterForm.controls['start'].value) && !filterForm.controls['email'].value ">Buscar</button>
             </div>
     </form>
-    
 </div>
 
 <div class="container mb-5">
@@ -64,8 +75,12 @@
                 <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.Credits}} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="LastAccess">
-                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Acesso</mat-header-cell>
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Último Acesso</mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.LastAccess | date:'short'}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="TotalAccessLog">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Número de Acesso</mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.TotalAccessLog }} </mat-cell>
             </ng-container>
             <ng-container matColumnDef="Edit">
                 <mat-header-cell *matHeaderCellDef mat-sort-header  style="flex-grow: 1;"></mat-header-cell>
@@ -78,7 +93,7 @@
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
-        <mat-paginator (page)="pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        <mat-paginator *ngIf="!filterForm.get('top').value" (page)="pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
         
         <div class="d-flex justify-content-end">
             <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!dataSource.data.length">

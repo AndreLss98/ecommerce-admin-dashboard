@@ -27,10 +27,10 @@ export class UsuariosService {
     this._history = history;
   }
 
-  getAllUsuarios(pageNumber: number, limit: number, startDate: String, endDate: String ){
-    console.log(pageNumber, limit, startDate, endDate);
+  getAllUsuarios(pageNumber: number, limit: number, startDate: String, endDate: String, topUsers: number ){
+    console.log(pageNumber, limit, startDate, endDate, topUsers);
     const body = `{
-        users(pageNumber: ${pageNumber}, limit: ${limit}, startDate: "${startDate}", endDate: "${endDate}") {
+        users(pageNumber: ${pageNumber}, limit: ${limit}, startDate: "${startDate}", endDate: "${endDate}", topUsers: ${topUsers}) {
           previousPage,
           nextPage,
           totalItems,
@@ -38,7 +38,8 @@ export class UsuariosService {
               CustomerName,
               Credits,
               LastAccess,
-              CustomerEmail
+              CustomerEmail,
+              TotalAccessLog,
           }
         }
     }`;
@@ -49,7 +50,7 @@ export class UsuariosService {
   getUserHistory(userEmail: string) {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
-        CustomerEmail CustomerID ShopifyCustomerNumber CustomerName Credits LastAccess
+        CustomerEmail CustomerID ShopifyCustomerNumber CustomerName Credits LastAccess TotalAccessLog
         LinksDownload {
           LinkID ItemTitle OrderDate ItemID
         }
