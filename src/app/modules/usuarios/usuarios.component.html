@@ -1,17 +1,42 @@
 <div class="container">
-    <form (ngSubmit)="searchUser(searchInput.value)" class="row justify-content-center w-100">    
-        <div class="col-4">
-            <mat-form-field appearance="standard" color="primary" class="w-100">
-                <mat-label>Buscar</mat-label>
-                <input #searchInput matInput autocomplete="off">
-            </mat-form-field>
-        </div>
-
-        <div class="col-2 d-flex align-items-center justify-content-center">
-            <button type="submit" mat-raised-button color="primary" [disabled]="!searchInput.value">Buscar</button>
-        </div>
+    <form [formGroup]="filterForm"(ngSubmit)="search()" class="row justify-content-center w-100">    
+            <div class="col">
+                <mat-form-field appearance="standard" color="primary" class="w-100">
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        formControlName="email"
+                        autocomplete="false"
+                        placeholder="Ex.: user@domain.com"
+                        type="email" />
+                </mat-form-field>
+            </div>
+            <div class="col-4">
+                <div class="col">
+                    <mat-form-field appearance="standard" class="w-100">
+                        <mat-label>Período</mat-label>
+                        <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+                          <input
+                            matStartDate
+                            formControlName="start"
+                            placeholder="Data inicial" />
+                          <input
+                            matEndDate
+                            formControlName="end"
+                            placeholder="Data final" />
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker (closed)="search()" #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="col-2 d-flex align-items-center justify-content-center">
+                <button type="submit" mat-raised-button color="primary" [disabled]="!filterForm.controls['email'].value && !filterForm.controls['start'].value">Buscar</button>
+            </div>
     </form>
+    
 </div>
+
 <div class="container mb-5">
     <mat-form-field appearance="standard" color="primary" class="w-100">
         <mat-label>Filtrar</mat-label>
@@ -38,6 +63,10 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Créditos</mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.Credits}} </mat-cell>
             </ng-container>
+            <ng-container matColumnDef="LastAccess">
+                <mat-header-cell *matHeaderCellDef mat-sort-header style="flex-grow: 1;">Acesso</mat-header-cell>
+                <mat-cell *matCellDef="let row" style="flex-grow: 1;"> {{row.LastAccess | date:'short'}} </mat-cell>
+            </ng-container>
             <ng-container matColumnDef="Edit">
                 <mat-header-cell *matHeaderCellDef mat-sort-header  style="flex-grow: 1;"></mat-header-cell>
                 <mat-cell *matCellDef="let row" style="flex-grow: 1;">
@@ -50,5 +79,15 @@
             <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
         </mat-table>
         <mat-paginator (page)="pageEvent = OnChange($event)" [length]="totalItems" [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+        
+        <div class="d-flex justify-content-end">
+            <button mat-icon-button [matMenuTriggerFor]="menu" [disabled]="!dataSource.data.length">
+                <mat-icon>get_app</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="generateReport('csv')">CSV</button>
+                <button mat-menu-item (click)="generateReport('xls')">Excel</button>
+            </mat-menu>
+        </div>
     </div>
 </div>

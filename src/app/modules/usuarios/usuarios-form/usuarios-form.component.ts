@@ -14,6 +14,7 @@ import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-mod
 import { ChangePluginModalComponent } from '../../creditos/change-plugin-modal/change-plugin-modal.component';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 import { Location } from '@angular/common';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -54,7 +55,8 @@ export class UsuariosFormComponent implements OnInit {
     this.userForm = this.formBuilder.group({
       nome: [""],
       email: [""],
-      creditos: [null, [Validators.min(0), Validators.required]]
+      creditos: [null, [Validators.min(0), Validators.required]],
+      acesso: [""],
 
     });
   }
@@ -75,7 +77,8 @@ export class UsuariosFormComponent implements OnInit {
         this.userForm.reset({
           nome: this.currentUser.CustomerName,
           email: this.currentUser.CustomerEmail,
-          creditos: this.currentUser.Credits
+          creditos: this.currentUser.Credits,
+          acesso: this.currentUser.LastAccess 
         })
       },)
     } else {

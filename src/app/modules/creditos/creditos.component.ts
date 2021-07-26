@@ -274,9 +274,9 @@ export class CreditosComponent implements OnInit {
   }
 
   public generateReport(exportType) {
-    let fileType  = 'text/palin';
+    let fileType  = 'text/plain';
     exporterReport({
-      data: this.dataSource.data,
+      data: this.dataSource.data.map((element)=>{ return {...element, UsageDate: moment(element.UsageDate, 'x').format('L') } }),
       fileName: `relatorio-${moment().format()}`,
       exportType,
       processor (content, type, fileName) {

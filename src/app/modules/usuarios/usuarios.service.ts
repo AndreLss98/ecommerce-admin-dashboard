@@ -27,15 +27,17 @@ export class UsuariosService {
     this._history = history;
   }
 
-  getAllUsuarios(pageNumber: number, limit: number){
+  getAllUsuarios(pageNumber: number, limit: number, startDate?: String, endDate?: String ){
+    console.log(pageNumber, limit, startDate, endDate);
     const body = `{
-        users(pageNumber: ${pageNumber}, limit: ${limit}) {
+        users(pageNumber: ${pageNumber}, limit: ${limit}, startDate: "${startDate}", endDate: "${endDate}") {
           previousPage,
           nextPage,
           totalItems,
           data {
               CustomerName,
               Credits,
+              LastAccess,
               CustomerEmail
           }
         }
@@ -43,11 +45,11 @@ export class UsuariosService {
     
     return this.http.post<any>(environment.graphQL, body, HTTP_OPTIONS);
   }
-
+ 
   getUserHistory(userEmail: string) {
     const body = `{
       user(CustomerEmail: "${userEmail}") {
-        CustomerEmail CustomerID ShopifyCustomerNumber CustomerName Credits
+        CustomerEmail CustomerID ShopifyCustomerNumber CustomerName Credits LastAccess
         LinksDownload {
           LinkID ItemTitle OrderDate ItemID
         }

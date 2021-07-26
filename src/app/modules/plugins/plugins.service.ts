@@ -13,7 +13,7 @@ export class PluginsService {
     const form = new FormData();
     form.append('file', file);
     
-    return this.http.post(`${environment.backendURL}/products/upload-file/${productId}`, form);
+    return this.http.post(`${environment.backendURL}/products/upload-file/${productId}`, form, { observe: "events", reportProgress: true} );
   }
 
   public getPluginMetafields(id: number) {

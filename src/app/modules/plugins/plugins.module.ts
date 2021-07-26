@@ -19,6 +19,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
 import { HistoryLogsModalComponent } from './history-logs-modal/history-logs-modal.component';
 import { MetafieldsModalComponent } from './metafields-modal/metafields-modal.component';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 @NgModule({
   declarations: [ PluginsComponent, HistoryLogsModalComponent, MetafieldsModalComponent ],
@@ -38,6 +40,8 @@ import { MetafieldsModalComponent } from './metafields-modal/metafields-modal.co
     MatPaginatorModule,
     ReactiveFormsModule,
     PluginsRoutingModule,
+    MatProgressBarModule,
+
   ]
 })
 export class PluginsModule { }
