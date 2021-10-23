@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, LOCALE_ID, OnInit, ViewChild } from '@angular/core';
 
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
@@ -14,7 +14,7 @@ import { AlertModalComponent } from 'src/app/shared/modals/alert-modal/alert-mod
 import { ChangePluginModalComponent } from '../../creditos/change-plugin-modal/change-plugin-modal.component';
 import { BasicModalComponent } from 'src/app/shared/modals/basic-modal/basic-modal.component';
 import { Location } from '@angular/common';
-import * as moment from 'moment';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-usuarios-form',
@@ -51,6 +51,7 @@ export class UsuariosFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     public activeRoute: ActivatedRoute,
     public usuariosService: UsuariosService,
+    @Inject(LOCALE_ID) private locale: string
   ) {
     this.userForm = this.formBuilder.group({
       nome: [""],
@@ -78,7 +79,7 @@ export class UsuariosFormComponent implements OnInit {
           nome: this.currentUser.CustomerName,
           email: this.currentUser.CustomerEmail,
           creditos: this.currentUser.Credits,
-          acesso: this.currentUser.LastAccess 
+          acesso: formatDate(this.currentUser.LastAccess, 'dd/MM/yyyy', this.locale)
         })
       },)
     } else {
