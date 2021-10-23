@@ -19,7 +19,7 @@ import { formatDate } from '@angular/common';
 @Component({
   selector: 'app-usuarios-form',
   templateUrl: './usuarios-form.component.html',
-  styleUrls: ['./usuarios-form.component.scss']
+  styleUrls: ['./usuarios-form.component.scss'],
 })
 export class UsuariosFormComponent implements OnInit {
   private _currentUser: any;
@@ -29,14 +29,14 @@ export class UsuariosFormComponent implements OnInit {
 
   @ViewChild(MatPaginator)
   public paginator: MatPaginator;
-  
+
   public userForm: FormGroup;
   public filteredDownload: Observable<any>;
 
   public usuariosform: UsuariosFormComponent;
   public dataSource: MatTableDataSource<any> = new MatTableDataSource([]);
-  
-  data : any = [];
+
+  data: any = [];
   public isLoading: boolean = false;
   public displayedColumns: string[] = ['PluginName', 'Edit', 'Delete'];
   private _urlAtual = window.location.href;
@@ -54,11 +54,10 @@ export class UsuariosFormComponent implements OnInit {
     @Inject(LOCALE_ID) private locale: string
   ) {
     this.userForm = this.formBuilder.group({
-      nome: [""],
-      email: [""],
+      nome: [''],
+      email: [''],
       creditos: [null, [Validators.min(0), Validators.required]],
-      acesso: [""],
-
+      acesso: [''],
     });
   }
 
@@ -70,7 +69,7 @@ export class UsuariosFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if(this.activeRoute.snapshot.data.usuario) {
+    if (this.activeRoute.snapshot.data.usuario) {
       this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
       this.dataSource.data = this.data = this.currentUser.LinksDownload;
 
@@ -79,16 +78,20 @@ export class UsuariosFormComponent implements OnInit {
           nome: this.currentUser.CustomerName,
           email: this.currentUser.CustomerEmail,
           creditos: this.currentUser.Credits,
-          acesso: formatDate(this.currentUser.LastAccess, 'dd/MM/yyyy', this.locale)
-        })
-      },)
+          acesso: formatDate(
+            this.currentUser.LastAccess,
+            'dd/MM/yyyy',
+            this.locale
+          ),
+        });
+      });
     } else {
       const dialogRef = this.matDialog.open(BasicModalComponent, {
         data: {
           title: 'Aviso',
-          message: 'Usuário não encontrado.'
+          message: 'Usuário não encontrado.',
         },
-        hasBackdrop: false
+        hasBackdrop: false,
       });
 
       dialogRef.afterClosed().subscribe(() => {
@@ -101,7 +104,7 @@ export class UsuariosFormComponent implements OnInit {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
-  
+
   applyFilter(search: string) {
     this.dataSource.filter = search.trim().toLowerCase();
   }
@@ -110,21 +113,27 @@ export class UsuariosFormComponent implements OnInit {
     const dialogReference = this.matDialog.open(AlertModalComponent, {
       data: {
         title: 'Aviso',
-        message: `Tem certeza que deseja excluir ${plugin.ItemTitle} do histórico do usuário?`
-      }
+        message: `Tem certeza que deseja excluir ${plugin.ItemTitle} do histórico do usuário?`,
+      },
     });
 
     dialogReference.afterClosed().subscribe((data) => {
-      if(data) {
-        this.usuariosService.deletePluginFromHistoric(plugin.LinkID).subscribe((response) => {
-          this.dataSource.data = this.data = this.currentUser.LinksDownload = this.currentUser.LinksDownload
-            .filter(element => element.LinkID !== plugin.LinkID);
-            window.location.href= this._urlAtual;
-        }, (error) => {
-          console.log(error);
-        }, () => {
-
-        });
+      if (data) {
+        this.usuariosService.deletePluginFromHistoric(plugin.LinkID).subscribe(
+          (response) => {
+            this.dataSource.data =
+              this.data =
+              this.currentUser.LinksDownload =
+                this.currentUser.LinksDownload.filter(
+                  (element) => element.LinkID !== plugin.LinkID
+                );
+            window.location.href = this._urlAtual;
+          },
+          (error) => {
+            console.log(error);
+          },
+          () => {}
+        );
       }
     });
   }
@@ -132,38 +141,40 @@ export class UsuariosFormComponent implements OnInit {
   alterPlugin(currentPlugin) {
     const dialogRef = this.matDialog.open(ChangePluginModalComponent, {
       maxHeight: '400px',
-      data: { currentPlugin }
+      data: { currentPlugin },
     });
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data) {
         const confirmActionModalRef = this.matDialog.open(AlertModalComponent, {
           data: {
-            title: "Atenção",
-            message: `Confirma a troca de plugins? De: ${currentPlugin.ItemTitle} Para: ${data.title} `
+            title: 'Atenção',
+            message: `Confirma a troca de plugins? De: ${currentPlugin.ItemTitle} Para: ${data.title} `,
           },
-          disableClose: true
+          disableClose: true,
         });
 
         confirmActionModalRef.afterClosed().subscribe((confirmResult) => {
           if (confirmResult) {
-            this.usuariosService.alterPluginInHistoricUser(
-              currentPlugin.LinkID,
-              this.currentUser.ShopifyCustomerNumber,
-              currentPlugin.ItemID,
-              data
-            ).subscribe(() => {
-              console.log('Plugin alterado');
-              window.location.href= this._urlAtual;
-            }, (error) => {
-              console.log(error)
-            }, () => {
-
-            });
-            
+            this.usuariosService
+              .alterPluginInHistoricUser(
+                currentPlugin.LinkID,
+                this.currentUser.ShopifyCustomerNumber,
+                currentPlugin.ItemID,
+                data
+              )
+              .subscribe(
+                () => {
+                  console.log('Plugin alterado');
+                  window.location.href = this._urlAtual;
+                },
+                (error) => {
+                  console.log(error);
+                },
+                () => {}
+              );
           }
         });
-        
       }
     });
   }
@@ -171,54 +182,67 @@ export class UsuariosFormComponent implements OnInit {
   addPlugin() {
     const dialogRef = this.matDialog.open(ChangePluginModalComponent, {
       maxHeight: '400px',
-      data: { }
+      data: {},
     });
 
     dialogRef.afterClosed().subscribe((data) => {
       if (data) {
-        this.usuariosService.addPluginInHistoricUser(data.id, this.currentUser.ShopifyCustomerNumber).subscribe((response) => {
-          console.log(response);
-          window.location.href= this._urlAtual;
-        }, (error) => {
-          console.log(error);
-        }, () => {
-
-        });
+        this.usuariosService
+          .addPluginInHistoricUser(
+            data.id,
+            this.currentUser.ShopifyCustomerNumber
+          )
+          .subscribe(
+            (response) => {
+              console.log(response);
+              window.location.href = this._urlAtual;
+            },
+            (error) => {
+              console.log(error);
+            },
+            () => {}
+          );
       }
-    })
+    });
   }
 
   onUpdateCredits() {
     setTimeout(() => {
       if (
-        this.userForm.get("creditos").value > this.currentUser.Credits &&
+        this.userForm.get('creditos').value !== this.currentUser.Credits &&
         !this.confirmUpdateCreditsModal
       ) {
-        this.confirmUpdateCreditsModal = this.matDialog.open(AlertModalComponent, {
-          data: {
-            title: "Atenção",
-            message: "Confirma alteração de quantidade de créditos do usuário?"
-          },
-          disableClose: true
-        });
-  
+        this.confirmUpdateCreditsModal = this.matDialog.open(
+          AlertModalComponent,
+          {
+            data: {
+              title: 'Atenção',
+              message:
+                'Confirma alteração de quantidade de créditos do usuário?',
+            },
+            disableClose: true,
+          }
+        );
+
         this.confirmUpdateCreditsModal.afterOpened().subscribe(() => {
           (document.activeElement as any).blur();
         });
-  
+
         this.confirmUpdateCreditsModal.afterClosed().subscribe((data) => {
           this.confirmUpdateCreditsModal = null;
           if (data) {
-            this.usuariosService.updateCredits(this.currentUser.CustomerID, this.userForm.get("creditos").value)
-            .subscribe((response) => {
-              this.currentUser.Credits = this.userForm.get("creditos").value ;
-            });
+            this.usuariosService
+              .updateCredits(
+                this.currentUser.CustomerID,
+                this.userForm.get('creditos').value
+              )
+              .subscribe((response) => {
+                this.currentUser.Credits = this.userForm.get('creditos').value;
+              });
           } else {
-            this.userForm.get("creditos").setValue( this.currentUser.Credits);
+            this.userForm.get('creditos').setValue(this.currentUser.Credits);
           }
         });
-      } else if (this.userForm.get("creditos").value < this.currentUser.Credits) {
-        this.userForm.get("creditos").setValue( this.currentUser.Credits);
       }
     });
   }
