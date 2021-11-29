@@ -149,24 +149,23 @@ export class UsuariosComponent implements OnInit {
   }
 
   public async generateReport(exportType) {
+    this.isLoading = true;
     let fileType  = 'text/plain';
     let buffer = [];
     let pageOffset = 1;
     let stopFlag = false;
-
-    if(this.filterForm.get('top').value){
-      buffer = this.dataSource.data;
-    }else {
-      while(!stopFlag){
-        const response = this.usuarioService.getAllUsuarios( pageOffset , 200, this.filterForm.controls['start'].value.toISOString().replace(/\T.{1,}/, 'T01:00:00.000Z'),
-        this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : '', null  
-        ).toPromise();
-        await response.then( ({data})=>{
-          if(!data.users.nextPage) stopFlag = true;
-          pageOffset++;
-          buffer = buffer.concat(data.users.data);
-        })
-      }
+    while(!stopFlag) {
+      const response = this.usuarioService.getAllUsuarios( pageOffset , 200,
+        this.filterForm.controls['start'].value? this.filterForm.controls['start'].value.toISOString().replace(/\T.{1,}/, 'T01:00:00.000Z') : '',
+        this.filterForm.controls['end'].value? this.filterForm.controls['end'].value.toISOString().replace(/\T.{1,}/, 'T23:59:59.000Z') : ''
+      ).toPromise();
+      await response.then( ({data}) => {
+        if(!data.users.nextPage) stopFlag = true;
+        pageOffset++;
+        buffer = buffer.concat(data.users.data);
+      }).catch(error => {
+        console.log(error);
+      })
     }
     console.log(buffer);
     exporterReport({
@@ -190,6 +189,8 @@ export class UsuariosComponent implements OnInit {
         window.URL.revokeObjectURL(downloadLink.href);
       }
     });
+
+    this.isLoading = false;
   }
 }
 

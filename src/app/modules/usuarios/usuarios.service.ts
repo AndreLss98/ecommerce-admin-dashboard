@@ -27,8 +27,7 @@ export class UsuariosService {
     this._history = history;
   }
 
-  getAllUsuarios(pageNumber: number, limit: number, startDate: String, endDate: String, topUsers: number ){
-    console.log(pageNumber, limit, startDate, endDate, topUsers);
+  getAllUsuarios(pageNumber: number, limit: number, startDate?: String, endDate?: String ){
     const body = `{
         users(pageNumber: ${pageNumber}, limit: ${limit}, startDate: "${startDate}", endDate: "${endDate}", topUsers: ${topUsers}) {
           previousPage,

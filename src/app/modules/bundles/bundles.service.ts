@@ -48,11 +48,6 @@ export class BundlesService {
     return this.http.get<any>(`https://lenofx.com/products/${handle}.json`, { observe: 'response' });
   }
 
-  public getPluginMetafields(id: number) {
-    const params = new HttpParams().append('id', id.toString());
-    return this.http.get<any>(`${environment.backendURL}/products/metafields`, { withCredentials: true, params, observe: 'response' });
-  }
-
   public getCollections() {
     return this.http.get<any>(`https://lenofx.com/collections.json`);
   }

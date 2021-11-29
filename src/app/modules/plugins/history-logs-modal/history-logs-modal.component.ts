@@ -17,6 +17,8 @@ export class HistoryLogsModalComponent implements OnInit {
   public logForm: FormGroup;
   public progress = 0;
 
+  private _metafields: any[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
     private dialogRef: MatDialogRef<any>,
@@ -30,6 +32,11 @@ export class HistoryLogsModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.pluginsService.getPluginMetafields(this.data.ProductID).subscribe(({ body }) => {
+      this._metafields = body;
+      this.logForm.get('logs').setValue(this._metafields.find(metafields => metafields.namespace === 'history-log').value);
+    });
+
     document.getElementById("progress").hidden = true;
     this.progress = 0;
     setTimeout(() => {
@@ -56,13 +63,13 @@ export class HistoryLogsModalComponent implements OnInit {
       this._dropzone.nativeElement.addEventListener('dragleave', (event) => {
         event.preventDefault();
         event.target.classList.remove('dragging');
-        event.target.classList.remove('droped');  
+        event.target.classList.remove('droped');
       });
     })
   }
 
   onSave() {
-    return { ...this.logForm.value, id: this.data.ProductID }
+    return { ...this.logForm.value, id: this.data.ProductID, metafields: this._metafields }
   }
 
   uploadFile(file: File) {

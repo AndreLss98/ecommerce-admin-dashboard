@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { BundlesService } from '../../bundles/bundles.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 import { t as typy } from 'typy';
-import { MatTableDataSource } from '@angular/material/table';
+
+import { PluginsService } from '../plugins.service';
 
 @Component({
   selector: 'app-metafields-modal',
@@ -19,13 +20,13 @@ export class MetafieldsModalComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private bundleService: BundlesService
+    private pluginsService: PluginsService
   ) {
     this.dataSource = new MatTableDataSource(this.data);
   }
 
   ngOnInit(): void {
-    this.bundleService.getPluginMetafields(this.data.productId).subscribe((response: any) => {
+    this.pluginsService.getPluginMetafields(this.data.productId).subscribe((response: any) => {
       this.data["aspect-ratios"] = response.body.find((metafield: any) => metafield.namespace === "aspect-ratios");
       this.data["requirements"] = response.body.find((metafield: any) => metafield.namespace === "requirements");
       this.dataSource = new MatTableDataSource([this.data]);
