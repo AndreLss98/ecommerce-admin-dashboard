@@ -7,6 +7,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { DatePipe } from '@angular/common';
 
 import { UsuariosService } from '../usuarios.service';
 
@@ -72,7 +73,6 @@ export class UsuariosFormComponent implements OnInit {
     if (this.activeRoute.snapshot.data.usuario) {
       this.currentUser = this.activeRoute.snapshot.data.usuario.data.user;
       this.dataSource.data = this.data = this.currentUser.LinksDownload;
-
       setTimeout(() => {
         this.userForm.reset({
           nome: this.currentUser.CustomerName,
